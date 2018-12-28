@@ -2,13 +2,19 @@ package ee.testprep.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.List;
 
 import ee.testprep.R;
+import ee.testprep.db.DataBaseHelper;
+import ee.testprep.db.DataBaseHelper.Database;
+import ee.testprep.db.DataBaseHelper.Test;
 
 public class StatsFragment extends Fragment {
     private static String className = StatsFragment.class.getSimpleName();
@@ -19,6 +25,7 @@ public class StatsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private OnFragmentInteractionListener mListener;
+    private DataBaseHelper dbHelper;
 
     public StatsFragment() {
     }
@@ -69,7 +76,52 @@ public class StatsFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+        dbHelper = DataBaseHelper.getInstance(context);
     }
+
+    private TextView practiceDataView;
+    private TextView quizDataView;
+    private TextView modelTestsDataView;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        List<Test> practiceData = dbHelper.getMaxQuestions(Database.QBANK);
+        int answered = 0;
+        int total = 0;
+        for (Test test : practiceData) {
+            answered += test.answeredQuestions;
+            total += test.maxQuestions;
+        }
+        practiceDataView = (TextView) view.findViewById(R.id.stats_practice_percent_value);
+        practiceDataView.setText(answered + "/" + total + " questions");
+
+        List<Test> quizData = dbHelper.getMaxQuestions(Database.QUIZ);
+        answered = 0;
+        total = 0;
+        for (Test test : quizData) {
+            answered += test.answeredQuestions;
+            total += test.maxQuestions;
+        }
+        quizDataView = (TextView) view.findViewById(R.id.stats_quiz_percent_value);
+        quizDataView.setText(answered + "/" + total + " questions");
+
+        List<Test> modelTestsData = dbHelper.getMaxQuestions(Database.MODELTEST);
+        answered = 0;
+        total = 0;
+        for (Test test : modelTestsData) {
+            answered += test.answeredQuestions;
+            total += test.maxQuestions;
+        }
+        modelTestsDataView = (TextView) view.findViewById(R.id.stats_model_tests_percent_value);
+        modelTestsDataView.setText(answered + "/" + total + " questions");
+    }
+
+//    @Override
+//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+//        super.onActivityCreated(savedInstanceState);
+//    }
 
     @Override
     public void onDetach() {

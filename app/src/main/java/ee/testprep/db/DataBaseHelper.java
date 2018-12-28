@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ee.testprep.L;
 import ee.testprep.R;
 
 public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
@@ -633,4 +632,49 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             db.close();
     }
 
+    public List<Test> getMaxQuestions(Database database) {
+        List<Test> tests = new ArrayList<>();
+        if (database == Database.QBANK) {
+            tests.add(new Test("Practice 1", 100, 100, 94, 6));
+            tests.add(new Test("Practice 2", 100, 100, 100, 0));
+            tests.add(new Test("Practice 3", 100, 60, 59, 1));
+        } else if (database == Database.QUIZ) {
+            tests.add(new Test("Quiz 1", 100, 100, 91, 9));
+            tests.add(new Test("Quiz 2", 100, 100, 87, 13));
+            tests.add(new Test("Quiz 3", 100, 100, 94, 6));
+            tests.add(new Test("Quiz 4", 100, 100, 93, 7));
+            tests.add(new Test("Quiz 5", 100, 80, 79, 1));
+        } else if (database == Database.MODELTEST) {
+            tests.add(new Test("Model Test 1", 100, 100, 90, 10));
+            tests.add(new Test("Model Test 2", 100, 100, 89, 11));
+            tests.add(new Test("Model Test 3", 100, 100, 91, 9));
+            tests.add(new Test("Model Test 4", 100, 100, 94, 6));
+            tests.add(new Test("Model Test 5", 100, 100, 87, 13));
+            tests.add(new Test("Model Test 6", 100, 100, 96, 4));
+            tests.add(new Test("Model Test 7", 100, 40, 40, 0));
+        }
+
+        return tests;
+    }
+
+    public enum Database {
+        QBANK, QUIZ, MODELTEST;
+    }
+
+    public static class Test {
+        public String name;
+        public int maxQuestions;
+        public int answeredQuestions;
+        public int correctAnswers;
+        public int wrongAnswers;
+
+        Test(String name, int maxQuestions, int answeredQuestions, int correctAnswers,
+                int wrongAnswers) {
+            this.name = name;
+            this.maxQuestions = maxQuestions;
+            this.answeredQuestions = answeredQuestions;
+            this.correctAnswers = correctAnswers;
+            this.wrongAnswers = wrongAnswers;
+        }
+    }
 }
