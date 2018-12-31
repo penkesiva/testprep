@@ -1,94 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="@dimen/padding_large"
-    android:paddingBottom="@dimen/padding_large"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/stats_practice"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small"
-        android:text="@string/practice"
-        android:textSize="@dimen/big_font"
-        android:textStyle="bold"/>
-
-    <ProgressBar
-        android:id="@+id/stats_practice_percent"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="800"
-        android:padding="@dimen/padding_small"
-        android:progress="670"/>
-
-    <TextView
-        android:id="@+id/stats_practice_percent_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:padding="@dimen/padding_small"
-        android:text="670/800 questions"
-        android:textSize="@dimen/small_font"/>
-
-    <TextView
-        android:id="@+id/stats_quiz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small"
+        android:orientation="vertical"
         android:paddingTop="@dimen/padding_large"
-        android:text="@string/quiz"
-        android:textSize="@dimen/big_font"
-        android:textStyle="bold"/>
+        android:paddingBottom="@dimen/padding_large">
 
-    <ProgressBar
-        android:id="@+id/stats_quiz_percent"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:padding="@dimen/padding_small"
-        android:progress="60"/>
+        <TextView
+            android:id="@+id/stats_practice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            android:text="@string/practice"
+            android:textSize="@dimen/big_font"
+            android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/stats_quiz_percent_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:padding="@dimen/padding_small"
-        android:text="60/100 tests"
-        android:textSize="@dimen/small_font"/>
+        <ProgressBar
+            android:id="@+id/stats_practice_percent"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="800"
+            android:padding="@dimen/padding_small"
+            android:progress="670"/>
 
-    <TextView
-        android:id="@+id/stats_model_tests"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding_small"
-        android:paddingTop="@dimen/padding_large"
-        android:text="@string/model_tests"
-        android:textSize="@dimen/big_font"
-        android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/stats_practice_percent_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="@dimen/padding_small"
+            android:text="670/800 questions"
+            android:textSize="@dimen/small_font"/>
 
-    <ProgressBar
-        android:id="@+id/stats_model_tests_percent"
-        style="@android:style/Widget.ProgressBar.Horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="100"
-        android:padding="@dimen/padding_small"
-        android:progress="30"/>
+        <GridView
+            android:id="@+id/stats_practice_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="spacingWidthUniform"
+            android:verticalSpacing="24dp"/>
 
-    <TextView
-        android:id="@+id/stats_model_tests_percent_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="right"
-        android:padding="@dimen/padding_small"
-        android:text="30/100 tests"
-        android:textSize="@dimen/small_font"/>
+        <TextView
+            android:id="@+id/stats_quiz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_large"
+            android:text="@string/quiz"
+            android:textSize="@dimen/big_font"
+            android:textStyle="bold"/>
 
-    <!--android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"-->
-</LinearLayout>
+        <ProgressBar
+            android:id="@+id/stats_quiz_percent"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:padding="@dimen/padding_small"
+            android:progress="60"/>
+
+        <TextView
+            android:id="@+id/stats_quiz_percent_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="@dimen/padding_small"
+            android:text="60/100 tests"
+            android:textSize="@dimen/small_font"/>
+
+        <GridView
+            android:id="@+id/stats_quiz_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="spacingWidthUniform"
+            android:verticalSpacing="24dp"/>
+
+        <TextView
+            android:id="@+id/stats_model_tests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            android:paddingTop="@dimen/padding_large"
+            android:text="@string/model_tests"
+            android:textSize="@dimen/big_font"
+            android:textStyle="bold"/>
+
+        <ProgressBar
+            android:id="@+id/stats_model_tests_percent"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:padding="@dimen/padding_small"
+            android:progress="30"/>
+
+        <TextView
+            android:id="@+id/stats_model_tests_percent_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="@dimen/padding_small"
+            android:text="30/100 tests"
+            android:textSize="@dimen/small_font"/>
+
+        <GridView
+            android:id="@+id/stats_model_tests_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnWidth="100dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="spacingWidthUniform"
+            android:verticalSpacing="24dp"/>
+    </LinearLayout>
+</ScrollView>

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "ee.testprep"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 27
         multiDexEnabled true
         versionCode 1

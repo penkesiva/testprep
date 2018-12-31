@@ -632,7 +632,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             db.close();
     }
 
-    public List<Test> getMaxQuestions(Database database) {
+    public List<Test> getTestsData(Database database) {
         List<Test> tests = new ArrayList<>();
         if (database == Database.QBANK) {
             tests.add(new Test("Practice 1", 100, 100, 94, 6));
