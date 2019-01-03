@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ee.testprep.R;
@@ -27,9 +30,13 @@ public class StatsFragment extends Fragment {
     private static String className = StatsFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
     private DataBaseHelper dbHelper;
-    private TextView practiceDataView;
-    private TextView quizDataView;
-    private TextView modelTestsDataView;
+    private Database database = Database.QUIZ;
+    private FilterAdapter filterAdapter;
+    private Button practiceButton;
+    private Button quizButton;
+    private Button modelTestsButton;
+    private ProgressBar progressBar;
+    private TextView progressDataView;
 
     public StatsFragment() {
     }
@@ -59,7 +66,7 @@ public class StatsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_stats, container, false);
     }
@@ -87,47 +94,70 @@ public class StatsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<Test> practiceData = dbHelper.getTestsData(Database.QBANK);
+        practiceButton = view.findViewById(R.id.stats_practice_button);
+        practiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update(Database.QBANK);
+            }
+        });
+
+        quizButton = view.findViewById(R.id.stats_quiz_button);
+        quizButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update(Database.QUIZ);
+            }
+        });
+
+        modelTestsButton = view.findViewById(R.id.stats_model_tests_button);
+        modelTestsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                update(Database.MODELTEST);
+            }
+        });
+
+        progressBar = view.findViewById(R.id.stats_percent);
+        progressDataView = view.findViewById(R.id.stats_percent_value);
+
+        filterAdapter = new FilterAdapter(getActivity());
+        GridView gridView = view.findViewById(R.id.stats_gridview);
+        gridView.setAdapter(filterAdapter);
+
+        update(Database.QBANK);
+    }
+
+    private void update(Database database) {
+        if (this.database == database) return;
+
+        this.database = database;
+
+        if (database == Database.QBANK) {
+            practiceButton.setSelected(true);
+            quizButton.setSelected(false);
+            modelTestsButton.setSelected(false);
+        } else if (database == Database.QUIZ) {
+            practiceButton.setSelected(false);
+            quizButton.setSelected(true);
+            modelTestsButton.setSelected(false);
+        } else if (database == Database.MODELTEST) {
+            practiceButton.setSelected(false);
+            quizButton.setSelected(false);
+            modelTestsButton.setSelected(true);
+        }
+
         int answered = 0;
         int total = 0;
+        List<Test> practiceData = dbHelper.getTestsData(database);
         for (Test test : practiceData) {
             answered += test.answeredQuestions;
             total += test.maxQuestions;
         }
-        practiceDataView = (TextView) view.findViewById(R.id.stats_practice_percent_value);
-        practiceDataView.setText(answered + "/" + total + " questions");
+        progressBar.setProgress(progressBar.getMax() * answered / total);
+        progressDataView.setText(answered + "/" + total + " questions");
 
-        GridView gridView1 = view.findViewById(R.id.stats_practice_gridview);
-        final FilterAdapter filterAdapter1 = new FilterAdapter(getActivity(), Database.QBANK);
-        gridView1.setAdapter(filterAdapter1);
-
-        List<Test> quizData = dbHelper.getTestsData(Database.QUIZ);
-        answered = 0;
-        total = 0;
-        for (Test test : quizData) {
-            answered += test.answeredQuestions;
-            total += test.maxQuestions;
-        }
-        quizDataView = (TextView) view.findViewById(R.id.stats_quiz_percent_value);
-        quizDataView.setText(answered + "/" + total + " questions");
-
-        GridView gridView2 = view.findViewById(R.id.stats_quiz_gridview);
-        final FilterAdapter filterAdapter2 = new FilterAdapter(getActivity(), Database.QUIZ);
-        gridView2.setAdapter(filterAdapter2);
-
-        List<Test> modelTestsData = dbHelper.getTestsData(Database.MODELTEST);
-        answered = 0;
-        total = 0;
-        for (Test test : modelTestsData) {
-            answered += test.answeredQuestions;
-            total += test.maxQuestions;
-        }
-        modelTestsDataView = (TextView) view.findViewById(R.id.stats_model_tests_percent_value);
-        modelTestsDataView.setText(answered + "/" + total + " questions");
-
-        GridView gridView3 = view.findViewById(R.id.stats_model_tests_gridview);
-        final FilterAdapter filterAdapter3 = new FilterAdapter(getActivity(), Database.MODELTEST);
-        gridView3.setAdapter(filterAdapter3);
+        filterAdapter.update(database);
     }
 
     @Override
@@ -139,11 +169,16 @@ public class StatsFragment extends Fragment {
     private class FilterAdapter extends BaseAdapter {
 
         private final Context mContext;
-        private List<Test> modelTestsData;
+        private List<Test> modelTestsData = new ArrayList<>();
 
-        public FilterAdapter(Context context, Database database) {
+        public FilterAdapter(Context context) {
             this.mContext = context;
-            this.modelTestsData = dbHelper.getTestsData(database);
+        }
+
+        protected synchronized void update(Database database) {
+            modelTestsData.clear();
+            modelTestsData.addAll(dbHelper.getTestsData(database));
+            notifyDataSetChanged();
         }
 
         @Override
