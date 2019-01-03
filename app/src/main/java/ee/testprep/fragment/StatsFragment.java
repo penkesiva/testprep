@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -66,7 +65,7 @@ public class StatsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_stats, container, false);
     }
@@ -196,41 +195,37 @@ public class StatsFragment extends Fragment {
             return modelTestsData.get(position);
         }
 
-        private boolean getIsLocked() {
-            return false; //TODO
-        }
-
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            final String filterName = modelTestsData.get(position).name;
+            Test test = modelTestsData.get(position);
+            final String filterName = test.name;
 
             if (convertView == null) {
                 final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-                convertView = layoutInflater.inflate(R.layout.gridview_year_item, null);
+                convertView = layoutInflater.inflate(R.layout.gridview_stats_item, null);
 
-                final TextView nameTextView = convertView.findViewById(R.id.textview_filter_name);
-                final ImageView lockImageView = convertView.findViewById(R.id.imageview_unlock);
+                final TextView titleView = convertView.findViewById(R.id.stats_item_title);
+                final TextView dataView = convertView.findViewById(R.id.stats_item_data);
 
-                final ViewHolder viewHolder = new ViewHolder(nameTextView, lockImageView);
+                final ViewHolder viewHolder = new ViewHolder(titleView, dataView);
                 convertView.setTag(viewHolder);
             }
 
             final ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.nameTextView.setText(filterName);
-            viewHolder.lockImageView.setImageResource(getIsLocked() ? R.drawable.lock : R
-                    .drawable.unlock);
+            viewHolder.titleView.setText(filterName);
+            viewHolder.dataView.setText(test.correctAnswers + "/" + test.maxQuestions);
 
             return convertView;
         }
 
         private class ViewHolder {
-            private final TextView nameTextView;
-            private final ImageView lockImageView;
+            private final TextView titleView;
+            private final TextView dataView;
 
-            public ViewHolder(TextView nameTextView, ImageView lockImageView) {
-                this.nameTextView = nameTextView;
-                this.lockImageView = lockImageView;
+            public ViewHolder(TextView titleView, TextView dataView) {
+                this.titleView = titleView;
+                this.dataView = dataView;
             }
         }
     }
