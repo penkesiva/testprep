@@ -673,7 +673,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         public int correctAnswers;
         public int wrongAnswers;
 
-        Test(String name, int maxQuestions, int answeredQuestions, int correctAnswers,
+        public Test(String name, int maxQuestions, int answeredQuestions, int correctAnswers,
                 int wrongAnswers) {
             this.name = name;
             this.maxQuestions = maxQuestions;
