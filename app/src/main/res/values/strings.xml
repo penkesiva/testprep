@@ -12,6 +12,7 @@
     <string name="practice">Practice</string>
     <string name="quiz">Quiz</string>
     <string name="model_tests">Model Tests</string>
+    <string name="all_tests">All Tests</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

@@ -1,5 +1,6 @@
 package ee.testprep.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 
 import ee.testprep.MainActivity;
 import ee.testprep.R;
-import ee.testprep.db.DataBaseHelper.Database;
+import ee.testprep.db.Test.TestType;
 
 public class StatsFragment extends android.app.Fragment {
     private TabLayout tabLayout;
@@ -39,37 +40,31 @@ public class StatsFragment extends android.app.Fragment {
     }
 
     private class SlidePagerAdapter extends FragmentPagerAdapter {
+        private final Context context;
+
         public SlidePagerAdapter(FragmentActivity activity) {
             super(activity.getSupportFragmentManager());
+            context = activity;
         }
 
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = new StatsTabFragment();
             Bundle args = new Bundle();
-            args.putInt(StatsTabFragment.DATABASE_TYPE, position);
+            args.putInt(StatsTabFragment.TEST_TYPE, position);
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return Database.values().length;
+            return TestType.values().length;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            Database database = Database.values()[position];
-            if (database == Database.ALL) {
-                return "Summary";
-            } else if (database == Database.QBANK) {
-                return "Practice";
-            } else if (database == Database.QUIZ) {
-                return "Quiz";
-            } else if (database == Database.MODELTEST) {
-                return "Model Tests";
-            }
-            return "";
+            TestType testType = TestType.values()[position];
+            return testType.getTitle(context);
         }
     }
 }

@@ -18,13 +18,13 @@ import java.util.List;
 
 import ee.testprep.R;
 import ee.testprep.db.DataBaseHelper;
-import ee.testprep.db.DataBaseHelper.Database;
-import ee.testprep.db.DataBaseHelper.Test;
+import ee.testprep.db.Test;
+import ee.testprep.db.Test.TestType;
 
 public class StatsTabFragment extends Fragment {
-    public static final String DATABASE_TYPE = "database_type";
+    public static final String TEST_TYPE = "test_type";
 
-    private Database database;
+    private TestType testType;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -33,8 +33,8 @@ public class StatsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         Bundle args = getArguments();
-        int databaseIndex = args.getInt(DATABASE_TYPE, 0);
-        database = Database.values()[databaseIndex];
+        int testTypeIndex = args.getInt(TEST_TYPE, 0);
+        testType = TestType.values()[testTypeIndex];
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_stats_tab, container, false);
         return rootView;
@@ -48,60 +48,16 @@ public class StatsTabFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new StatsTabAdapter(getContext(), database);
+        mAdapter = new StatsTabAdapter(getContext(), testType);
         mRecyclerView.setAdapter(mAdapter);
     }
 
     public class StatsTabAdapter extends RecyclerView.Adapter<StatsTabAdapter.StatsViewHolder> {
         private List<Test> modelTestData = new ArrayList<>();
 
-        public StatsTabAdapter(Context context, Database database) {
+        public StatsTabAdapter(Context context, TestType testType) {
             DataBaseHelper dbHelper = DataBaseHelper.getInstance(context);
-            if (database == Database.ALL) {
-                int maxQuestions = 0;
-                int answeredQuestions = 0;
-                int correctAnswers = 0;
-                int wrongAnswers = 0;
-                List<Test> testData = dbHelper.getTestsData(Database.QBANK);
-                for (Test test : testData) {
-                    maxQuestions += test.maxQuestions;
-                    answeredQuestions += test.answeredQuestions;
-                    correctAnswers += test.correctAnswers;
-                    wrongAnswers += test.wrongAnswers;
-                }
-                modelTestData.add(new Test("Practice", maxQuestions, answeredQuestions,
-                        correctAnswers, wrongAnswers));
-
-                maxQuestions = 0;
-                answeredQuestions = 0;
-                correctAnswers = 0;
-                wrongAnswers = 0;
-                testData = dbHelper.getTestsData(Database.QUIZ);
-                for (Test test : testData) {
-                    maxQuestions += test.maxQuestions;
-                    answeredQuestions += test.answeredQuestions;
-                    correctAnswers += test.correctAnswers;
-                    wrongAnswers += test.wrongAnswers;
-                }
-                modelTestData.add(new Test("Quiz", maxQuestions, answeredQuestions,
-                        correctAnswers, wrongAnswers));
-
-                maxQuestions = 0;
-                answeredQuestions = 0;
-                correctAnswers = 0;
-                wrongAnswers = 0;
-                testData = dbHelper.getTestsData(Database.MODELTEST);
-                for (Test test : testData) {
-                    maxQuestions += test.maxQuestions;
-                    answeredQuestions += test.answeredQuestions;
-                    correctAnswers += test.correctAnswers;
-                    wrongAnswers += test.wrongAnswers;
-                }
-                modelTestData.add(new Test("Model Tests", maxQuestions, answeredQuestions,
-                        correctAnswers, wrongAnswers));
-            } else {
-                modelTestData.addAll(dbHelper.getTestsData(database));
-            }
+            modelTestData.addAll(dbHelper.getTestsData(context, testType));
         }
 
         @Override
@@ -126,9 +82,6 @@ public class StatsTabFragment extends Fragment {
             return modelTestData.size();
         }
 
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
         public class StatsViewHolder extends RecyclerView.ViewHolder {
             private final TextView titleView;
             private final TextView summaryView;

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import ee.testprep.R;
+import ee.testprep.db.Test.TestType;
 
 public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
@@ -632,23 +633,23 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             db.close();
     }
 
-    public List<Test> getTestsData(Database database) {
+    public List<Test> getTestsData(Context context, TestType testType) {
         List<Test> tests = new ArrayList<>();
-        if (database == Database.QBANK) {
+        if (testType == TestType.QBANK) {
             tests.add(new Test("Practice 1", 100, 100, 94, 6));
             tests.add(new Test("Practice 2", 100, 100, 100, 0));
             tests.add(new Test("Practice 3", 100, 60, 59, 1));
             tests.add(new Test("Practice 4", 100, 0, 0, 0));
             tests.add(new Test("Practice 5", 100, 0, 0, 0));
             tests.add(new Test("Practice 6", 100, 0, 0, 0));
-        } else if (database == Database.QUIZ) {
+        } else if (testType == TestType.QUIZ) {
             tests.add(new Test("Quiz 1", 100, 100, 91, 9));
             tests.add(new Test("Quiz 2", 100, 100, 87, 13));
             tests.add(new Test("Quiz 3", 100, 100, 94, 6));
             tests.add(new Test("Quiz 4", 100, 100, 93, 7));
             tests.add(new Test("Quiz 5", 100, 0, 0, 0));
             tests.add(new Test("Quiz 6", 100, 0, 0, 0));
-        } else if (database == Database.MODELTEST) {
+        } else if (testType == TestType.MODELTEST) {
             tests.add(new Test("Model Test 1", 100, 100, 90, 10));
             tests.add(new Test("Model Test 2", 100, 100, 89, 11));
             tests.add(new Test("Model Test 3", 100, 100, 91, 9));
@@ -657,29 +658,12 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             tests.add(new Test("Model Test 6", 100, 100, 96, 4));
             tests.add(new Test("Model Test 7", 100, 40, 40, 0));
             tests.add(new Test("Model Test 8", 100, 0, 0, 0));
+        } else if (testType == TestType.ALL) {
+            tests.add(TestType.QBANK.getSummary(context));
+            tests.add(TestType.QUIZ.getSummary(context));
+            tests.add(TestType.MODELTEST.getSummary(context));
         }
 
         return tests;
-    }
-
-    public enum Database {
-        ALL, QBANK, QUIZ, MODELTEST;
-    }
-
-    public static class Test {
-        public String name;
-        public int maxQuestions;
-        public int answeredQuestions;
-        public int correctAnswers;
-        public int wrongAnswers;
-
-        public Test(String name, int maxQuestions, int answeredQuestions, int correctAnswers,
-                int wrongAnswers) {
-            this.name = name;
-            this.maxQuestions = maxQuestions;
-            this.answeredQuestions = answeredQuestions;
-            this.correctAnswers = correctAnswers;
-            this.wrongAnswers = wrongAnswers;
-        }
     }
 }
