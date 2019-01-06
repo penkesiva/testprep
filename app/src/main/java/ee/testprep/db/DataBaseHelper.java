@@ -638,12 +638,16 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             tests.add(new Test("Practice 1", 100, 100, 94, 6));
             tests.add(new Test("Practice 2", 100, 100, 100, 0));
             tests.add(new Test("Practice 3", 100, 60, 59, 1));
+            tests.add(new Test("Practice 4", 100, 0, 0, 0));
+            tests.add(new Test("Practice 5", 100, 0, 0, 0));
+            tests.add(new Test("Practice 6", 100, 0, 0, 0));
         } else if (database == Database.QUIZ) {
             tests.add(new Test("Quiz 1", 100, 100, 91, 9));
             tests.add(new Test("Quiz 2", 100, 100, 87, 13));
             tests.add(new Test("Quiz 3", 100, 100, 94, 6));
             tests.add(new Test("Quiz 4", 100, 100, 93, 7));
-            tests.add(new Test("Quiz 5", 100, 80, 79, 1));
+            tests.add(new Test("Quiz 5", 100, 0, 0, 0));
+            tests.add(new Test("Quiz 6", 100, 0, 0, 0));
         } else if (database == Database.MODELTEST) {
             tests.add(new Test("Model Test 1", 100, 100, 90, 10));
             tests.add(new Test("Model Test 2", 100, 100, 89, 11));
@@ -652,13 +656,14 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             tests.add(new Test("Model Test 5", 100, 100, 87, 13));
             tests.add(new Test("Model Test 6", 100, 100, 96, 4));
             tests.add(new Test("Model Test 7", 100, 40, 40, 0));
+            tests.add(new Test("Model Test 8", 100, 0, 0, 0));
         }
 
         return tests;
     }
 
     public enum Database {
-        QBANK, QUIZ, MODELTEST;
+        ALL, QBANK, QUIZ, MODELTEST;
     }
 
     public static class Test {

@@ -1,27 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rectangle_blue"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="5dp">
 
     <TextView
         android:id="@+id/stats_item_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="left"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:textSize="18sp"
+        android:textSize="@dimen/medium2_font"
         android:textStyle="bold"/>
 
-    <TextView
-        android:id="@+id/stats_item_data"
-        android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/stats_item_progress"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="12sp"/>
+        android:layout_marginLeft="@dimen/padding_large"
+        android:layout_marginTop="@dimen/padding_large"
+        android:layout_marginRight="@dimen/padding_large"
+        android:max="800"
+        android:padding="@dimen/padding_small"
+        android:progress="670"/>
+
+    <TextView
+        android:id="@+id/stats_item_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:padding="@dimen/padding_small"
+        android:text="670/800 questions"
+        android:textSize="@dimen/small_font"/>
 </LinearLayout>
