@@ -31,10 +31,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     private static final String DATABASE_NAME = "eeTestPrep2.db";
 
     // Table Names
-    private static final String TABLE_USERDATA = "userdata";
-    private static final String TABLE_QBANK = "qbank";
-    private static final String TABLE_QUIZ = "quiz";
-    private static final String TABLE_MODELTEST = "nav_modeltest";
+    public static final String TABLE_USERDATA = "userdata";
+    public static final String TABLE_QBANK = "qbank";
+    public static final String TABLE_QUIZ = "quiz";
+    public static final String TABLE_MODELTEST = "nav_modeltest";
 
     private static final int MAX_QUESTIONS = 500;
     private Workbook workbook;
@@ -295,9 +295,9 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return new ArrayList<>(subList);
     }
 
-    public ArrayList<String> queryExam() {
+    public ArrayList<String> queryExam(String database) {
         ArrayList<String> examList = new ArrayList<>();
-        String query = queryStringAllExams();
+        String query = queryStringAllExams(database);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
 
@@ -480,8 +480,8 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return ret == null ? "" : ret;
     }
 
-    private String queryStringAllExams() {
-        return "SELECT DISTINCT examName FROM " + TABLE_QBANK;
+    private String queryStringAllExams(String database) {
+        return "SELECT DISTINCT examName FROM " + database;
     }
 
     private String queryStringAllYears() {
@@ -633,31 +633,56 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             db.close();
     }
 
+    private int runCountQuery(String query) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor mCount = db.rawQuery(query, null);
+        mCount.moveToFirst();
+        int count = mCount.getInt(0);
+        mCount.close();
+        return count;
+    }
+
     public List<Test> getTestsData(Context context, TestType testType) {
         List<Test> tests = new ArrayList<>();
+        String query;
+        int maxQuestions;
+        int answeredQuestions;
+        int correctAnswers;
+        int wrongAnswers;
+
         if (testType == TestType.QBANK) {
-            tests.add(new Test("Practice 1", 100, 100, 94, 6));
-            tests.add(new Test("Practice 2", 100, 100, 100, 0));
-            tests.add(new Test("Practice 3", 100, 60, 59, 1));
-            tests.add(new Test("Practice 4", 100, 0, 0, 0));
-            tests.add(new Test("Practice 5", 100, 0, 0, 0));
-            tests.add(new Test("Practice 6", 100, 0, 0, 0));
+            ArrayList<String> exams = queryExam(TABLE_QBANK);
+            for(String exam:exams){
+                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_EXAM + " = '" + exam + "'";
+                maxQuestions = runCountQuery(query);
+                answeredQuestions = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
+                correctAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" = " + DBRow.KEY_ANSWER);
+                wrongAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" != " + DBRow.KEY_ANSWER);
+
+                tests.add(new Test(exam, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+            }
         } else if (testType == TestType.QUIZ) {
-            tests.add(new Test("Quiz 1", 100, 100, 91, 9));
-            tests.add(new Test("Quiz 2", 100, 100, 87, 13));
-            tests.add(new Test("Quiz 3", 100, 100, 94, 6));
-            tests.add(new Test("Quiz 4", 100, 100, 93, 7));
-            tests.add(new Test("Quiz 5", 100, 0, 0, 0));
-            tests.add(new Test("Quiz 6", 100, 0, 0, 0));
+            ArrayList<String> exams = queryExam(TABLE_QBANK);
+            for(String exam:exams){
+                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_EXAM + " = '" + exam + "'";
+                maxQuestions = runCountQuery(query);
+                answeredQuestions = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
+                correctAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" = " + DBRow.KEY_ANSWER);
+                wrongAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" != " + DBRow.KEY_ANSWER);
+
+                tests.add(new Test(exam, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+            }
         } else if (testType == TestType.MODELTEST) {
-            tests.add(new Test("Model Test 1", 100, 100, 90, 10));
-            tests.add(new Test("Model Test 2", 100, 100, 89, 11));
-            tests.add(new Test("Model Test 3", 100, 100, 91, 9));
-            tests.add(new Test("Model Test 4", 100, 100, 94, 6));
-            tests.add(new Test("Model Test 5", 100, 100, 87, 13));
-            tests.add(new Test("Model Test 6", 100, 100, 96, 4));
-            tests.add(new Test("Model Test 7", 100, 40, 40, 0));
-            tests.add(new Test("Model Test 8", 100, 0, 0, 0));
+            ArrayList<String> exams = queryExam(TABLE_QBANK);
+            for(String exam:exams){
+                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_EXAM + " = '" + exam + "'";
+                maxQuestions = runCountQuery(query);
+                answeredQuestions = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
+                correctAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" = " + DBRow.KEY_ANSWER);
+                wrongAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" != " + DBRow.KEY_ANSWER);
+
+                tests.add(new Test(exam, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+            }
         } else if (testType == TestType.ALL) {
             tests.add(TestType.QBANK.getSummary(context));
             tests.add(TestType.QUIZ.getSummary(context));

@@ -782,7 +782,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void showExams() {
         if (dbHelper != null) {
-            ArrayList<String> exams = dbHelper.queryExam();
+            ArrayList<String> exams = dbHelper.queryExam(DataBaseHelper.TABLE_QBANK);
             examFragment = ExamFragment.newInstance(exams);
 
             Runnable mPendingRunnable = new Runnable() {
