@@ -22,12 +22,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/filterby"
-        android:paddingTop="8dp"
+        android:padding="@dimen/padding_8sp"
         android:gravity="center"
         android:columnWidth="100dp"
         android:numColumns="auto_fit"
-        android:verticalSpacing="24dp"
-        android:horizontalSpacing="10dp"
+        android:verticalSpacing="@dimen/padding_16sp"
         android:stretchMode="spacingWidthUniform"
     />
 </RelativeLayout>
