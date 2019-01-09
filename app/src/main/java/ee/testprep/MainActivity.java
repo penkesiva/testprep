@@ -7,7 +7,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +23,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,13 +34,13 @@ import ee.testprep.db.DataBaseHelper;
 import ee.testprep.fragment.DonateFragment;
 import ee.testprep.fragment.FeedbackFragment;
 import ee.testprep.fragment.HomeFragment;
-import ee.testprep.fragment.NothingToShowFragment;
-import ee.testprep.fragment.PracticeFragment;
 import ee.testprep.fragment.ModelTestFragment;
+import ee.testprep.fragment.NothingToShowFragment;
 import ee.testprep.fragment.OnFragmentInteractionListener;
+import ee.testprep.fragment.PracticeFragment;
 import ee.testprep.fragment.QuestionPracticeFragment;
-import ee.testprep.fragment.QuizFragment;
 import ee.testprep.fragment.QuestionQuizFragment;
+import ee.testprep.fragment.QuizFragment;
 import ee.testprep.fragment.RateUsFragment;
 import ee.testprep.fragment.SettingsFragment;
 import ee.testprep.fragment.StatsFragment;
@@ -219,6 +220,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
+
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    Toast.makeText(getBaseContext(), "PLEASE REGISTER!", Toast.LENGTH_LONG).show();
+                    return true;
+                }
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {

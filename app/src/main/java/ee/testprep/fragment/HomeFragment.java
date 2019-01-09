@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.Calendar;
 import java.util.Random;
@@ -29,11 +29,14 @@ public class HomeFragment extends Fragment {
     private static String className = HomeFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String PASSWORD = "ugulet";
     private OnFragmentInteractionListener mListener;
 
+    private View loginRoot;
+    private EditText displayName;
     private EditText email;
-    private EditText password;
-    private Button signin;
+    private Button register;
+    private boolean toastDisplayed = false;
 
     private static String author_kalam = "- APJ Kalam";
     private static String author_gandhi = "- MK Gandhi";
@@ -146,31 +149,10 @@ public class HomeFragment extends Fragment {
         author.setText(quotes[index][1]);
         author.setTextColor(Color.BLACK);
 
-        email = view.findViewById(R.id.email);
-        password = view.findViewById(R.id.password);
-
-        signin = view.findViewById(R.id.signin);
-        signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                        email.getText().toString(), password.getText().toString())
-                        .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Toast.makeText(getContext(), "Authentication SUCCESSFULLL!!!!.",
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(getContext(), "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-            }
-        });
+        loginRoot = view.findViewById(R.id.login_root);
+        displayName = loginRoot.findViewById(R.id.login_name);
+        email = loginRoot.findViewById(R.id.login_email);
+        register = loginRoot.findViewById(R.id.login_register);
 
         return view;
     }
@@ -219,8 +201,40 @@ public class HomeFragment extends Fragment {
         super.onStart();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
-        if (user != null) {
-            email.setText(user.getEmail());
+        if (user == null) {
+            loginRoot.setVisibility(View.VISIBLE);
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+                            email.getText().toString(), PASSWORD)
+                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                                        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                                .setDisplayName(displayName.getText().toString())
+                                                .build();
+                                        FirebaseUser user = auth.getCurrentUser();
+                                        user.updateProfile(request);
+                                        loginRoot.setVisibility(View.GONE);
+                                        Toast.makeText(getContext(), "Authentication Successful!",
+                                                Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(getContext(), "Authentication Failed!",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+            });
+        } else {
+            loginRoot.setVisibility(View.GONE);
+            if (!toastDisplayed) {
+                toastDisplayed = true;
+                Toast.makeText(getContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
