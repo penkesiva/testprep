@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     private View loginRoot;
     private EditText displayName;
     private EditText email;
+    private Button signin;
     private Button register;
     private boolean toastDisplayed = false;
 
@@ -149,10 +151,7 @@ public class HomeFragment extends Fragment {
         author.setText(quotes[index][1]);
         author.setTextColor(Color.BLACK);
 
-        loginRoot = view.findViewById(R.id.login_root);
-        displayName = loginRoot.findViewById(R.id.login_name);
-        email = loginRoot.findViewById(R.id.login_email);
-        register = loginRoot.findViewById(R.id.login_register);
+        checkUser(view);
 
         return view;
     }
@@ -196,45 +195,79 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
+    private void checkUser(View view) {
+        loginRoot = view.findViewById(R.id.login_root);
+        displayName = loginRoot.findViewById(R.id.login_name);
+        email = loginRoot.findViewById(R.id.login_email);
+        signin = loginRoot.findViewById(R.id.login_signin);
+        register = loginRoot.findViewById(R.id.login_register);
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         if (user == null) {
             loginRoot.setVisibility(View.VISIBLE);
+            signin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (validData()) signInUser();
+                }
+            });
             register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                            email.getText().toString(), PASSWORD)
-                            .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        FirebaseAuth auth = FirebaseAuth.getInstance();
-                                        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                                                .setDisplayName(displayName.getText().toString())
-                                                .build();
-                                        FirebaseUser user = auth.getCurrentUser();
-                                        user.updateProfile(request);
-                                        loginRoot.setVisibility(View.GONE);
-                                        Toast.makeText(getContext(), "Authentication Successful!",
-                                                Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        Toast.makeText(getContext(), "Authentication Failed!",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
+                    if (validData()) registerNewUser();
                 }
             });
         } else {
-            loginRoot.setVisibility(View.GONE);
-            if (!toastDisplayed) {
-                toastDisplayed = true;
-                Toast.makeText(getContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-            }
+            updateUi(user);
         }
     }
+
+    private boolean validData() {
+        if (email.getText().toString().isEmpty() || displayName.getText().toString().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private void updateUi(FirebaseUser user) {
+        loginRoot.setVisibility(View.GONE);
+        if (!toastDisplayed) {
+            toastDisplayed = true;
+            Toast.makeText(getContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void signInUser() {
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                email.getText().toString(), PASSWORD)
+                .addOnCompleteListener(getActivity(), onCompleteListener);
+    }
+
+    private void registerNewUser() {
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+                email.getText().toString(), PASSWORD)
+                .addOnCompleteListener(getActivity(), onCompleteListener);
+    }
+
+    private OnCompleteListener<AuthResult> onCompleteListener = new OnCompleteListener<AuthResult>() {
+        @Override
+        public void onComplete(@NonNull Task<AuthResult> task) {
+            if (task.isSuccessful()) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(displayName.getText().toString())
+                        .build();
+                FirebaseUser user = auth.getCurrentUser();
+                user.updateProfile(request);
+                loginRoot.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Authentication Successful!", Toast.LENGTH_SHORT).show();
+            } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                Toast.makeText(getContext(), email.getText().toString() + " Already " +
+                                "registered!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Authentication Failed!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 }
