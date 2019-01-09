@@ -42,11 +42,11 @@ import ee.testprep.fragment.QuestionPracticeFragment;
 import ee.testprep.fragment.QuestionQuizFragment;
 import ee.testprep.fragment.QuizFragment;
 import ee.testprep.fragment.RateUsFragment;
+import ee.testprep.fragment.ResultsFragment;
 import ee.testprep.fragment.SettingsFragment;
 import ee.testprep.fragment.StatsFragment;
 import ee.testprep.fragment.practice.ExamFragment;
 import ee.testprep.fragment.practice.SubjectFragment;
-import ee.testprep.fragment.practice.UserStatusFragment;
 import ee.testprep.fragment.practice.YearFragment;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -124,14 +124,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final int STATUS_PRACTICE_YEAR_XX = 3002;
     public static final int STATUS_PRACTICE_SUBJECT_XX = 3003;
     public static final int STATUS_PRACTICE_EXAM_XX = 3004;
-    public static final int STATUS_PRACTICE_USERSTATUS_XX = 3005;
 
     public static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
 
     private YearFragment yearFragment;
     private SubjectFragment subjectFragment;
     private ExamFragment examFragment;
-    private UserStatusFragment userStatusFragment;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -295,18 +293,20 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             }
         });
 
-
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
+                toolbar, R.string.openDrawer, R.string.closeDrawer) {
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawer closes as we don't want anything to
+                // happen so we leave this blank
                 super.onDrawerClosed(drawerView);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+                // Code here will be triggered once the drawer open as we dont want anything to
+                // happen so we leave this blank
                 super.onDrawerOpened(drawerView);
             }
         };
@@ -356,32 +356,24 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private Fragment getHomeFragment() {
         switch (navItemIndex) {
             case INDEX_HOME:
-                HomeFragment homeFragment = new HomeFragment();
-                return homeFragment;
+                return new HomeFragment();
             case INDEX_LEARN:
-                PracticeFragment practiceFragment = PracticeFragment.newInstance();
-                return practiceFragment;
+                return PracticeFragment.newInstance();
             case INDEX_QUIZ:
-                QuizFragment quizFragment = QuizFragment.newInstance();
-                return quizFragment;
+                return QuizFragment.newInstance();
             case INDEX_MODELTEST:
-                ModelTestFragment modelTestFragment = new ModelTestFragment();
-                return modelTestFragment;
+                return new ModelTestFragment();
             case INDEX_STATS:
-                StatsFragment statsFragment = new StatsFragment();
-                return statsFragment;
+                return new StatsFragment();
             case INDEX_SETTINGS:
-                SettingsFragment settingsFragment = new SettingsFragment();
-                return settingsFragment;
+                return new SettingsFragment();
             case INDEX_FEEDBACK:
-                FeedbackFragment feedbackFragment = new FeedbackFragment();
-                return feedbackFragment;
+                return new FeedbackFragment();
             case INDEX_RATEUS:
                 RateUsFragment.openAppRating(mContext);
                 return null;
             case INDEX_DONATE:
-                DonateFragment donateFragment = new DonateFragment();
-                return donateFragment;
+                return new DonateFragment();
             default:
                 return new HomeFragment();
         }
@@ -698,6 +690,28 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
                 // If mPendingRunnable is not null, then add to the message queue
                 mUIHandler.post(mPendingRunnable);
+            } else {
+                //TODO: end of quiz
+                final ResultsFragment resultsFragment = ResultsFragment.newInstance(quizList);
+
+                Runnable mPendingRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        // update the main content by replacing fragments
+                        Fragment fragment = resultsFragment;
+                        FragmentTransaction fragmentTransaction =
+                                getFragmentManager().beginTransaction();
+                        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
+                                android.R.animator.fade_out);
+                        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION)
+                                .addToBackStack(TAG_QUIZ);
+                        fragmentTransaction.commitAllowingStateLoss();
+                    }
+                };
+
+                // If mPendingRunnable is not null, then add to the message queue
+                mUIHandler.post(mPendingRunnable);
+
             }
         }
     }
@@ -776,7 +790,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_SUBJECT).addToBackStack(TAG_PRACTICE);
-                    ;
                     fragmentTransaction.commitAllowingStateLoss();
                 }
             };
@@ -852,7 +865,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             //query questions
             practiceQuestions = (ArrayList<DBRow>) dbHelper.queryQuestionsDifficulty("0 AND 3");
 
-            if(practiceQuestions.size() > 0) {
+            if (practiceQuestions.size() > 0) {
                 //start a nav_practice session
                 practice = new PracticeMetrics(practiceQuestions);
 
@@ -888,7 +901,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             //query questions
             practiceQuestions = (ArrayList<DBRow>) dbHelper.queryQuestionsDifficulty("4 AND 6");
 
-            if(practiceQuestions.size() > 0) {
+            if (practiceQuestions.size() > 0) {
                 //start a nav_practice session
                 practice = new PracticeMetrics(practiceQuestions);
 
@@ -1029,7 +1042,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             //query questions
             practiceQuestions = (ArrayList<DBRow>) dbHelper.queryYearExt(year);
 
-            if(practiceQuestions.size() > 0) {
+            if (practiceQuestions.size() > 0) {
                 //start a nav_practice session
                 practice = new PracticeMetrics(practiceQuestions);
 
@@ -1065,7 +1078,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             //query questions
             practiceQuestions = (ArrayList<DBRow>) dbHelper.querySubjectExt(subject);
 
-            if(practiceQuestions.size() > 0) {
+            if (practiceQuestions.size() > 0) {
                 //start a nav_practice session
                 practice = new PracticeMetrics(practiceQuestions);
 
@@ -1101,7 +1114,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             //query questions
             practiceQuestions = (ArrayList<DBRow>) dbHelper.queryExamExt(exam);
 
-            if(practiceQuestions.size() > 0) {
+            if (practiceQuestions.size() > 0) {
                 //start a nav_practice session
                 practice = new PracticeMetrics(practiceQuestions);
 

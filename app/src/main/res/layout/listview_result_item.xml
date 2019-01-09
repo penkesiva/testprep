@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:background="@color/colorWhite">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/padding_5sp"
+        android:paddingEnd="@dimen/padding_5sp">
+
+        <TextView
+            android:id="@+id/question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/question_header"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/medium_font"/>
+
+        <ImageView
+            android:id="@+id/ques_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_5sp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/quizanswer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Correct Answer:"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/answeroption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingStart="@dimen/padding_8sp"
+                    android:paddingEnd="@dimen/padding_8sp"
+                    android:text="Answer"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/option_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="correct option content here"
+                android:textStyle="italic"
+                android:textColor="@color/colorGreen"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_5sp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_5sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/your_answer"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/useranswer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingLeft="@dimen/padding_8sp"
+                    android:paddingRight="@dimen/padding_8sp"
+                    android:text="C"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"/>
+
+                <ImageView
+                    android:id="@+id/user_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/padding_8sp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:maxWidth="16sp"
+                    android:maxHeight="16sp"
+                    android:src="@drawable/wrong"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/user_option_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="correct option content here"
+                android:textStyle="italic"
+                android:textColor="@color/colorGreen"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/explanation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="explanation here"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="@color/colorGreen"
+            android:textSize="@dimen/medium_font"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</FrameLayout>

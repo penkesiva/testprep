@@ -365,11 +365,8 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
     public List<DBRow> queryQuestionsQuiz() {
 
-        //setPreferences TODO
-        //get number of questions - 10, 20, 30 - 10; TODO
-        int numQ = 10;
         List<DBRow> questions = new ArrayList<>();
-        String selectQuery = queryStringRandom(numQ);
+        String selectQuery = queryStringForQuiz("quiz1");
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
@@ -456,6 +453,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
     private String queryStringAllQuestions() {
         return "SELECT * FROM " + TABLE_QBANK;
+    }
+
+    private String queryStringForQuiz(String tableName) {
+        return "SELECT * FROM " + tableName;
     }
 
     public void setUserStatus(int qNo, boolean status) {
