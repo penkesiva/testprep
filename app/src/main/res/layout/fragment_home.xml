@@ -63,6 +63,11 @@
         android:padding="@dimen/padding_large"
         android:visibility="invisible">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +87,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="E-mail"
+            android:paddingTop="@dimen/padding_large"
+            android:text="Email Address"
             android:textColor="@android:color/black"
             android:textSize="@dimen/big_font"
             android:textStyle="bold"/>
@@ -94,12 +100,48 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/big_font"/>
 
-        <Button
-            android:id="@+id/login_register"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="REGISTER"
-            android:textSize="@dimen/medium2_font"/>
+            android:paddingTop="@dimen/padding_large">
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/login_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/padding_small"
+                android:text="SIGN IN"
+                android:textSize="@dimen/medium2_font"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/login_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/padding_small"
+                android:text="REGISTER"
+                android:textSize="@dimen/medium2_font"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"/>
     </LinearLayout>
 </FrameLayout>
