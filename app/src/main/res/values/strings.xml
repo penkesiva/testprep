@@ -57,4 +57,8 @@
     <string name="your_score">Your Score</string>
     <string name="sample_score">0/25</string>
     <string name="your_answer">Your Answer:</string>
+
+    <string name="image_description">Image Description</string>
+    <string name="cancel">" Cancel "</string>
+
 </resources>

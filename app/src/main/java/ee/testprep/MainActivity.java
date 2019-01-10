@@ -1,10 +1,12 @@
 package ee.testprep;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -18,7 +20,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private ImageView imgProfile;
     private TextView txtWebsite;
     private Toolbar toolbar;
+    private static Dialog statusDialog;
 
     // tags used to attach the fragments
     public static final String TAG_HOME = "nav_home";
@@ -159,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         //this.setTheme(android.R.style.ThemeOverlay_Material_Dark);
         setContentView(R.layout.activity_main);
-        mContext = getApplicationContext();
+        mContext = MainActivity.this;
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -198,8 +203,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             L.v(className, "Permissions already granted");
         }
 
+        showCustomDialog();
+
         //if there is no database already created, create one from .xlsx TODO
         dbHelper = DataBaseHelper.getInstance(this);
+
+        cancelCustomDialog();
     }
 
     private void hideStatusBar() {
@@ -318,6 +327,23 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         actionBarDrawerToggle.syncState();
     }
 
+    protected void showCustomDialog() {
+
+        statusDialog = new Dialog(mContext, android.R.style.Theme_Translucent);
+        statusDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        statusDialog.setCancelable(true);
+        statusDialog.setContentView(R.layout.loading_dialog);
+
+        final ImageView myImage = statusDialog.findViewById(R.id.loader);
+        myImage.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.rotate));
+        statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000)); //TODO
+        statusDialog.show();
+    }
+
+    protected void cancelCustomDialog() {
+        if(statusDialog != null || statusDialog.isShowing())
+            statusDialog.cancel();
+    }
 
     /***
      * Load navigation menu header information
