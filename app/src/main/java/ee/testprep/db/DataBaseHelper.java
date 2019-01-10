@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import ee.testprep.L;
 import ee.testprep.R;
 import ee.testprep.db.Test.TestType;
 
@@ -699,37 +698,40 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         int wrongAnswers;
 
         if (testType == TestType.QBANK) {
-            ArrayList<String> exams = queryExam(TABLE_QBANK);
-            for(String exam:exams){
-                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_EXAM + " = '" + exam + "'";
+            List<String> subjects = querySubject();
+            for (String subject : subjects) {
+                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_SUBJECT + " = '" + subject + "'";
                 maxQuestions = runCountQuery(query);
-                answeredQuestions = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
-                correctAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" = " + DBRow.KEY_ANSWER);
-                wrongAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" != " + DBRow.KEY_ANSWER);
+                answeredQuestions = runCountQuery(query + " AND " + DBRow.KEY_USER_STATUS +
+                        " != ''" + " AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
+                correctAnswers = runCountQuery(query + " AND " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
+                wrongAnswers = runCountQuery(query + " AND " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(exam, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(subject, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
             }
         } else if (testType == TestType.QUIZ) {
-            ArrayList<String> exams = queryExam(TABLE_QBANK);
-            for(String exam:exams){
-                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_EXAM + " = '" + exam + "'";
+            List<String> quizzes = queryAllQuizzes();
+            for (String quiz : quizzes) {
+                query = "SELECT COUNT(*) FROM " + quiz;
                 maxQuestions = runCountQuery(query);
-                answeredQuestions = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
-                correctAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" = " + DBRow.KEY_ANSWER);
-                wrongAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" != " + DBRow.KEY_ANSWER);
+                answeredQuestions = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS +
+                        " != ''" + " AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
+                correctAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
+                wrongAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(exam, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(quiz, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
             }
         } else if (testType == TestType.MODELTEST) {
-            ArrayList<String> exams = queryExam(TABLE_QBANK);
-            for(String exam:exams){
-                query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_EXAM + " = '" + exam + "'";
+            List<String> quizzes = queryAllModelTests();
+            for (String quiz : quizzes) {
+                query = "SELECT COUNT(*) FROM " + quiz;
                 maxQuestions = runCountQuery(query);
-                answeredQuestions = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
-                correctAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" = " + DBRow.KEY_ANSWER);
-                wrongAnswers = runCountQuery(query+" AND " + DBRow.KEY_USER_STATUS+" != " + DBRow.KEY_ANSWER);
+                answeredQuestions = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS +
+                        " != ''" + " AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
+                correctAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
+                wrongAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(exam, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(quiz, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
             }
         } else if (testType == TestType.ALL) {
             tests.add(TestType.QBANK.getSummary(context));

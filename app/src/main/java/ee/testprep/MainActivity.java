@@ -4,9 +4,11 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -275,6 +277,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         break;
 
                     case R.id.nav_rateus:
+                        // Uncomment after testing
+                        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=PackageName")));
+                        //return true;
                         navItemIndex = INDEX_RATEUS;
                         CURRENT_TAG = TAG_RATEUS;
                         break;
