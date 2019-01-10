@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private View navHeader;
     private ImageView imgProfile;
     private TextView txtWebsite;
+    private TextView displayName;
     private Toolbar toolbar;
     private static Dialog statusDialog;
 
@@ -177,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         navHeader = navigationView.getHeaderView(0);
         txtWebsite = navHeader.findViewById(R.id.website);
         imgProfile = navHeader.findViewById(R.id.img_profile);
+        displayName = navHeader.findViewById(R.id.display_name);
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
@@ -373,6 +375,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         // showing dot next to notifications label
         navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
+        displayName.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
     }
 
     private void selectNavMenu() {

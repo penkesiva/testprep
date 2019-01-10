@@ -38,7 +38,6 @@ public class HomeFragment extends Fragment {
     private EditText email;
     private Button signin;
     private Button register;
-    private boolean toastDisplayed = false;
 
     private static String author_kalam = "- APJ Kalam";
     private static String author_gandhi = "- MK Gandhi";
@@ -219,7 +218,7 @@ public class HomeFragment extends Fragment {
                 }
             });
         } else {
-            updateUi(user);
+            loginRoot.setVisibility(View.GONE);
         }
     }
 
@@ -228,14 +227,6 @@ public class HomeFragment extends Fragment {
             return false;
         }
         return true;
-    }
-
-    private void updateUi(FirebaseUser user) {
-        loginRoot.setVisibility(View.GONE);
-        if (!toastDisplayed) {
-            toastDisplayed = true;
-            Toast.makeText(getContext(), "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-        }
     }
 
     private void signInUser() {

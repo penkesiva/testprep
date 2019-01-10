@@ -3,28 +3,65 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <View style="@style/Divider"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <Switch
-            android:id="@+id/sw_night_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Night Mode"/>
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Toggles background color for pleasant reading at night"
-            android:textSize="12sp"/>
+            android:text="Display Name:"
+            android:textSize="@dimen/medium_font"/>
 
+        <TextView
+            android:id="@+id/settings_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_small"
+            android:textSize="@dimen/medium_font"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/padding_large">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email Address:"
+            android:textSize="@dimen/medium_font"/>
+
+        <TextView
+            android:id="@+id/settings_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_small"
+            android:textSize="@dimen/medium_font"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <View style="@style/Divider"/>
 
+    <Switch
+        android:id="@+id/sw_night_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Night Mode"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toggles background color for pleasant reading at night"
+        android:textSize="12sp"/>
+
+    <View style="@style/Divider"/>
 </LinearLayout>

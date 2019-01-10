@@ -81,6 +81,7 @@
             android:id="@+id/login_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLength="10"
             android:textColor="@android:color/black"
             android:textSize="@dimen/big_font"/>
 

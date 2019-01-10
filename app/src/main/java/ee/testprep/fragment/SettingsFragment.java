@@ -1,17 +1,19 @@
 package ee.testprep.fragment;
 
 import android.app.Fragment;
-import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
-import ee.testprep.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import ee.testprep.R;
 
 public class SettingsFragment extends Fragment {
@@ -84,4 +86,14 @@ public class SettingsFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        TextView name = view.findViewById(R.id.settings_name);
+        name.setText(user.getDisplayName());
+        TextView email = view.findViewById(R.id.settings_email);
+        email.setText(user.getEmail());
+    }
 }
