@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ee.testprep.L;
 import ee.testprep.R;
 import ee.testprep.db.Test.TestType;
 
@@ -34,7 +35,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     public static final String TABLE_USERDATA = "userdata";
     public static final String TABLE_QBANK = "qbank";
     public static final String TABLE_QUIZ = "quiz";
-    public static final String TABLE_MODELTEST = "nav_modeltest";
+    public static final String TABLE_MODELTEST = "modeltest";
 
     private static final int MAX_QUESTIONS = 500;
     private Workbook workbook;
@@ -413,6 +414,52 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         }
 
         return questions;
+    }
+
+    /*
+        return list of all quiz names aka table names starting with suffix quiz
+     */
+    public List<String> queryAllQuizzes() {
+
+        List<String> quizTableList = new ArrayList<>();
+        String selectQuery = queryStringAllTables();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // loop through all rows and add to the list
+        if (c != null && c.moveToFirst()) {
+            do {
+                String tableName = c.getString(c.getColumnIndex("name"));
+                if(tableName.contains(TABLE_QUIZ)) {
+                    quizTableList.add(tableName);
+                }
+            } while (c.moveToNext());
+        }
+
+        return quizTableList;
+    }
+
+    /*
+    return list of all modeltest names aka table names starting with suffix modeltest
+ */
+    public List<String> queryAllModelTests() {
+
+        List<String> modeltestTableList = new ArrayList<>();
+        String selectQuery = queryStringAllTables();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // loop through all rows and add to the list
+        if (c != null && c.moveToFirst()) {
+            do {
+                String tableName = c.getString(c.getColumnIndex("name"));
+                if(tableName.contains(TABLE_MODELTEST)) {
+                    modeltestTableList.add(tableName);
+                }
+            } while (c.moveToNext());
+        }
+
+        return modeltestTableList;
     }
 
     private String queryStringAllTables() {
