@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment {
     private static String className = HomeFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String PASSWORD = "ugulet";
+    private static final String PASSWORD = "Equality123";
     private OnFragmentInteractionListener mListener;
 
     private View loginRoot;
