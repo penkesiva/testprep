@@ -82,6 +82,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLength="10"
+            android:nextFocusDown="@+id/login_email"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/big_font"/>
 
@@ -98,6 +100,8 @@
             android:id="@+id/login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nextFocusUp="@id/login_name"
+            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/big_font"/>
 

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.ee.testprep.R;
 public class SettingsFragment extends Fragment {
     private static String className = SettingsFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
+    private Button signout;
 
     public static boolean nightMode = false;
 
@@ -95,5 +97,14 @@ public class SettingsFragment extends Fragment {
         name.setText(user.getDisplayName());
         TextView email = view.findViewById(R.id.settings_email);
         email.setText(user.getEmail());
+
+        signout = view.findViewById(R.id.settings_signout);
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                mListener.onSignOut();
+            }
+        });
     }
 }

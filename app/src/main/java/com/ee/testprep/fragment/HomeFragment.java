@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,6 +34,7 @@ public class HomeFragment extends Fragment {
     private static final String PASSWORD = "Equality123";
     private OnFragmentInteractionListener mListener;
 
+    private TextView greeting;
     private View loginRoot;
     private EditText displayName;
     private EditText email;
@@ -137,8 +139,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        TextView greeting = view.findViewById(R.id.tv_home_wish);
-        greeting.setText(getGreeting());
+        greeting = view.findViewById(R.id.tv_home_wish);
 
         TextView quote = view.findViewById(R.id.tv_home_quote);
         Random rand = new Random();
@@ -179,18 +180,30 @@ public class HomeFragment extends Fragment {
         mListener = null;
     }
 
-    private String getGreeting() {
+    private String getGreeting(String displayName) {
         Calendar c = Calendar.getInstance();
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
-        if(timeOfDay >= 0 && timeOfDay < 12){
-            return "Hello, Good Morning!";
-        }else if(timeOfDay >= 12 && timeOfDay < 16){
-            return "Hello, Good Afternoon!";
-        }else if(timeOfDay >= 16 && timeOfDay < 24){
-            return "Hello, Good Evening!";
+        if (displayName == null || displayName.isEmpty()) {
+            if (timeOfDay >= 0 && timeOfDay < 12) {
+                return "Hello, Good Morning!";
+            } else if (timeOfDay >= 12 && timeOfDay < 16) {
+                return "Hello, Good Afternoon!";
+            } else if (timeOfDay >= 16 && timeOfDay < 24) {
+                return "Hello, Good Evening!";
+            } else {
+                return "Hello, Good Day!";
+            }
         } else {
-            return "Hello, Good Day!";
+            if (timeOfDay >= 0 && timeOfDay < 12) {
+                return "Good Morning, " + displayName + "!";
+            } else if (timeOfDay >= 12 && timeOfDay < 16) {
+                return "Good Afternoon, " + displayName + "!";
+            } else if (timeOfDay >= 16 && timeOfDay < 24) {
+                return "Good Evening, " + displayName + "!";
+            } else {
+                return "Good Day, " + displayName + "!";
+            }
         }
     }
 
@@ -218,7 +231,7 @@ public class HomeFragment extends Fragment {
                 }
             });
         } else {
-            loginRoot.setVisibility(View.GONE);
+            updateUI(user.getDisplayName());
         }
     }
 
@@ -231,14 +244,21 @@ public class HomeFragment extends Fragment {
 
     private void signInUser() {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                email.getText().toString(), PASSWORD)
+                email.getText().toString().trim(), PASSWORD)
                 .addOnCompleteListener(getActivity(), onCompleteListener);
     }
 
     private void registerNewUser() {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                email.getText().toString(), PASSWORD)
+                email.getText().toString().trim(), PASSWORD)
                 .addOnCompleteListener(getActivity(), onCompleteListener);
+    }
+
+    private void updateUI(String displayName) {
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(email.getWindowToken(), 0);
+        greeting.setText(getGreeting(displayName));
+        loginRoot.setVisibility(View.GONE);
     }
 
     private OnCompleteListener<AuthResult> onCompleteListener = new OnCompleteListener<AuthResult>() {
@@ -247,11 +267,11 @@ public class HomeFragment extends Fragment {
             if (task.isSuccessful()) {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
                 UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(displayName.getText().toString())
+                        .setDisplayName(displayName.getText().toString().trim())
                         .build();
                 FirebaseUser user = auth.getCurrentUser();
                 user.updateProfile(request);
-                loginRoot.setVisibility(View.GONE);
+                updateUI(displayName.getText().toString().trim());
                 Toast.makeText(getContext(), "Authentication Successful!", Toast.LENGTH_SHORT).show();
             } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                 Toast.makeText(getContext(), email.getText().toString() + " Already " +

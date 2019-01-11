@@ -26,6 +26,18 @@
             android:paddingLeft="@dimen/padding_small"
             android:textSize="@dimen/medium_font"
             android:textStyle="bold"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/settings_signout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_small"
+            android:text="SIGN OUT"/>
     </LinearLayout>
 
     <LinearLayout
