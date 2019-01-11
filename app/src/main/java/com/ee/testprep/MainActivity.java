@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static int navItemIndex = INDEX_HOME;
     public static String CURRENT_TAG = TAG_HOME;
 
-    public static final int STATUS_QUIZ_START = 1001;
     public static final int STATUS_QUIZ_NEXT = 1002;
     public static final int STATUS_QUIZ_PREVIOUS = 1003;
     public static final int STATUS_QUIZ_END = 1004;
@@ -130,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final int STATUS_PRACTICE_YEAR_XX = 3002;
     public static final int STATUS_PRACTICE_SUBJECT_XX = 3003;
     public static final int STATUS_PRACTICE_EXAM_XX = 3004;
+
+    public static final int STATUS_MODELTEST_XX = 4001;
 
     public static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
 
@@ -394,7 +395,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 ArrayList<String> quizzes = (ArrayList<String>) dbHelper.queryAllQuizzes();
                 return QuizFragment.newInstance(quizzes);
             case INDEX_MODELTEST:
-                return new ModelTestFragment();
+                ArrayList<String> modelTests = (ArrayList<String>) dbHelper.queryAllModelTests();
+                return ModelTestFragment.newInstance(modelTests);
             case INDEX_STATS:
                 return new StatsFragment();
             case INDEX_SETTINGS:
@@ -640,6 +642,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 showExamXX(param);
                 break;
             case STATUS_QUIZ_XX:
+                startQuiz(param);
+                break;
+            case STATUS_MODELTEST_XX:
                 startQuiz(param);
                 break;
             default:
