@@ -237,6 +237,9 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     private void insertRow(String tableName, DBRow row) {
         SQLiteDatabase db = this.getWritableDatabase();
 
+        //avoid any empty rows
+        if(row.question == null) return;
+
         ContentValues values = new ContentValues();
         values.put(DBRow.KEY_EXAM, row.exam);
         values.put(DBRow.KEY_YEAR, row.year);
@@ -363,10 +366,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return questions;
     }
 
-    public List<DBRow> queryQuestionsQuiz() {
+    public List<DBRow> queryQuestionsQuiz(String quizName) {
 
         List<DBRow> questions = new ArrayList<>();
-        String selectQuery = queryStringForQuiz("quiz1");
+        String selectQuery = queryStringForQuiz(quizName);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 

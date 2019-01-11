@@ -138,18 +138,19 @@ public class QuestionQuizFragment extends Fragment{
 
     public void uiRefresh(final int time, final int currQIndex) {
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int p1 = time % 60;
-                int p2 = time / 60;
-                int p3 = p2 % 60;
-                p2 = p2 / 60;
-                tvTimer.setText(p2 + " : " + p3 + " : " + p1);
-                mProgressBar.setProgress(currQIndex);
-            }
-        });
-
+        if(getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int p1 = time % 60;
+                    int p2 = time / 60;
+                    int p3 = p2 % 60;
+                    p2 = p2 / 60;
+                    tvTimer.setText(p2 + " : " + p3 + " : " + p1);
+                    mProgressBar.setProgress(currQIndex);
+                }
+            });
+        }
     }
 
     private int getIndexMap(String option) {

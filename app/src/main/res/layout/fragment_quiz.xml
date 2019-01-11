@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center_vertical"
-    android:gravity="center"
+    android:padding="@dimen/activity_horizontal_margin"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_start_quiz"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:textSize="@dimen/big_font"
-        android:background="@drawable/rectangle_blue"
-        android:layout_marginEnd="2dp"
-        android:text="Start Quiz"/>
+    <GridView
+        android:id="@+id/quiz_gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:gravity="center"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="24dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="spacingWidthUniform" />
 
-</LinearLayout>
+</RelativeLayout>

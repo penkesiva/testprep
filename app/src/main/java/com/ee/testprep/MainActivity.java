@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final int STATUS_QUIZ_NEXT = 1002;
     public static final int STATUS_QUIZ_PREVIOUS = 1003;
     public static final int STATUS_QUIZ_END = 1004;
+    public static final int STATUS_QUIZ_XX = 1005;
 
     public static final int STATUS_PRACTICE = 2001;
     public static final int STATUS_PRACTICE_YEAR = 2002;
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private YearFragment yearFragment;
     private SubjectFragment subjectFragment;
     private ExamFragment examFragment;
+    private QuizFragment quizFragment;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -389,7 +391,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case INDEX_LEARN:
                 return PracticeFragment.newInstance();
             case INDEX_QUIZ:
-                return QuizFragment.newInstance();
+                ArrayList<String> quizzes = (ArrayList<String>) dbHelper.queryAllQuizzes();
+                return QuizFragment.newInstance(quizzes);
             case INDEX_MODELTEST:
                 return new ModelTestFragment();
             case INDEX_STATS:
@@ -572,9 +575,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public void onFragmentInteraction(int status) {
 
         switch (status) {
-            case STATUS_QUIZ_START:
-                startQuiz();
-                break;
             case STATUS_QUIZ_NEXT:
                 nextQuizQuestion();
                 break;
@@ -627,17 +627,20 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     @Override
-    public void onFragmentInteraction(int status, String filter) {
+    public void onFragmentInteraction(int status, String param) {
 
         switch (status) {
             case STATUS_PRACTICE_YEAR_XX:
-                showYearXX(filter);
+                showYearXX(param);
                 break;
             case STATUS_PRACTICE_SUBJECT_XX:
-                showSubjectXX(filter);
+                showSubjectXX(param);
                 break;
             case STATUS_PRACTICE_EXAM_XX:
-                showExamXX(filter);
+                showExamXX(param);
+                break;
+            case STATUS_QUIZ_XX:
+                startQuiz(param);
                 break;
             default:
                 break;
@@ -674,10 +677,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-    private void startQuiz() {
+    private void startQuiz(String quizName) {
 
         if (dbHelper != null) {
-            quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz();
+            quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
 
             quiz = new QuizMetrics(quizList, quizList.size() * TIME_INSEC_PER_QUESTION);
             quiz.startQuiz();
@@ -779,6 +782,30 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 // If mPendingRunnable is not null, then add to the message queue
                 mUIHandler.post(mPendingRunnable);
             }
+        }
+    }
+
+    private void showQuizzes() {
+        if (dbHelper != null) {
+            ArrayList<String> quizzes = (ArrayList<String>) dbHelper.queryAllQuizzes();
+            quizFragment = QuizFragment.newInstance(quizzes);
+
+            Runnable mPendingRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    // update the main content by replacing fragments
+                    Fragment fragment = quizFragment;
+                    FragmentTransaction fragmentTransaction =
+                            getFragmentManager().beginTransaction();
+                    fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
+                            android.R.animator.fade_out);
+                    fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ).addToBackStack(TAG_HOME);
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            };
+
+            // If mPendingRunnable is not null, then add to the message queue
+            MainActivity.mUIHandler.post(mPendingRunnable);
         }
     }
 
