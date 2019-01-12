@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -27,10 +29,13 @@ public class QuestionQuizFragment extends Fragment{
     private DBRow mQuestion;
     private int mNumQuestions;
     private OnFragmentInteractionListener mListener;
-    private RadioButton radioButtons[] = new RadioButton[4];
     private TextView tvTimer;
     private static ProgressBar mProgressBar;
     private String recordedAnswer;
+    private CheckBox cbA;
+    private CheckBox cbB;
+    private CheckBox cbC;
+    private CheckBox cbD;
 
     public QuestionQuizFragment() {
     }
@@ -70,21 +75,7 @@ public class QuestionQuizFragment extends Fragment{
         tvQuestion.append(mQuestion.question);
         tvQuestion.setMovementMethod(new ScrollingMovementMethod());
 
-        final RadioButton tvOptA = view.findViewById(R.id.rb_optA);
-        tvOptA.setText(mQuestion.optionA);
-        radioButtons[0] = tvOptA;
-
-        final RadioButton tvOptB = view.findViewById(R.id.rb_optB);
-        tvOptB.setText(mQuestion.optionB);
-        radioButtons[1] = tvOptB;
-
-        final RadioButton tvOptC = view.findViewById(R.id.rb_optC);
-        tvOptC.setText(mQuestion.optionC);
-        radioButtons[2] = tvOptC;
-
-        final RadioButton tvOptD = view.findViewById(R.id.rb_optD);
-        tvOptD.setText(mQuestion.optionD);
-        radioButtons[3] = tvOptD;
+        configureCheckBox(view);
 
         Button btnNext = view.findViewById(R.id.nextButton);
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +108,55 @@ public class QuestionQuizFragment extends Fragment{
 
         // populate the question
         return view;
+    }
+
+    private void clearCheckBoxes() {
+        cbA.setChecked(false);
+        cbB.setChecked(false);
+        cbC.setChecked(false);
+        cbD.setChecked(false);
+    }
+
+    private void configureCheckBox(View view) {
+        cbA = view.findViewById(R.id.rb_optA);
+        cbA.setText(mQuestion.optionA);
+        cbA.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                clearCheckBoxes();
+                cbA.setChecked(b);
+            }
+        });
+
+        cbB = view.findViewById(R.id.rb_optB);
+        cbB.setText(mQuestion.optionB);
+        cbB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                clearCheckBoxes();
+                cbB.setChecked(b);
+            }
+        });
+
+        cbC = view.findViewById(R.id.rb_optC);
+        cbC.setText(mQuestion.optionC);
+        cbC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                clearCheckBoxes();
+                cbC.setChecked(b);
+            }
+        });
+
+        cbD = view.findViewById(R.id.rb_optD);
+        cbD.setText(mQuestion.optionD);
+        cbD.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                clearCheckBoxes();
+                cbD.setChecked(b);
+            }
+        });
     }
 
     @Override

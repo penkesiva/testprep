@@ -3,6 +3,8 @@ package com.ee.testprep.fragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -28,7 +31,7 @@ public class QuestionPracticeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private DBRow mQuestion;
     private OnFragmentInteractionListener mListener;
-    private RadioButton radioButtons[] = new RadioButton[4];
+    private CheckBox[] cb = new CheckBox[4];
     private String recordedAnswer;
     private ImageView iv_fav;
     private DataBaseHelper dbHelper;
@@ -79,91 +82,91 @@ public class QuestionPracticeFragment extends Fragment {
             }
         });
 
-        if(mQuestion.userstatus.equals("Z")) {
+        if (mQuestion.userstatus.equals("Z")) {
             iv_fav.setActivated(true);
         }
 
-        final RadioButton tvOptA = view.findViewById(R.id.rb_optA);
-        tvOptA.setText(mQuestion.optionA.trim());
-        radioButtons[0] = tvOptA;
+        cb[0] = view.findViewById(R.id.rb_optA);
+        cb[0].setText(mQuestion.optionA.trim());
 
-        tvOptA.setOnClickListener(new View.OnClickListener() {
+        cb[0].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                clearCheckBoxes();
+                cb[0].setChecked(true);
+
                 if (mQuestion.answer.toLowerCase().equals("a")) {
-                    tvOptA.setBackground(getResources().getDrawable(R.drawable.rectangle_green));
+                    cb[0].setTypeface(null, Typeface.BOLD);
                 } else {
-                    tvOptA.setBackground(getResources().getDrawable(R.drawable.rectangle_red));
+                    cb[0].setTextColor(getResources().getColor(R.color.colorRed));
+                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                    cb[i].setTypeface(null, Typeface.BOLD);
 
                     new SimpleVibaration(getActivity().getApplicationContext());
-
-                    //get the right answer
-                    String ans = mQuestion.answer.toLowerCase();
-                    int i = getIndexMap(ans);
-                    radioButtons[i].setBackground(getResources().getDrawable(R.drawable.rectangle_green));
                 }
             }
         });
 
-        final RadioButton tvOptB = view.findViewById(R.id.rb_optB);
-        tvOptB.setText(mQuestion.optionB.trim());
-        radioButtons[1] = tvOptB;
-        tvOptB.setOnClickListener(new View.OnClickListener() {
+        cb[1] = view.findViewById(R.id.rb_optB);
+        cb[1].setText(mQuestion.optionB.trim());
+        cb[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                clearCheckBoxes();
+                cb[1].setChecked(true);
+
                 if (mQuestion.answer.toLowerCase().equals("b")) {
-                    tvOptB.setBackground(getResources().getDrawable(R.drawable.rectangle_green));
+                    cb[1].setTypeface(null, Typeface.BOLD);
                 } else {
-                    tvOptB.setBackground(getResources().getDrawable(R.drawable.rectangle_red));
+                    cb[1].setTextColor(getResources().getColor(R.color.colorRed));
+                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                    cb[i].setTypeface(null, Typeface.BOLD);
 
                     new SimpleVibaration(getActivity().getApplicationContext());
-
-                    //get the right answer
-                    String ans = mQuestion.answer.toLowerCase();
-                    int i = getIndexMap(ans);
-                    radioButtons[i].setBackground(getResources().getDrawable(R.drawable.rectangle_green));
                 }
             }
         });
 
-        final RadioButton tvOptC = view.findViewById(R.id.rb_optC);
-        tvOptC.setText(mQuestion.optionC.trim());
-        radioButtons[2] = tvOptC;
-        tvOptC.setOnClickListener(new View.OnClickListener() {
+        cb[2] = view.findViewById(R.id.rb_optC);
+        cb[2].setText(mQuestion.optionC.trim());
+        cb[2].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                clearCheckBoxes();
+                cb[2].setChecked(true);
+
                 if (mQuestion.answer.toLowerCase().equals("c")) {
-                    tvOptC.setBackground(getResources().getDrawable(R.drawable.rectangle_green));
+                    cb[2].setTypeface(null, Typeface.BOLD);
                 } else {
-                    tvOptC.setBackground(getResources().getDrawable(R.drawable.rectangle_red));
+                    cb[2].setTextColor(getResources().getColor(R.color.colorRed));
+                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                    cb[i].setTypeface(null, Typeface.BOLD);
 
                     new SimpleVibaration(getActivity().getApplicationContext());
-
-                    //get the right answer
-                    String ans = mQuestion.answer.toLowerCase();
-                    int i = getIndexMap(ans);
-                    radioButtons[i].setBackground(getResources().getDrawable(R.drawable.rectangle_green));
                 }
             }
         });
 
-        final RadioButton tvOptD = view.findViewById(R.id.rb_optD);
-        tvOptD.setText(mQuestion.optionD.trim());
-        radioButtons[3] = tvOptD;
-        tvOptD.setOnClickListener(new View.OnClickListener() {
+        cb[3] = view.findViewById(R.id.rb_optD);
+        cb[3].setText(mQuestion.optionD.trim());
+        cb[3].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                clearCheckBoxes();
+                cb[3].setChecked(true);
+
                 if (mQuestion.answer.toLowerCase().equals("d")) {
-                    tvOptD.setBackground(getResources().getDrawable(R.drawable.rectangle_green));
+                    cb[3].setTypeface(null, Typeface.BOLD);
                 } else {
-                    tvOptD.setBackground(getResources().getDrawable(R.drawable.rectangle_red));
+                    cb[3].setTextColor(getResources().getColor(R.color.colorRed));
+                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                    cb[i].setTypeface(null, Typeface.BOLD);
 
                     new SimpleVibaration(getActivity().getApplicationContext());
-
-                    //get the right answer
-                    String ans = mQuestion.answer.toLowerCase();
-                    int i = getIndexMap(ans);
-                    radioButtons[i].setBackground(getResources().getDrawable(R.drawable.rectangle_green));
                 }
             }
         });
@@ -199,6 +202,13 @@ public class QuestionPracticeFragment extends Fragment {
 
         // populate the question
         return view;
+    }
+
+    private void clearCheckBoxes() {
+        for (int i = 0; i < 4; i++) {
+            cb[i].setChecked(false);
+            cb[i].setTextColor(Color.BLACK);
+        }
     }
 
     @Override
