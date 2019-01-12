@@ -1,16 +1,21 @@
 package com.ee.testprep.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
@@ -28,6 +33,7 @@ import com.ee.testprep.util.SimpleVibaration;
 public class QuestionPracticeFragment extends Fragment {
 
     private static String TAG = QuestionPracticeFragment.class.getSimpleName();
+    private Context mContext;
     private static final String ARG_PARAM1 = "param1";
     private DBRow mQuestion;
     private OnFragmentInteractionListener mListener;
@@ -35,6 +41,7 @@ public class QuestionPracticeFragment extends Fragment {
     private String recordedAnswer;
     private ImageView iv_fav;
     private DataBaseHelper dbHelper;
+    private Dialog statusDialog;
 
     public QuestionPracticeFragment() {
     }
@@ -50,6 +57,7 @@ public class QuestionPracticeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = getActivity().getApplicationContext();
         if (getArguments() != null) {
             mQuestion = (DBRow) getArguments().getSerializable(ARG_PARAM1);
         }
@@ -98,12 +106,14 @@ public class QuestionPracticeFragment extends Fragment {
 
                 if (mQuestion.answer.toLowerCase().equals("a")) {
                     cb[0].setTypeface(null, Typeface.BOLD);
+                    cb[0].setTextColor(getResources().getColor(R.color.colorGreen));
                 } else {
                     cb[0].setTextColor(getResources().getColor(R.color.colorRed));
                     int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
                     cb[i].setTypeface(null, Typeface.BOLD);
+                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
 
-                    new SimpleVibaration(getActivity().getApplicationContext());
+                    new SimpleVibaration(mContext);
                 }
             }
         });
@@ -119,10 +129,12 @@ public class QuestionPracticeFragment extends Fragment {
 
                 if (mQuestion.answer.toLowerCase().equals("b")) {
                     cb[1].setTypeface(null, Typeface.BOLD);
+                    cb[1].setTextColor(getResources().getColor(R.color.colorGreen));
                 } else {
                     cb[1].setTextColor(getResources().getColor(R.color.colorRed));
                     int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
                     cb[i].setTypeface(null, Typeface.BOLD);
+                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
 
                     new SimpleVibaration(getActivity().getApplicationContext());
                 }
@@ -140,10 +152,12 @@ public class QuestionPracticeFragment extends Fragment {
 
                 if (mQuestion.answer.toLowerCase().equals("c")) {
                     cb[2].setTypeface(null, Typeface.BOLD);
+                    cb[2].setTextColor(getResources().getColor(R.color.colorGreen));
                 } else {
                     cb[2].setTextColor(getResources().getColor(R.color.colorRed));
                     int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
                     cb[i].setTypeface(null, Typeface.BOLD);
+                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
 
                     new SimpleVibaration(getActivity().getApplicationContext());
                 }
@@ -161,10 +175,12 @@ public class QuestionPracticeFragment extends Fragment {
 
                 if (mQuestion.answer.toLowerCase().equals("d")) {
                     cb[3].setTypeface(null, Typeface.BOLD);
+                    cb[3].setTextColor(getResources().getColor(R.color.colorGreen));
                 } else {
                     cb[3].setTextColor(getResources().getColor(R.color.colorRed));
                     int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
                     cb[i].setTypeface(null, Typeface.BOLD);
+                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
 
                     new SimpleVibaration(getActivity().getApplicationContext());
                 }

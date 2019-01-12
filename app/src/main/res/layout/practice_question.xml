@@ -114,10 +114,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_a"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionA"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
+                android:textColor="@color/colorBlack" />
 
         </RelativeLayout>
 
@@ -147,10 +148,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_b"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionB"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
+                android:textColor="@color/colorBlack" />
         </RelativeLayout>
 
 
@@ -180,13 +182,13 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_c"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionC"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
+                android:textColor="@color/colorBlack" />
 
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/rg_d"
@@ -214,10 +216,11 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_d"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionD"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
+                android:textColor="@color/colorBlack" />
 
         </RelativeLayout>
 
