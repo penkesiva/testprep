@@ -27,12 +27,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.fragment.DonateFragment;
@@ -52,6 +46,14 @@ import com.ee.testprep.fragment.StatsFragment;
 import com.ee.testprep.fragment.practice.ExamFragment;
 import com.ee.testprep.fragment.practice.SubjectFragment;
 import com.ee.testprep.fragment.practice.YearFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.analytics.FirebaseAnalytics.Event;
+import com.google.firebase.analytics.FirebaseAnalytics.Param;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -301,6 +303,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     menuItem.setChecked(true);
                 }
                 menuItem.setChecked(true);
+
+                FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(getApplicationContext());
+                Bundle params = new Bundle();
+                params.putString("fragment", CURRENT_TAG);
+                params.putString("fragment_index", "navItemIndex_" + navItemIndex);
+                params.putLong(Param.VALUE, navItemIndex);
+                firebaseAnalytics.logEvent("FRAGMENT_SWITCH", params);
 
                 loadHomeFragment();
 
