@@ -13,13 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ee.testprep.R;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.db.Test;
 import com.ee.testprep.db.Test.TestType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatsTabFragment extends Fragment {
     public static final String TEST_TYPE = "test_type";
@@ -73,8 +73,10 @@ public class StatsTabFragment extends Fragment {
             Test test = modelTestData.get(position);
             holder.titleView.setText(test.name);
             holder.summaryView.setText(test.correctAnswers + "/" + test.maxQuestions);
-            holder.progressBar.setProgress(holder.progressBar.getMax() * test.correctAnswers /
-                    test.maxQuestions);
+            if (test.maxQuestions != 0) {
+                holder.progressBar.setProgress(
+                        holder.progressBar.getMax() * test.correctAnswers / test.maxQuestions);
+            }
         }
 
         @Override
