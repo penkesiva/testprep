@@ -138,7 +138,7 @@ public class QuizFragment extends Fragment {
             }
 
             final QuizFragment.QuizAdapter.ViewHolder viewHolder = (QuizFragment.QuizAdapter.ViewHolder)convertView.getTag();
-            viewHolder.nameTextView.setText(filterName);
+            viewHolder.nameTextView.setText(filterName.toUpperCase());
             viewHolder.fullNameTextView.setText("TBD");
             viewHolder.lockImageView.setImageResource(getIsLocked() ? R.drawable.lock : R.drawable.unlock);
 

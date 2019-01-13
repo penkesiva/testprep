@@ -10,54 +10,70 @@
         android:id="@+id/progress_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_blue"
+        android:padding="@dimen/padding_8sp"
         android:layout_alignParentTop="true" >
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="@style/CustomProgressBar"
-            android:layout_width="fill_parent"
+        <RelativeLayout
+            android:id="@+id/ll_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/CustomProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_5sp"
+                android:indeterminate="false"
+                android:minHeight="5dp"
+                android:minWidth="200dp" />
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="(0 / 0)"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/time_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_5sp"
-            android:indeterminate="false"
-            android:minHeight="5dp"
-            android:minWidth="200dp" />
+            android:layout_below="@id/ll_progress"
+            android:gravity="center" >
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingEnd="@dimen/padding_8sp"
+                android:paddingStart="@dimen/padding_8sp"
+                android:text="@string/remaining_time"
+                android:layout_centerInParent="true"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold" />
 
-    <RelativeLayout
-        android:id="@+id/time_header"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/progress_header"
-        android:gravity="center"
-        android:padding="@dimen/padding_8sp">
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/seconds"
+                android:ellipsize="marquee"
+                android:text="99:99:99"
+                android:textSize="@dimen/medium_font"
+                android:fontFamily="sans-serif-light"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/seconds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/padding_8sp"
-            android:paddingStart="@dimen/padding_8sp"
-            android:text="@string/remaining_time"
-            android:layout_centerInParent="true"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="@dimen/medium_font"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_5sp"
-            android:layout_toEndOf="@id/seconds"
-            android:background="@drawable/rectangle"
-            android:ellipsize="marquee"
-            android:text="99:99:99"
-            android:textSize="@dimen/medium_font"
-            android:fontFamily="sans-serif-light"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:textStyle="bold" />
+        </RelativeLayout>
 
     </RelativeLayout>
 
@@ -65,9 +81,10 @@
         android:id="@+id/question_layout"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:background="@drawable/rectangle"
+        android:background="@drawable/rectangle_blue"
         android:layout_above="@id/radioGroup1"
-        android:layout_below="@id/time_header"
+        android:layout_below="@id/progress_header"
+        android:layout_marginTop="@dimen/padding_5sp"
         android:padding="@dimen/padding_8sp">
 
         <TextView
@@ -113,7 +130,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/next_prev_buttons"
-        android:background="@drawable/rectangle"
+        android:background="@drawable/rectangle_blue"
         android:layout_marginTop="@dimen/padding_5sp"
         android:padding="@dimen/padding_8sp">
 
@@ -143,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_a"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionA"
                 android:textAlignment="viewStart"
@@ -176,6 +194,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_b"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionB"
                 android:textAlignment="viewStart"
@@ -209,6 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_c"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionC"
                 android:textAlignment="viewStart"
@@ -243,6 +263,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_d"
                 android:button="@null"
+                android:background="@drawable/ripple"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionD"
                 android:textAlignment="viewStart"
@@ -257,13 +278,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/padding_8sp">
+        android:layout_marginTop="@dimen/padding_5sp">
 
         <Button
             android:id="@+id/previousButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_blue"
             android:text="@string/previous"
             android:textColor="#46cf47"
             android:textSize="@dimen/medium_font" />
@@ -272,7 +293,7 @@
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:background="@drawable/rectangle"
+            android:background="@drawable/rectangle_blue"
             android:text="@string/next"
             android:layout_alignParentEnd="true"
             android:textColor="#46cf47"

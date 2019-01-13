@@ -136,7 +136,7 @@ public class ModelTestFragment extends Fragment {
             }
 
             final ModelTestAdapter.ViewHolder viewHolder = (ModelTestAdapter.ViewHolder) convertView.getTag();
-            viewHolder.nameTextView.setText(filterName);
+            viewHolder.nameTextView.setText(filterName.toUpperCase());
             viewHolder.fullNameTextView.setText("TBD");
             viewHolder.lockImageView.setImageResource(getIsLocked() ? R.drawable.lock : R.drawable.unlock);
 

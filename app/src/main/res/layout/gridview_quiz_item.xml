@@ -31,27 +31,47 @@
         tools:text="Politics"
         android:gravity="center_horizontal"/>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="8sp">
+        android:paddingTop="@dimen/padding_5sp"
+        android:layout_marginRight="@dimen/padding_5sp"
+        android:layout_marginLeft="@dimen/padding_5sp" >
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:id="@+id/imageview_unlock"
+                android:layout_width="18dp"
+                android:layout_height="24dp"
+                android:src="@drawable/unlock"
+                android:scaleType="fitXY"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/imageview_lock"
+                android:layout_width="18dp"
+                android:layout_height="24dp"
+                android:src="@drawable/lock"
+                android:scaleType="fitXY"
+                android:visibility="invisible"/>
+
+        </FrameLayout>
 
         <ImageView
-            android:id="@+id/imageview_unlock"
-            android:layout_width="24dp"
-            android:layout_height="32dp"
-            android:src="@drawable/unlock"
+            android:id="@+id/right_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:scaleType="fitXY"
-            android:visibility="visible"/>
+            android:src="@drawable/right"
+            android:visibility="visible" />
 
-        <ImageView
-            android:id="@+id/imageview_lock"
-            android:layout_width="24dp"
-            android:layout_height="32dp"
-            android:src="@drawable/lock"
-            android:scaleType="fitXY"
-            android:visibility="invisible"/>
-
-    </FrameLayout>
+    </RelativeLayout>
 
 </LinearLayout>

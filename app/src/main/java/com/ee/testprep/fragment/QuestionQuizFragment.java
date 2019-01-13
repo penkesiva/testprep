@@ -30,6 +30,7 @@ public class QuestionQuizFragment extends Fragment{
     private int mNumQuestions;
     private OnFragmentInteractionListener mListener;
     private TextView tvTimer;
+    private TextView tvProgress;
     private static ProgressBar mProgressBar;
     private String recordedAnswer;
     private CheckBox cbA;
@@ -67,6 +68,8 @@ public class QuestionQuizFragment extends Fragment{
 
         tvTimer = view.findViewById(R.id.timer);
         tvTimer.setText("");
+
+        tvProgress = view.findViewById(R.id.tv_progress);
 
         mProgressBar = view.findViewById(R.id.progressBar);
         mProgressBar.setMax(mNumQuestions);
@@ -188,6 +191,8 @@ public class QuestionQuizFragment extends Fragment{
                     p2 = p2 / 60;
                     tvTimer.setText(p2 + " : " + p3 + " : " + p1);
                     mProgressBar.setProgress(currQIndex);
+
+                    tvProgress.setText("( " + currQIndex + " / " + mNumQuestions + " )");
                 }
             });
         }

@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         super.onCreate(savedInstanceState);
 
         View rootView = findViewById(android.R.id.content);
-        rootView.setBackgroundResource(R.drawable.cover);
+        //rootView.setBackgroundResource(R.drawable.cover);
 
         //this.setTheme(android.R.style.ThemeOverlay_Material_Dark);
         setContentView(R.layout.activity_main);

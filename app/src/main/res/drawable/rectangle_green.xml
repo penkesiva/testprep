@@ -22,7 +22,7 @@
         android:height="30dp"
         />
     <stroke
-        android:width="2dp"
+        android:width="3dp"
         android:color="@color/colorGreen"
         />
 
