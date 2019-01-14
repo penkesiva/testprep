@@ -100,7 +100,7 @@
             android:id="@+id/login_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nextFocusUp="@id/login_name"
+            android:nextFocusDown="@+id/login_signin"
             android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/big_font"/>

@@ -1,56 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="@dimen/activity_horizontal_margin">
 
     <TextView
+        style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your feedback is greatly appreciated. Tell us how we could improve."/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
-        android:orientation="vertical">
+        android:text="Title"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/feedback_title"
+        style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:nextFocusDown="@+id/feedback_description"/>
+
+    <TextView
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
-        android:orientation="vertical">
+        android:text="Description"
+        android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="200sp"/>
-
-    </LinearLayout>
+    <EditText
+        android:id="@+id/feedback_description"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:minHeight="200sp"/>
 
     <Button
+        android:id="@+id/feedback_send"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="16sp"
         android:text="Send"/>
-
 
 </LinearLayout>
