@@ -24,7 +24,8 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nextFocusDown="@+id/feedback_description"/>
+        android:nextFocusDown="@+id/feedback_description"
+        android:singleLine="true"/>
 
     <TextView
         style="@android:style/TextAppearance.Medium"
@@ -39,6 +40,7 @@
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="top"
         android:maxLines="10"
         android:minHeight="200sp"/>
 
