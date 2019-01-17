@@ -43,12 +43,15 @@ public class FeedbackFragment extends Fragment {
                 String body = "";
                 if (description.getText() != null) body += description.getText().toString().trim();
 
+                if (subject.trim().isEmpty() && body.trim().isEmpty()) return;
+
                 Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
-                emailIntent.setData(Uri.parse("mailto:"));
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, FEEDBACK_EMAIL);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                emailIntent.putExtra(Intent.EXTRA_TEXT, body);
+                emailIntent.setData(Uri.parse("mailto:" + FEEDBACK_EMAIL));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, subject.trim());
+                emailIntent.putExtra(Intent.EXTRA_TEXT, body.trim());
                 startActivity(Intent.createChooser(emailIntent, "Feedback Email"));
+                title.setText("");
+                description.setText("");
             }
         });
     }
