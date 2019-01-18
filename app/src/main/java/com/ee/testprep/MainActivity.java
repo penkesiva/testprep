@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     private void setToolbarTitle() {
-        getSupportActionBar().setTitle(getApplicationName() + ": " + activityTitles[navItemIndex]);
+        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
     }
 
     private String getApplicationName() {
