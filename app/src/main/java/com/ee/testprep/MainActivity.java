@@ -40,7 +40,7 @@ import com.ee.testprep.fragment.NothingToShowFragment;
 import com.ee.testprep.fragment.OnFragmentInteractionListener;
 import com.ee.testprep.fragment.PracticeFragment;
 import com.ee.testprep.fragment.QuestionPracticeFragment;
-import com.ee.testprep.fragment.QuestionQuizFragment;
+import com.ee.testprep.fragment.QuestionQuizBaseFragment;
 import com.ee.testprep.fragment.QuizFragment;
 import com.ee.testprep.fragment.RateUsFragment;
 import com.ee.testprep.fragment.ResultsFragment;
@@ -52,8 +52,6 @@ import com.ee.testprep.fragment.practice.YearFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -110,8 +108,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static int navItemIndex = INDEX_HOME;
     public static String CURRENT_TAG = TAG_HOME;
 
-    public static final int STATUS_QUIZ_NEXT = 1002;
-    public static final int STATUS_QUIZ_PREVIOUS = 1003;
     public static final int STATUS_QUIZ_END = 1004;
     public static final int STATUS_QUIZ_XX = 1005;
 
@@ -134,8 +130,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     public static final int STATUS_MODELTEST_XX = 4001;
 
-    public static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
-
     private YearFragment yearFragment;
     private SubjectFragment subjectFragment;
     private ExamFragment examFragment;
@@ -151,13 +145,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     //permissions
     private static final int PERMISSION_REQUEST_CODE = 1;
 
-    private ArrayList<DBRow> quizList;
-    private QuizMetrics quiz;
-
     private ArrayList<DBRow> practiceQuestions;
     private PracticeMetrics practice;
 
-    private QuestionQuizFragment questionQuizFragment;
+    private QuestionQuizBaseFragment questionQuizFragment;
     private Fragment questionPracticeFragment;
 
     @Override
@@ -580,12 +571,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public void onFragmentInteraction(int status) {
 
         switch (status) {
-            case STATUS_QUIZ_NEXT:
-                nextQuizQuestion();
-                break;
-            case STATUS_QUIZ_PREVIOUS:
-                prevQuizQuestion();
-                break;
             case STATUS_QUIZ_END:
                 break;
             case STATUS_PRACTICE:
@@ -669,81 +654,33 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     /***************************** START OF QUIZ **************************************************/
 
-    private void uiRefresh() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+    private void startQuiz(String quizName) {
+        if (questionQuizFragment == null) {
+            questionQuizFragment = QuestionQuizBaseFragment.newInstance(quizName);
+        }
+
+        Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
-                if (quiz != null) {
-                    sendDataToFragment(quiz.getRemainingTimeInSec());
-                }
+                // update the main content by replacing fragments
+                Fragment fragment = questionQuizFragment;
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
+                        android.R.animator.fade_out);
+                fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(TAG_HOME);
+                fragmentTransaction.commitAllowingStateLoss();
             }
-        }, 0, 1000);
+        };
+
+        // If mPendingRunnable is not null, then add to the message queue
+        mUIHandler.post(mPendingRunnable);
     }
 
-    private void sendDataToFragment(int time) {
-        if (questionQuizFragment != null) {
-            (questionQuizFragment).uiRefresh(time, quiz.getProgress());
-        }
-    }
-
-    private void startQuiz(String quizName) {
-
+    private void showQuizResult() {
         if (dbHelper != null) {
-            quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
-
-            quiz = new QuizMetrics(quizList, quizList.size() * TIME_INSEC_PER_QUESTION);
-            quiz.startQuiz();
-            uiRefresh();
-            questionQuizFragment = QuestionQuizFragment.newInstance(quiz.getNextQuestion(), quizList.size());
-
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    // update the main content by replacing fragments
-                    Fragment fragment = questionQuizFragment;
-                    FragmentTransaction fragmentTransaction =
-                            getFragmentManager().beginTransaction();
-                    fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
-                            android.R.animator.fade_out);
-                    fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION)
-                            .addToBackStack(TAG_HOME);
-                    fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
-
-            // If mPendingRunnable is not null, then add to the message queue
-            mUIHandler.post(mPendingRunnable);
-        }
-    }
-
-    private void nextQuizQuestion() {
-
-        if (dbHelper != null) {
-            DBRow question = quiz.getNextQuestion();
-            if (question != null) {
-                questionQuizFragment = QuestionQuizFragment.newInstance(question, quizList.size());
-
-                Runnable mPendingRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        // update the main content by replacing fragments
-                        Fragment fragment = questionQuizFragment;
-                        FragmentTransaction fragmentTransaction =
-                                getFragmentManager().beginTransaction();
-                        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
-                                android.R.animator.fade_out);
-                        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION)
-                                .addToBackStack(TAG_QUIZ);
-                        fragmentTransaction.commitAllowingStateLoss();
-                    }
-                };
-
-                // If mPendingRunnable is not null, then add to the message queue
-                mUIHandler.post(mPendingRunnable);
-            } else {
                 //TODO: end of quiz
-                final ResultsFragment resultsFragment = ResultsFragment.newInstance(quizList);
+                //final ResultsFragment resultsFragment = ResultsFragment.newInstance(quizList);
+                final ResultsFragment resultsFragment = ResultsFragment.newInstance(null);
 
                 Runnable mPendingRunnable = new Runnable() {
                     @Override
@@ -762,36 +699,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
                 // If mPendingRunnable is not null, then add to the message queue
                 mUIHandler.post(mPendingRunnable);
-
-            }
-        }
-    }
-
-    private void prevQuizQuestion() {
-
-        if (dbHelper != null) {
-            //questionFragment = QuestionFragment.newInstance((quizList.get(--questionIndex)));
-            DBRow question = quiz.getPrevQuestion();
-            if (question != null) {
-                questionQuizFragment = QuestionQuizFragment.newInstance(question, quizList.size());
-                Runnable mPendingRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        // update the main content by replacing fragments
-                        Fragment fragment = questionQuizFragment;
-                        FragmentTransaction fragmentTransaction =
-                                getFragmentManager().beginTransaction();
-                        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
-                                android.R.animator.fade_out);
-                        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION)
-                                .addToBackStack(TAG_QUIZ);
-                        fragmentTransaction.commitAllowingStateLoss();
-                    }
-                };
-
-                // If mPendingRunnable is not null, then add to the message queue
-                mUIHandler.post(mPendingRunnable);
-            }
         }
     }
 
