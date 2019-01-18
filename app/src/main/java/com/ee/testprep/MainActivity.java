@@ -197,13 +197,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             loadHomeFragment();
         }
 
-        //set permissions if not already set
-        //TODO check multiple permissions and less than 23 API
+        /*
         if (!checkPermission()) {
             requestPermission();
         } else {
             L.v(className, "Permissions already granted");
         }
+        */
 
         showCustomDialog();
 
@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     private void setToolbarTitle() {
-        getSupportActionBar().setTitle(getApplicationName() + ": " + activityTitles[navItemIndex]);
+        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
     }
 
     private String getApplicationName() {
