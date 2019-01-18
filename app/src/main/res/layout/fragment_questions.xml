@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingTop="@dimen/padding_large"
+              android:paddingBottom="@dimen/padding_large">
+
+    <RelativeLayout
+        android:id="@+id/progress_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/rectangle_blue"
+        android:padding="@dimen/padding_8sp">
+
+        <RelativeLayout
+            android:id="@+id/ll_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/CustomProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/padding_5sp"
+                android:indeterminate="false"
+                android:minWidth="200dp"
+                android:minHeight="5dp"/>
+
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="(0 / 0)"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/time_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_progress"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingStart="@dimen/padding_8sp"
+                android:paddingEnd="@dimen/padding_8sp"
+                android:text="@string/remaining_time"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@id/seconds"
+                android:ellipsize="marquee"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:text="99:99:99"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/questions_sliding_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"/>
+</LinearLayout>

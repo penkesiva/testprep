@@ -1,90 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bg_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:padding="@dimen/padding_8sp">
-
-    <RelativeLayout
-        android:id="@+id/progress_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_blue"
-        android:padding="@dimen/padding_8sp"
-        android:layout_alignParentTop="true" >
-
-        <RelativeLayout
-            android:id="@+id/ll_progress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                style="@style/CustomProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_5sp"
-                android:indeterminate="false"
-                android:minHeight="5dp"
-                android:minWidth="200dp" />
-
-            <TextView
-                android:id="@+id/tv_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:text="(0 / 0)"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/medium_font"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/time_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_progress"
-            android:gravity="center" >
-
-            <TextView
-                android:id="@+id/seconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/padding_8sp"
-                android:paddingStart="@dimen/padding_8sp"
-                android:text="@string/remaining_time"
-                android:layout_centerInParent="true"
-                android:textColor="@android:color/holo_green_dark"
-                android:textSize="@dimen/medium_font"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/seconds"
-                android:ellipsize="marquee"
-                android:text="99:99:99"
-                android:textSize="@dimen/medium_font"
-                android:fontFamily="sans-serif-light"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
-
-    </RelativeLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/bg_layout"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorWhite"
+              android:orientation="vertical"
+              android:padding="@dimen/padding_8sp">
 
     <RelativeLayout
         android:id="@+id/question_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:background="@drawable/rectangle_blue"
-        android:layout_above="@id/radioGroup1"
-        android:layout_below="@id/progress_header"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/padding_5sp"
+        android:layout_weight="1"
+        android:background="@drawable/rectangle_blue"
         android:padding="@dimen/padding_8sp">
 
         <TextView
@@ -97,41 +27,39 @@
             android:text="@string/question_header"
             android:textColor="@color/colorGreen"
             android:textSize="@dimen/big_font"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
             android:layout_below="@id/question_header"
+            android:fontFamily="sans-serif-light"
             android:scrollbars="vertical"
             android:text=""
             android:textColor="@color/colorBlack"
-            android:textStyle="bold"
-            android:textSize="@dimen/medium_font"  />
+            android:textSize="@dimen/medium_font"
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/iv_ques"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
             android:contentDescription="@string/question_image"
             android:maxWidth="250sp"
             android:maxHeight="250sp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
             android:src="@android:drawable/btn_star_big_on"
             android:visibility="gone"/>
-
     </RelativeLayout>
 
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/next_prev_buttons"
-        android:background="@drawable/rectangle_blue"
         android:layout_marginTop="@dimen/padding_5sp"
+        android:background="@drawable/rectangle_blue"
         android:padding="@dimen/padding_8sp">
 
         <RelativeLayout
@@ -145,27 +73,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionA"/>
+                android:fontFamily="serif"
+                android:text="@string/optionA"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_a"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionA"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
-
+                android:textColor="#000000"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -179,28 +106,27 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionB"/>
+                android:fontFamily="serif"
+                android:text="@string/optionB"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_b"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionB"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
+                android:textColor="#000000"/>
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/rg_c"
@@ -213,29 +139,27 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionC"/>
+                android:fontFamily="serif"
+                android:text="@string/optionC"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optC"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_c"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionC"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
-
+                android:textColor="#000000"/>
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/rg_d"
@@ -248,56 +172,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionD"/>
+                android:fontFamily="serif"
+                android:text="@string/optionD"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optD"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/iv_d"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionD"
                 android:textAlignment="viewStart"
-                android:textColor="#000000" />
-
+                android:textColor="#000000"/>
         </RelativeLayout>
-
     </RadioGroup>
-
-    <RelativeLayout
-        android:id="@+id/next_prev_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/padding_5sp">
-
-        <Button
-            android:id="@+id/previousButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/rectangle_blue"
-            android:text="@string/previous"
-            android:textColor="#46cf47"
-            android:textSize="@dimen/medium_font" />
-
-        <Button
-            android:id="@+id/nextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/rectangle_blue"
-            android:text="@string/next"
-            android:layout_alignParentEnd="true"
-            android:textColor="#46cf47"
-            android:textSize="@dimen/medium_font" />
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>
