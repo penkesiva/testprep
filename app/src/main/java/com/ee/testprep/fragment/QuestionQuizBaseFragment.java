@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
@@ -34,8 +33,8 @@ public class QuestionQuizBaseFragment extends android.app.Fragment {
     private DataBaseHelper dbHelper;
     private TextView tvTimer;
     private TextView tvProgress;
-    private int mNumQuestions;
-    private ProgressBar mProgressBar;
+    private int numQuestions;
+    //private ProgressBar progressBar;
 
     public static QuestionQuizBaseFragment newInstance(String quizName) {
         QuestionQuizBaseFragment fragment = new QuestionQuizBaseFragment();
@@ -48,18 +47,16 @@ public class QuestionQuizBaseFragment extends android.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Bundle args = getArguments();
         quizName = args.getString(QUIZ_NAME);
 
         dbHelper = DataBaseHelper.getInstance(getContext());
         quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
-
         quiz = new QuizMetrics(quizList, quizList.size() * TIME_INSEC_PER_QUESTION);
         quiz.startQuiz();
-        uiRefresh();
+        numQuestions = quizList.size();
 
-        mNumQuestions = quizList.size();
         return inflater.inflate(R.layout.fragment_questions, container, false);
     }
 
@@ -72,28 +69,42 @@ public class QuestionQuizBaseFragment extends android.app.Fragment {
 
         tvProgress = view.findViewById(R.id.tv_progress);
 
-        mProgressBar = view.findViewById(R.id.progressBar);
-        mProgressBar.setMax(mNumQuestions);
+        //progressBar = view.findViewById(R.id.progressBar);
+        //progressBar.setMax(numQuestions);
 
         pagerAdapter = new SlidePagerAdapter((MainActivity) getActivity());
         pager = view.findViewById(R.id.questions_sliding_pager);
         pager.setAdapter(pagerAdapter);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                uiRefreshCount(position + 1);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        uiRefreshTime();
     }
 
-    private void uiRefresh() {
+    private void uiRefreshTime() {
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (quiz != null) {
-                    uiRefresh(quiz.getRemainingTimeInSec(), quiz.getProgress());
+                    uiRefreshTime(quiz.getRemainingTimeInSec());
                 }
             }
         }, 0, 1000);
     }
 
-    public void uiRefresh(final int time, final int currQIndex) {
-
+    public void uiRefreshTime(final int time) {
         if (getActivity() != null) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -103,8 +114,18 @@ public class QuestionQuizBaseFragment extends android.app.Fragment {
                     int p3 = p2 % 60;
                     p2 = p2 / 60;
                     tvTimer.setText(p2 + " : " + p3 + " : " + p1);
-                    mProgressBar.setProgress(currQIndex);
-                    tvProgress.setText("( " + currQIndex + " / " + mNumQuestions + " )");
+                }
+            });
+        }
+    }
+
+    public void uiRefreshCount(final int currentQuestion) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //progressBar.setProgress(currentQuestion);
+                    tvProgress.setText("( " + currentQuestion + " / " + numQuestions + " )");
                 }
             });
         }
@@ -134,7 +155,7 @@ public class QuestionQuizBaseFragment extends android.app.Fragment {
 
         @Override
         public int getCount() {
-            return mNumQuestions;
+            return numQuestions;
         }
     }
 }
