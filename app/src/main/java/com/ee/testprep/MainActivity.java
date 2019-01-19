@@ -37,7 +37,7 @@ import com.ee.testprep.fragment.NothingToShowFragment;
 import com.ee.testprep.fragment.OnFragmentInteractionListener;
 import com.ee.testprep.fragment.PracticeFragment;
 import com.ee.testprep.fragment.QuestionPracticeFragment;
-import com.ee.testprep.fragment.QuestionQuizBaseFragment;
+import com.ee.testprep.fragment.QuestionBaseFragment;
 import com.ee.testprep.fragment.QuizFragment;
 import com.ee.testprep.fragment.RateUsFragment;
 import com.ee.testprep.fragment.ResultsFragment;
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private ArrayList<DBRow> practiceQuestions;
     private PracticeMetrics practice;
 
-    private QuestionQuizBaseFragment questionQuizFragment;
+    private QuestionBaseFragment questionQuizFragment;
     private Fragment questionPracticeFragment;
 
     @Override
@@ -650,7 +650,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void startQuiz(String quizName) {
         if (questionQuizFragment == null) {
-            questionQuizFragment = QuestionQuizBaseFragment.newInstance(quizName);
+            questionQuizFragment = QuestionBaseFragment.newInstance(quizName);
         }
 
         Runnable mPendingRunnable = new Runnable() {

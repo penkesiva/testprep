@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QuestionQuizBaseFragment extends android.app.Fragment {
+public class QuestionBaseFragment extends android.app.Fragment {
     public static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
     public static String QUIZ_NAME = "quiz_name";
     private ViewPager pager;
@@ -36,8 +36,8 @@ public class QuestionQuizBaseFragment extends android.app.Fragment {
     private int numQuestions;
     //private ProgressBar progressBar;
 
-    public static QuestionQuizBaseFragment newInstance(String quizName) {
-        QuestionQuizBaseFragment fragment = new QuestionQuizBaseFragment();
+    public static QuestionBaseFragment newInstance(String quizName) {
+        QuestionBaseFragment fragment = new QuestionBaseFragment();
         Bundle bundle = new Bundle();
         bundle.putString(QUIZ_NAME, quizName);
         fragment.setArguments(bundle);
