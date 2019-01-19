@@ -27,6 +27,13 @@
         <item>Donate</item>
     </string-array>
 
+    <string-array name="connecting_colors">
+        <item>@color/colorOrange</item>
+        <item>@color/colorGreen</item>
+        <item>@color/colorOrange</item>
+        <item>@color/colorGreen</item>
+    </string-array>
+
     <string name="activity_title_about_us">About Us</string>
     <string name="activity_title_privacy_policy">Privacy Policy</string>
     <string name="action_clear_all">Clear All</string>
