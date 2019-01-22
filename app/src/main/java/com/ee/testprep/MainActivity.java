@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
@@ -23,6 +24,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -163,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         View rootView = findViewById(android.R.id.content);
         //rootView.setBackgroundResource(R.drawable.cover);
+        rootView.setBackgroundColor(getResources().getColor(R.color.colorBackground2));
 
         //this.setTheme(android.R.style.ThemeOverlay_Material_Dark);
         setContentView(R.layout.activity_main);
@@ -652,14 +656,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     }
 
+    /*
     @Override
     public void onSignOut() {
         if (navItemIndex != INDEX_HOME) {
             navItemIndex = INDEX_HOME;
             CURRENT_TAG = TAG_HOME;
-            loadHomeFragment();
+            startActivity(new Intent(mContext, LoginActivity.class));
+            finish();
         }
-    }
+    }*/
 
     /***************************** START OF QUIZ **************************************************/
 

@@ -2,6 +2,7 @@ package com.ee.testprep.fragment;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.ee.testprep.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -102,8 +104,11 @@ public class SettingsFragment extends Fragment {
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                mListener.onSignOut();
+                //attach the key value pair using putExtra to this intent
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                String action = "SignOut";
+                intent.putExtra("ACTION", action);
+                startActivity(intent);
             }
         });
     }

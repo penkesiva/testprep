@@ -17,5 +17,11 @@
     <color name="colorGreen">#5FB404</color>
     <color name="colorRed">#FF0000</color>
     <color name="colorPurplePink">#A9A9F5</color>
+    <color name="colorBackground">#333C46</color>
+    <color name="colorSplashText">#F0F0F0</color>
+    <color name="colorProgressBar">#FFCE511C</color>
+    <color name="colorTextView">#83898E</color>
+    <color name="colorBackground2">#424250</color>
+    <color name="colorBackground3">#33333D</color>
 
 </resources>

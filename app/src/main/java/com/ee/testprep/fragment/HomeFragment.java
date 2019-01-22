@@ -31,15 +31,8 @@ public class HomeFragment extends Fragment {
     private static String className = HomeFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String PASSWORD = "Equality123";
-    private OnFragmentInteractionListener mListener;
-
     private TextView greeting;
-    private View loginRoot;
-    private EditText displayName;
-    private EditText email;
-    private Button signin;
-    private Button register;
+    private OnFragmentInteractionListener mListener;
 
     private static String author_kalam = "- APJ Kalam";
     private static String author_gandhi = "- MK Gandhi";
@@ -139,7 +132,9 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         greeting = view.findViewById(R.id.tv_home_wish);
+        greeting.setText(getGreeting(user.getDisplayName()));
 
         TextView quote = view.findViewById(R.id.tv_home_quote);
         Random rand = new Random();
@@ -150,8 +145,6 @@ public class HomeFragment extends Fragment {
         TextView author = view.findViewById(R.id.tv_home_author);
         author.setText(quotes[index][1]);
         author.setTextColor(Color.BLACK);
-
-        checkUser(view);
 
         return view;
     }
@@ -207,78 +200,5 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void checkUser(View view) {
-        loginRoot = view.findViewById(R.id.login_root);
-        displayName = loginRoot.findViewById(R.id.login_name);
-        email = loginRoot.findViewById(R.id.login_email);
-        signin = loginRoot.findViewById(R.id.login_signin);
-        register = loginRoot.findViewById(R.id.login_register);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user == null) {
-            loginRoot.setVisibility(View.VISIBLE);
-            signin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (validData()) signInUser();
-                }
-            });
-            register.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (validData()) registerNewUser();
-                }
-            });
-        } else {
-            updateUI(user.getDisplayName());
-        }
-    }
-
-    private boolean validData() {
-        if (email.getText().toString().isEmpty() || displayName.getText().toString().isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
-    private void signInUser() {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(
-                email.getText().toString().trim(), PASSWORD)
-                .addOnCompleteListener(getActivity(), onCompleteListener);
-    }
-
-    private void registerNewUser() {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                email.getText().toString().trim(), PASSWORD)
-                .addOnCompleteListener(getActivity(), onCompleteListener);
-    }
-
-    private void updateUI(String displayName) {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(email.getWindowToken(), 0);
-        greeting.setText(getGreeting(displayName));
-        loginRoot.setVisibility(View.GONE);
-    }
-
-    private OnCompleteListener<AuthResult> onCompleteListener = new OnCompleteListener<AuthResult>() {
-        @Override
-        public void onComplete(@NonNull Task<AuthResult> task) {
-            if (task.isSuccessful()) {
-                FirebaseAuth auth = FirebaseAuth.getInstance();
-                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(displayName.getText().toString().trim())
-                        .build();
-                FirebaseUser user = auth.getCurrentUser();
-                user.updateProfile(request);
-                updateUI(displayName.getText().toString().trim());
-                Toast.makeText(getContext(), "Authentication Successful!", Toast.LENGTH_SHORT).show();
-            } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
-                Toast.makeText(getContext(), email.getText().toString() + " Already " +
-                                "registered!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Authentication Failed!", Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
 }
