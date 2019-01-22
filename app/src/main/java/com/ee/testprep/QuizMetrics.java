@@ -28,7 +28,7 @@ public class QuizMetrics {
         QSTOPPED
     }
 
-    QuizMetrics(ArrayList<DBRow> qList, int timeInSec) {
+    public QuizMetrics(ArrayList<DBRow> qList, int timeInSec) {
         mQList = qList;//TODO
         mNumQuestions = qList.size();
         mCurrIndex = -1;

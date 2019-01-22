@@ -1,32 +1,24 @@
 package com.ee.testprep.fragment;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.ee.testprep.L;
-import com.ee.testprep.db.DBRow;
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
+import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.util.SimpleVibaration;
 
@@ -187,34 +179,18 @@ public class QuestionPracticeFragment extends Fragment {
             }
         });
 
-        Button btnNext = view.findViewById(R.id.nextButton);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonPressed(MainActivity.STATUS_PRACTICE_NEXT);
-            }
-        });
-
-        Button btnPrev = view.findViewById(R.id.previousButton);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonPressed(MainActivity.STATUS_PRACTICE_PREVIOUS);
-            }
-        });
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().popBackStack();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        view.setFocusableInTouchMode(true);
+//        view.requestFocus();
+//        view.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+//                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+//                    getFragmentManager().popBackStack();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
 
         // populate the question
         return view;

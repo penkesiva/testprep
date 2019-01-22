@@ -1,38 +1,23 @@
 package com.ee.testprep.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.ee.testprep.db.DBRow;
-import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
-import com.ee.testprep.util.SimpleVibaration;
+import com.ee.testprep.db.DBRow;
 
-public class QuestionQuizFragment extends Fragment{
+public class QuestionQuizFragment extends Fragment {
 
+    private static final String QUIZ_QUESTION = "quiz_question";
     private static String TAG = QuestionQuizFragment.class.getSimpleName();
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private DBRow mQuestion;
-    private int mNumQuestions;
-    private OnFragmentInteractionListener mListener;
-    private TextView tvTimer;
-    private TextView tvProgress;
-    private static ProgressBar mProgressBar;
-    private String recordedAnswer;
     private CheckBox cbA;
     private CheckBox cbB;
     private CheckBox cbC;
@@ -41,11 +26,10 @@ public class QuestionQuizFragment extends Fragment{
     public QuestionQuizFragment() {
     }
 
-    public static QuestionQuizFragment newInstance(DBRow question, int numQuestions) {
+    public static QuestionQuizFragment newInstance(DBRow question) {
         QuestionQuizFragment fragment = new QuestionQuizFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_PARAM1, question);
-        bundle.putSerializable(ARG_PARAM2, numQuestions);
+        bundle.putSerializable(QUIZ_QUESTION, question);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -55,24 +39,14 @@ public class QuestionQuizFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mQuestion = (DBRow) getArguments().getSerializable(ARG_PARAM1);
-            mNumQuestions = (int) getArguments().getSerializable(ARG_PARAM2);
+            mQuestion = (DBRow) getArguments().getSerializable(QUIZ_QUESTION);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.quiz_question, container, false);
-
-        tvTimer = view.findViewById(R.id.timer);
-        tvTimer.setText("");
-
-        tvProgress = view.findViewById(R.id.tv_progress);
-
-        mProgressBar = view.findViewById(R.id.progressBar);
-        mProgressBar.setMax(mNumQuestions);
 
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question);
@@ -80,36 +54,6 @@ public class QuestionQuizFragment extends Fragment{
 
         configureCheckBox(view);
 
-        Button btnNext = view.findViewById(R.id.nextButton);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonPressed(MainActivity.STATUS_QUIZ_NEXT);
-            }
-        });
-
-        Button btnPrev = view.findViewById(R.id.previousButton);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onButtonPressed(MainActivity.STATUS_QUIZ_PREVIOUS);
-            }
-        });
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if( keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().popBackStack();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        // populate the question
         return view;
     }
 
@@ -162,58 +106,15 @@ public class QuestionQuizFragment extends Fragment{
         });
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public void uiRefresh(final int time, final int currQIndex) {
-
-        if(getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    int p1 = time % 60;
-                    int p2 = time / 60;
-                    int p3 = p2 % 60;
-                    p2 = p2 / 60;
-                    tvTimer.setText(p2 + " : " + p3 + " : " + p1);
-                    mProgressBar.setProgress(currQIndex);
-
-                    tvProgress.setText("( " + currQIndex + " / " + mNumQuestions + " )");
-                }
-            });
-        }
-    }
-
     private int getIndexMap(String option) {
-        if(option.equals("a")) {
+        if (option.equals("a")) {
             return 0;
-        } else if(option.equals("b")) {
+        } else if (option.equals("b")) {
             return 1;
-        } else if(option.equals("c")) {
+        } else if (option.equals("c")) {
             return 2;
         } else {
             return 3;
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(int status) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(status);
         }
     }
 }
