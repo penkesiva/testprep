@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/bg_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:orientation="vertical"
     android:padding="8dp">
 
     <RelativeLayout
         android:id="@+id/question_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rectangle_blue"
+        android:layout_height="0dp"
         android:layout_above="@id/radioGroup1"
-        android:padding="@dimen/padding_5sp"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"
+        android:background="@drawable/rectangle_blue"
+        android:padding="@dimen/padding_5sp">
 
         <RelativeLayout
             android:id="@+id/q_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_5sp"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/padding_5sp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -30,17 +33,17 @@
                 android:text="@string/question_header"
                 android:textColor="@color/colorGreen"
                 android:textSize="@dimen/big_font"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/fav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:contentDescription="@string/question_image"
                 android:background="@color/colorWhite"
+                android:contentDescription="@string/question_image"
                 android:src="@drawable/ic_toggle"
-                android:visibility="visible" />
+                android:visibility="visible"/>
 
         </RelativeLayout>
 
@@ -54,24 +57,24 @@
                 android:id="@+id/question"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
                 android:layout_above="@id/iv_ques"
                 android:layout_alignParentTop="true"
-                android:text=""
+                android:fontFamily="sans-serif-light"
                 android:gravity="start"
                 android:scrollbars="vertical"
+                android:text=""
                 android:textColor="@color/colorBlack"
-                android:textStyle="bold"
-                android:textSize="@dimen/medium_font" />
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/iv_ques"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:contentDescription="@string/question_image"
                 android:maxWidth="250sp"
                 android:maxHeight="250sp"
-                android:layout_alignParentBottom="true"
                 android:src="@android:drawable/btn_star_big_on"
                 android:visibility="gone"/>
 
@@ -83,9 +86,8 @@
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/next_prev_buttons"
-        android:background="@drawable/rectangle_blue"
         android:layout_marginTop="@dimen/padding_5sp"
+        android:background="@drawable/rectangle_blue"
         android:padding="8dp">
 
         <RelativeLayout
@@ -98,27 +100,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
-                android:gravity="center"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionA"/>
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="@string/optionA"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_a"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionA"
                 android:textAlignment="viewStart"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"/>
 
         </RelativeLayout>
 
@@ -132,27 +134,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
-                android:gravity="center"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionB"/>
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="@string/optionB"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_b"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionB"
                 android:textAlignment="viewStart"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"/>
         </RelativeLayout>
 
 
@@ -166,27 +168,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
-                android:gravity="center"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionC"/>
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="@string/optionC"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optC"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_c"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionC"
                 android:textAlignment="viewStart"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"/>
 
         </RelativeLayout>
 
@@ -200,57 +202,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:textSize="@dimen/big_font"
-                android:textColor="@color/colorGreen"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:fontFamily="serif"
-                android:gravity="center"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
-                android:text="@string/optionD"/>
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="@string/optionD"
+                android:textAlignment="center"
+                android:textColor="@color/colorGreen"
+                android:textSize="@dimen/big_font"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/rb_optD"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/iv_d"
-                android:button="@null"
                 android:background="@drawable/ripple"
+                android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionD"
                 android:textAlignment="viewStart"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"/>
 
         </RelativeLayout>
 
     </RadioGroup>
 
-    <RelativeLayout
-        android:id="@+id/next_prev_buttons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/padding_5sp">
-
-        <Button
-            android:id="@+id/previousButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/rectangle_blue"
-            android:text="@string/previous"
-            android:textColor="#46cf47"
-            android:textSize="@dimen/medium_font" />
-
-        <Button
-            android:id="@+id/nextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/rectangle_blue"
-            android:text="@string/next"
-            android:layout_alignParentEnd="true"
-            android:textColor="#46cf47"
-            android:textSize="@dimen/medium_font" />
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

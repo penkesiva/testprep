@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class QuestionBaseFragment extends android.app.Fragment {
+public class TestQuizFragment extends android.app.Fragment {
     public static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
     public static String QUIZ_NAME = "quiz_name";
     private ViewPager pager;
@@ -36,8 +37,8 @@ public class QuestionBaseFragment extends android.app.Fragment {
     private int numQuestions;
     //private ProgressBar progressBar;
 
-    public static QuestionBaseFragment newInstance(String quizName) {
-        QuestionBaseFragment fragment = new QuestionBaseFragment();
+    public static TestQuizFragment newInstance(String quizName) {
+        TestQuizFragment fragment = new TestQuizFragment();
         Bundle bundle = new Bundle();
         bundle.putString(QUIZ_NAME, quizName);
         fragment.setArguments(bundle);
@@ -90,6 +91,19 @@ public class QuestionBaseFragment extends android.app.Fragment {
             }
         });
         uiRefreshTime();
+
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    getFragmentManager().popBackStack();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void uiRefreshTime() {
