@@ -24,8 +24,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TestQuizFragment extends android.app.Fragment {
-    public static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
-    public static String QUIZ_NAME = "quiz_name";
+    private static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
+    private static String QUIZ_NAME = "quiz_name";
     private ViewPager pager;
     private SlidePagerAdapter pagerAdapter;
     private ArrayList<DBRow> quizList;
@@ -48,7 +48,7 @@ public class TestQuizFragment extends android.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         Bundle args = getArguments();
         quizName = args.getString(QUIZ_NAME);
 
@@ -78,7 +78,8 @@ public class TestQuizFragment extends android.app.Fragment {
         pager.setAdapter(pagerAdapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float positionOffset,
+                    int positionOffsetPixels) {
                 uiRefreshCount(position + 1);
             }
 
@@ -159,10 +160,11 @@ public class TestQuizFragment extends android.app.Fragment {
             int prevPosition = currentPosition;
             currentPosition = position;
             Fragment fragment;
+            boolean isLastQuestion = (position == numQuestions - 1);
             if (currentPosition < prevPosition) {
-                fragment = QuestionQuizFragment.newInstance(quiz.getPrevQuestion());
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion(), isLastQuestion);
             } else {
-                fragment = QuestionQuizFragment.newInstance(quiz.getNextQuestion());
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion(), isLastQuestion);
             }
             return fragment;
         }

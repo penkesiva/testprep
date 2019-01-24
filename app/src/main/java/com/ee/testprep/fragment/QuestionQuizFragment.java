@@ -1,22 +1,30 @@
 package com.ee.testprep.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 
 public class QuestionQuizFragment extends Fragment {
 
+    private static String QUIZ_NAME = "quiz_name";
     private static final String QUIZ_QUESTION = "quiz_question";
+    private static final String QUIZ_LAST_QUESTION = "is_last_question";
     private static String TAG = QuestionQuizFragment.class.getSimpleName();
+    private OnFragmentInteractionListener mListener;
+    private String quizName;
+    private boolean isLastQuestion;
     private DBRow mQuestion;
     private CheckBox cbA;
     private CheckBox cbB;
@@ -26,10 +34,12 @@ public class QuestionQuizFragment extends Fragment {
     public QuestionQuizFragment() {
     }
 
-    public static QuestionQuizFragment newInstance(DBRow question) {
+    public static QuestionQuizFragment newInstance(String quizName, DBRow question, boolean isLastQuestion) {
         QuestionQuizFragment fragment = new QuestionQuizFragment();
         Bundle bundle = new Bundle();
+        bundle.putString(QUIZ_NAME, quizName);
         bundle.putSerializable(QUIZ_QUESTION, question);
+        bundle.putBoolean(QUIZ_LAST_QUESTION, isLastQuestion);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -38,8 +48,11 @@ public class QuestionQuizFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mQuestion = (DBRow) getArguments().getSerializable(QUIZ_QUESTION);
+        Bundle args = getArguments();
+        if (args != null) {
+            quizName = args.getString(QUIZ_NAME);
+            mQuestion = (DBRow) args.getSerializable(QUIZ_QUESTION);
+            isLastQuestion = args.getBoolean(QUIZ_LAST_QUESTION);
         }
     }
 
@@ -54,7 +67,37 @@ public class QuestionQuizFragment extends Fragment {
 
         configureCheckBox(view);
 
+        if (isLastQuestion) {
+            Button submit = view.findViewById(R.id.quiz_submit);
+            submit.setVisibility(View.VISIBLE);
+            submit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_END, quizName);
+                    }
+                }
+            });
+        }
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     private void clearCheckBoxes() {

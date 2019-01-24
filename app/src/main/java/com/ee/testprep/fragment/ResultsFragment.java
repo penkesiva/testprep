@@ -13,25 +13,26 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
+import com.ee.testprep.db.DataBaseHelper;
+
+import java.util.ArrayList;
 
 public class ResultsFragment extends Fragment {
 
+    private static final String ARG_QUIZ_NAME = "quiz_name";
     private static String TAG = ResultsFragment.class.getSimpleName();
-    private static final String ARG_PARAM1 = "param1";
     private OnFragmentInteractionListener mListener;
     private ArrayList<DBRow> mAnswerKey = new ArrayList<>();
 
     public ResultsFragment() {
     }
 
-    public static ResultsFragment newInstance(ArrayList<DBRow> rows) {
+    public static ResultsFragment newInstance(String quizName) {
         ResultsFragment fragment = new ResultsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, rows);
+        args.putSerializable(ARG_QUIZ_NAME, quizName);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,13 +41,15 @@ public class ResultsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mAnswerKey = ((ArrayList<DBRow>) getArguments().getSerializable(ARG_PARAM1));
+            String quizName = getArguments().getString(ARG_QUIZ_NAME);
+            DataBaseHelper dbHelper = DataBaseHelper.getInstance(getContext());
+            mAnswerKey = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz_results, container, false);
         ListView listView = view.findViewById(R.id.results_listview);
         final FilterAdapter filterAdapter = new FilterAdapter(getActivity(), mAnswerKey);
@@ -57,8 +60,9 @@ public class ResultsFragment extends Fragment {
         view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if( keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    getFragmentManager().popBackStack(null,
+                            FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     return true;
                 }
                 return false;
@@ -131,7 +135,8 @@ public class ResultsFragment extends Fragment {
                 final TextView userAnswer = convertView.findViewById(R.id.useranswer);
                 final TextView explanation = convertView.findViewById(R.id.explanation);
 
-                final ViewHolder viewHolder = new ViewHolder(question, questionImage, correctAnswer, userAnswer, explanation);
+                final ViewHolder viewHolder = new ViewHolder(question, questionImage,
+                        correctAnswer, userAnswer, explanation);
                 convertView.setTag(viewHolder);
             }
 
@@ -151,7 +156,8 @@ public class ResultsFragment extends Fragment {
             private final TextView userAnswer;
             private final TextView explanation;
 
-            public ViewHolder(TextView question, ImageView questionImage, TextView correctAnswer, TextView userAnswer, TextView explanation) {
+            public ViewHolder(TextView question, ImageView questionImage, TextView correctAnswer,
+                    TextView userAnswer, TextView explanation) {
                 this.question = question;
                 this.questionImage = questionImage;
                 this.correctAnswer = correctAnswer;

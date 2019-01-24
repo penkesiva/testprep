@@ -85,10 +85,11 @@ public class TestPracticeFragment extends android.app.Fragment {
             int prevPosition = currentPosition;
             currentPosition = position;
             Fragment fragment;
+            boolean isLastQuestion = (position == numQuestions - 1);
             if (currentPosition < prevPosition) {
-                fragment = QuestionPracticeFragment.newInstance(practice.getPrevQuestion());
+                fragment = QuestionPracticeFragment.newInstance(practice.getPrevQuestion(), isLastQuestion);
             } else {
-                fragment = QuestionPracticeFragment.newInstance(practice.getNextQuestion());
+                fragment = QuestionPracticeFragment.newInstance(practice.getNextQuestion(), isLastQuestion);
             }
             return fragment;
         }

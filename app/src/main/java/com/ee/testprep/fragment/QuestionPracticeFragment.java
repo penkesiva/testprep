@@ -7,7 +7,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +23,10 @@ import com.ee.testprep.util.SimpleVibaration;
 
 public class QuestionPracticeFragment extends Fragment {
 
+    private static final String ARG_QUESTION = "question";
+    private static final String ARG_LAST_QUESTION = "is_last_question";
     private static String TAG = QuestionPracticeFragment.class.getSimpleName();
     private Context mContext;
-    private static final String ARG_PARAM1 = "param1";
     private DBRow mQuestion;
     private OnFragmentInteractionListener mListener;
     private CheckBox[] cb = new CheckBox[4];
@@ -34,14 +34,17 @@ public class QuestionPracticeFragment extends Fragment {
     private ImageView iv_fav;
     private DataBaseHelper dbHelper;
     private Dialog statusDialog;
+    private Button summary;
+    private boolean isLastQuestion;
 
     public QuestionPracticeFragment() {
     }
 
-    public static QuestionPracticeFragment newInstance(DBRow question) {
+    public static QuestionPracticeFragment newInstance(DBRow question, boolean isLastQuestion) {
         QuestionPracticeFragment fragment = new QuestionPracticeFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ARG_PARAM1, question);
+        bundle.putSerializable(ARG_QUESTION, question);
+        bundle.putBoolean(ARG_LAST_QUESTION, isLastQuestion);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -51,13 +54,14 @@ public class QuestionPracticeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContext = getActivity().getApplicationContext();
         if (getArguments() != null) {
-            mQuestion = (DBRow) getArguments().getSerializable(ARG_PARAM1);
+            mQuestion = (DBRow) getArguments().getSerializable(ARG_QUESTION);
+            isLastQuestion = getArguments().getBoolean(ARG_LAST_QUESTION);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.practice_question, container, false);
 
@@ -66,6 +70,19 @@ public class QuestionPracticeFragment extends Fragment {
         tvQuestion.setMovementMethod(new ScrollingMovementMethod());
 
         dbHelper = DataBaseHelper.getInstance(getActivity());
+
+        if (isLastQuestion) {
+            summary = view.findViewById(R.id.practice_summary);
+            summary.setVisibility(View.VISIBLE);
+            summary.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null) {
+                        mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_END);
+                    }
+                }
+            });
+        }
 
         iv_fav = view.findViewById(R.id.fav);
         iv_fav.setOnClickListener(new View.OnClickListener() {
@@ -178,19 +195,6 @@ public class QuestionPracticeFragment extends Fragment {
                 }
             }
         });
-
-//        view.setFocusableInTouchMode(true);
-//        view.requestFocus();
-//        view.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-//                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-//                    getFragmentManager().popBackStack();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
 
         // populate the question
         return view;
