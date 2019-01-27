@@ -1,7 +1,5 @@
 package com.ee.testprep.fragment.practice;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,20 +7,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.fragment.OnFragmentInteractionListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class SubjectFragment extends Fragment {
 

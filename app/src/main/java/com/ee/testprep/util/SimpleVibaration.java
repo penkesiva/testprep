@@ -4,7 +4,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.support.annotation.RequiresApi;
+
+import androidx.annotation.RequiresApi;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 

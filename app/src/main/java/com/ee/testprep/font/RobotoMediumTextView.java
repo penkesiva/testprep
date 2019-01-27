@@ -2,9 +2,10 @@ package com.ee.testprep.font;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
-public class RobotoMediumTextView extends android.support.v7.widget.AppCompatTextView {
+import androidx.appcompat.widget.AppCompatTextView;
+
+public class RobotoMediumTextView extends AppCompatTextView {
 
     private Context c;
 
