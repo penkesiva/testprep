@@ -2,7 +2,6 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,13 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 
+import androidx.fragment.app.Fragment;
+
 public class QuestionQuizFragment extends Fragment {
 
-    private static String QUIZ_NAME = "quiz_name";
     private static final String QUIZ_QUESTION = "quiz_question";
     private static final String QUIZ_LAST_QUESTION = "is_last_question";
+    private static String QUIZ_NAME = "quiz_name";
     private static String TAG = QuestionQuizFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
     private String quizName;
@@ -34,7 +35,8 @@ public class QuestionQuizFragment extends Fragment {
     public QuestionQuizFragment() {
     }
 
-    public static QuestionQuizFragment newInstance(String quizName, DBRow question, boolean isLastQuestion) {
+    public static QuestionQuizFragment newInstance(String quizName, DBRow question,
+            boolean isLastQuestion) {
         QuestionQuizFragment fragment = new QuestionQuizFragment();
         Bundle bundle = new Bundle();
         bundle.putString(QUIZ_NAME, quizName);
