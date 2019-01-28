@@ -56,6 +56,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return dbHelperInstance;
     }
 
+    public static DataBaseHelper getInstance() {
+        return dbHelperInstance;
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         updateTableList(db, R.raw.qbank_v1);
@@ -260,7 +264,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         db.insert(tableName, null, values);
     }
 
-    public ArrayList<String> queryYear() {
+    public ArrayList<String> queryYears() {
         ArrayList<String> yearList = new ArrayList<>();
         String query = queryStringAllYears();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -279,7 +283,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return new ArrayList<>(yearList);
     }
 
-    public ArrayList<String> querySubject() {
+    public ArrayList<String> querySubjects() {
         ArrayList<String> subList = new ArrayList<>();
         String query = queryStringAllSubjects();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -298,9 +302,9 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return new ArrayList<>(subList);
     }
 
-    public ArrayList<String> queryExam(String database) {
+    public ArrayList<String> queryExams() {
         ArrayList<String> examList = new ArrayList<>();
-        String query = queryStringAllExams(database);
+        String query = queryStringAllExams();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(query, null);
 
@@ -500,6 +504,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return "SELECT DISTINCT subject FROM " + TABLE_QBANK;
     }
 
+    private String queryStringAllExams() {
+        return "SELECT DISTINCT examName FROM " + TABLE_QBANK;
+    }
+
     private String queryStringAllQuestions() {
         return "SELECT * FROM " + TABLE_QBANK;
     }
@@ -524,10 +532,6 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         c.close();
         db.close();
         return ret == null ? "" : ret;
-    }
-
-    private String queryStringAllExams(String database) {
-        return "SELECT DISTINCT examName FROM " + database;
     }
 
     private String queryStringAllYears() {
@@ -697,7 +701,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         int wrongAnswers;
 
         if (testType == TestType.QBANK) {
-            List<String> subjects = querySubject();
+            List<String> subjects = querySubjects();
             for (String subject : subjects) {
                 query = "SELECT COUNT(*) FROM " + TABLE_QBANK + " WHERE " + DBRow.KEY_SUBJECT + " = '" + subject + "'";
                 maxQuestions = runCountQuery(query);

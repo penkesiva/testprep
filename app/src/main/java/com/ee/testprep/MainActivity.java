@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private PracticeType savedPracticeCategory;
     private String savedPracticeSubCategory;
 
+    private static ArrayList<String> examList;
+    private static ArrayList<String> subjectList;
+    private static ArrayList<String> yearList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -565,13 +569,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 showFilters();
                 break;
             case STATUS_PRACTICE_YEAR:
-                showYears();
+                getYears();
                 break;
             case STATUS_PRACTICE_SUBJECT:
-                showSubjects();
+                getSubjects();
                 break;
             case STATUS_PRACTICE_EXAM:
-                showExams();
+                getExams();
                 break;
             case STATUS_PRACTICE_EASY:
                 showEasyQuestions();
@@ -668,40 +672,34 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     }
 
-    private void showYears() {
-        if (dbHelper == null) return;
+    public static ArrayList<String> getYears() {
+        DataBaseHelper helper = DataBaseHelper.getInstance();
+        if (helper != null) {
+            yearList = helper.queryYears();
+            return yearList;
+        }
 
-        ArrayList<String> years = dbHelper.queryYear();
-        Fragment fragment = YearFragment.newInstance(years);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
-                android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, TAG_YEAR).addToBackStack(TAG_PRACTICE);
-        fragmentTransaction.commitAllowingStateLoss();
+        return new ArrayList<>();
     }
 
-    private void showSubjects() {
-        if (dbHelper == null) return;
+    public static ArrayList<String> getSubjects() {
+        DataBaseHelper helper = DataBaseHelper.getInstance();
+        if (helper != null) {
+            subjectList = helper.querySubjects();
+            return subjectList;
+        }
 
-        ArrayList<String> subjects = dbHelper.querySubject();
-        Fragment fragment = SubjectFragment.newInstance(subjects);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
-                android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, TAG_SUBJECT).addToBackStack(TAG_PRACTICE);
-        fragmentTransaction.commitAllowingStateLoss();
+        return new ArrayList<>();
     }
 
-    private void showExams() {
-        if (dbHelper == null) return;
+    public static ArrayList<String> getExams() {
+        DataBaseHelper helper = DataBaseHelper.getInstance();
+        if (helper != null) {
+            examList = helper.queryExams();
+            return examList;
+        }
 
-        ArrayList<String> exams = dbHelper.queryExam(DataBaseHelper.TABLE_QBANK);
-        Fragment fragment = ExamFragment.newInstance(exams);
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
-                android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, TAG_EXAM).addToBackStack(TAG_PRACTICE);
-        fragmentTransaction.commitAllowingStateLoss();
+        return new ArrayList<>();
     }
 
     private void showUserStatus() {

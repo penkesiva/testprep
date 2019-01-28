@@ -7,12 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ImageButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
+import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
+
+import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 
@@ -20,18 +25,9 @@ public class PracticeFragment extends Fragment {
 
     private static String TAG = PracticeFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
-
-    private final static String mFilter[][] = {
-            {"Year", "ex: 2016"},
-            {"Subject", "ex: Politics"},
-            {"Exam", "ex: CSP"},
-            {"Easy", "scale: 0-3"},
-            {"Medium", "scale 4-6"},
-            {"Hard", "scale: 7-9"},
-            {"Random", "random"},
-            {"Starred", "to review later"},
-            {"All", "no filters"}
-    };
+    private String[] mExamList = new String[0];
+    private String[] mSubjectList = new String[0];
+    private GridView examGridView, subjectGridView;
 
     public PracticeFragment() {
     }
@@ -46,53 +42,115 @@ public class PracticeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_practice, container, false);
+        View view =  inflater.inflate(R.layout.fragment_practice2, container, false);
 
-        GridView gridView = view.findViewById(R.id.practice_gridview);
-        final FilterAdapter filterAdapter = new FilterAdapter(getActivity(), mFilter);
-        gridView.setAdapter(filterAdapter);
+        /* EXAM expandable view - start */
+        examGridView = view.findViewById(R.id.expanded_exam_grid);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Switch examSwitch = view.findViewById(R.id.sw_exam);
+        examSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        ArrayList<String> examList = MainActivity.getExams();
+        mExamList = new String[examList.size()];
+        mExamList = examList.toArray(mExamList);
+
+        PracticeFragment.LocalAdapter examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
+        examGridView.setAdapter(examAdapter);
+
+        examGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //String filter = mFilter[position][0];
-                //filterAdapter.notifyDataSetChanged();
-                switch (position) {
-                    case 0:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_YEAR);
-                        break;
-                    case 1:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_SUBJECT);
-                        break;
-                    case 2:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_EXAM);
-                        break;
-                    case 3:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_EASY);
-                        break;
-                    case 4:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_MEDIUM);
-                        break;
-                    case 5:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_HARD);
-                        break;
-                    case 6:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_RANDOM);
-                        break;
-                    case 7:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_USERSTATUS);
-                        break;
-                    case 8:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_ALL);
-                        break;
+                final String item = (String) parent.getItemAtPosition(position);
+            }
+        });
+
+        ImageButton examView = view.findViewById(R.id.ib_exam);
+        examView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(examGridView.getVisibility() == View.VISIBLE)
+                    examGridView.setVisibility(View.GONE);
+                else
+                    examGridView.setVisibility(View.VISIBLE);
+            }
+        });
+        /* EXAM - expandable view done */
+
+        /* SUBJECT - expandable view start */
+        subjectGridView = view.findViewById(R.id.expanded_subject_grid);
+
+        ArrayList<String> subjectList = MainActivity.getSubjects();
+        mSubjectList = new String[subjectList.size()];
+        mSubjectList = subjectList.toArray(mSubjectList);
+
+        PracticeFragment.LocalAdapter subjectAdapter = new PracticeFragment.LocalAdapter(getActivity(), mSubjectList);
+        subjectGridView.setAdapter(subjectAdapter);
+
+        subjectGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final String item = (String) parent.getItemAtPosition(position);
+            }
+        });
+
+        ImageButton subjectView = view.findViewById(R.id.ib_subject);
+        subjectView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(subjectGridView.getVisibility() == View.VISIBLE)
+                    subjectGridView.setVisibility(View.GONE);
+                else
+                    subjectGridView.setVisibility(View.VISIBLE);
+            }
+        });
+        /* SUBJECT - expandable view done */
+
+        /* Year - range bar setup */
+        final RangeSeekBar<Integer> seekBar = view.findViewById(R.id.rangeSeekbar);
+        ArrayList<String> yearList = MainActivity.getYears();
+        seekBar.setRangeValues(Integer.valueOf(yearList.get(0)), Integer.valueOf(yearList.get(yearList.size() - 1)) + 1);
+        seekBar.setNotifyWhileDragging(true);
+
+        seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+            @Override
+            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+                //Toast.makeText(getContext(), "" + minValue + "   " + maxValue, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+        /* Year - range bar done */
+
+        /* Difficulty - start */
+        final Button allBtnView = view.findViewById(R.id.btn_all);
+        final Button easyBtnView = view.findViewById(R.id.btn_easy);
+        final Button mediumBtnView = view.findViewById(R.id.btn_medium);
+        final Button hardBtnView = view.findViewById(R.id.btn_hard);
+
+        allBtnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!allBtnView.isPressed()) {
+                    allBtnView.setPressed(true);
+                    easyBtnView.setPressed(true);
+                    mediumBtnView.setPressed(true);
+                    hardBtnView.setPressed(true);
+
+                } else {
+                    allBtnView.setPressed(false);
+                    easyBtnView.setPressed(false);
+                    mediumBtnView.setPressed(false);
+                    hardBtnView.setPressed(false);
                 }
             }
         });
@@ -123,19 +181,19 @@ public class PracticeFragment extends Fragment {
         mListener = null;
     }
 
-    public class FilterAdapter extends BaseAdapter {
+    public class LocalAdapter extends BaseAdapter {
 
         private final Context mContext;
-        private String mFilter[][];
+        private String mItems[];
 
-        public FilterAdapter(Context context, String[][] filter) {
+        public LocalAdapter(Context context, String[] items) {
             this.mContext = context;
-            this.mFilter = filter;
+            this.mItems = items;
         }
 
         @Override
         public int getCount() {
-            return mFilter.length;
+            return mItems.length;
         }
 
         @Override
@@ -145,48 +203,36 @@ public class PracticeFragment extends Fragment {
 
         @Override
         public Object getItem(int position) {
-            return null;
-        }
-
-        private boolean getIsLocked() {
-            return false; //TODO
+            return mItems[position];
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            final String filterName = mFilter[position][0];
-            final String filterExample = mFilter[position][1];
+            final String filterName = mItems[position];
 
             if (convertView == null) {
                 final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-                convertView = layoutInflater.inflate(R.layout.gridview_practice_item, null);
+                convertView = layoutInflater.inflate(R.layout.gridview_item, null);
 
-                final ImageView lockImageView = convertView.findViewById(R.id.imageview_unlock);
-                final TextView nameTextView = convertView.findViewById(R.id.textview_filter_name);
-                final TextView exampleTextView = convertView.findViewById(R.id.textview_example);
+                final Button btn = convertView.findViewById(R.id.btn_item);
+                btn.setText(filterName);
 
-                final ViewHolder viewHolder = new ViewHolder(nameTextView, exampleTextView, lockImageView);
+                final PracticeFragment.LocalAdapter.ViewHolder viewHolder = new PracticeFragment.LocalAdapter.ViewHolder(btn);
                 convertView.setTag(viewHolder);
             }
 
-            final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
-            viewHolder.nameTextView.setText(filterName);
-            viewHolder.exampleTextView.setText(filterExample);
-            viewHolder.lockImageview.setImageResource(getIsLocked() ? R.drawable.lock : R.drawable.unlock);
+            final PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder)convertView.getTag();
+            //viewHolder.item.setText(filterName.toUpperCase());
 
             return convertView;
         }
 
         private class ViewHolder {
-            private final TextView nameTextView;
-            private final TextView exampleTextView;
-            private final ImageView lockImageview;
+            private final Button item;
 
-            public ViewHolder(TextView nameTextView, TextView exampleTextView, ImageView lockImageview) {
-                this.nameTextView = nameTextView;
-                this.exampleTextView = exampleTextView;
-                this.lockImageview = lockImageview;
+            public ViewHolder(Button button) {
+                this.item = button;
             }
         }
     }
