@@ -1,14 +1,16 @@
-<LinearLayout
-    android:layout_width="wrap_content"
+<LinearLayout android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rsb="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="@dimen/padding_8sp"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_5sp"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:orientation="horizontal">
 
         <TextView
@@ -25,6 +27,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:padding="@dimen/padding_5sp">
 
         <TextView
@@ -35,7 +38,7 @@
             android:layout_centerVertical="true"
             android:text="Exam"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_font" />
+            android:textSize="@dimen/medium2_font" />
 
         <ImageButton
             android:id="@+id/ib_exam"
@@ -54,9 +57,24 @@
 
     </RelativeLayout>
 
+    <GridView
+        android:id="@+id/expanded_exam_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_8sp"
+        android:gravity="center"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="@dimen/padding_16sp"
+        android:stretchMode="spacingWidthUniform"
+        android:visibility="gone">
+    </GridView>
+
     <RelativeLayout
+        android:id="@+id/subject_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:gravity="center"
         android:padding="@dimen/padding_5sp">
 
@@ -68,7 +86,7 @@
             android:layout_centerVertical="true"
             android:text="Subject"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_font" />
+            android:textSize="@dimen/medium2_font" />
 
         <ImageButton
             android:id="@+id/ib_subject"
@@ -87,86 +105,98 @@
 
     </RelativeLayout>
 
+    <GridView
+        android:id="@+id/expanded_subject_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_8sp"
+        android:gravity="center"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="@dimen/padding_16sp"
+        android:stretchMode="spacingWidthUniform"
+        android:visibility="gone">
+    </GridView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_5sp"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_font"
+            android:textSize="@dimen/medium2_font"
             android:textColor="@color/colorBlack"
             android:text="Year"/>
 
-        <com.appyvet.materialrangebar.RangeBar
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/rangebar1"
-            android:layout_margin="@dimen/padding_8sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:mrb_rangeBar="true"
-            app:mrb_pinMaxFont="15sp"
-            app:mrb_pinMinFont="12sp"
-            app:mrb_rangeBarPaddingBottom="20dp"
-            app:mrb_pinTextColor="@color/colorWhite"
-            app:mrb_temporaryPins="true"
-            app:mrb_selectorSize="10dp"
-            app:mrb_tickEnd="10"
-            app:mrb_tickInterval="1"
-            app:mrb_tickStart="5"
-            app:mrb_pinRadius="14dp"
-            app:mrb_rangeBar_rounded="true"
-            app:mrb_connectingLineColors="@array/connecting_colors"
-            app:mrb_pinColor="#6c3f6a"/>
+        <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
+            android:id="@+id/rangeSeekbar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_5sp"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_font"
+            android:textSize="@dimen/medium2_font"
             android:textColor="@color/colorBlack"
             android:text="Difficulty"/>
 
-        <LinearLayout android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:weightSum="4">
+            android:layout_marginTop="@dimen/padding_8sp"
+            android:gravity="center_horizontal">
 
             <Button
+                android:id="@+id/btn_easy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ALL"
-                android:id="@+id/btn0"
-                android:layout_gravity="center_vertical" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_5sp"
+                android:layout_marginEnd="@dimen/padding_5sp"
                 android:text="EASY"
-                android:id="@+id/btn1"
+                android:layout_weight="1"
                 android:layout_gravity="center_vertical" />
 
             <Button
+                android:id="@+id/btn_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_5sp"
+                android:layout_marginEnd="@dimen/padding_5sp"
                 android:text="MEDIUM"
-                android:id="@+id/btn2"
+                android:layout_weight="1"
                 android:layout_gravity="center_vertical" />
 
             <Button
+                android:id="@+id/btn_hard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_5sp"
+                android:layout_marginEnd="@dimen/padding_5sp"
                 android:text="HARD"
-                android:id="@+id/btn3"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/btn_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_5sp"
+                android:layout_marginEnd="@dimen/padding_5sp"
+                android:text="ALL"
+                android:layout_weight="1"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
 
@@ -176,25 +206,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_5sp"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_font"
+            android:textSize="@dimen/medium2_font"
             android:textColor="@color/colorBlack"
             android:text="Other"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_16sp">
+            android:layout_marginStart="@dimen/padding_16sp"
+            android:layout_marginTop="@dimen/padding_5sp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/small_font"
+                android:textSize="@dimen/medium_font"
                 android:textColor="@color/colorBlack"
                 android:text="Random" />
 
@@ -208,13 +240,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_16sp">
+            android:layout_marginStart="@dimen/padding_16sp"
+            android:layout_marginTop="@dimen/padding_5sp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/small_font"
+                android:textSize="@dimen/medium_font"
                 android:textColor="@color/colorBlack"
                 android:text="To Review Later" />
 
@@ -231,14 +264,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:padding="@dimen/padding_5sp"
         android:orientation="horizontal">
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_font"
-            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/medium2_font"
             android:text="Start"/>
 
     </LinearLayout>

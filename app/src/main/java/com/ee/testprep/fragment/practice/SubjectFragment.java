@@ -179,10 +179,10 @@ public class SubjectFragment extends Fragment {
 
             if (convertView == null) {
                 final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-                convertView = layoutInflater.inflate(R.layout.gridview_subject_item, null);
+                convertView = layoutInflater.inflate(R.layout.gridview_item, null);
 
                 final TextView nameTextView = convertView.findViewById(R.id.textview_filter_name);
-                final TextView fullNameTextView = convertView.findViewById(R.id.tv_fullname);
+                final TextView fullNameTextView = null;
                 final ImageView lockImageView = convertView.findViewById(R.id.imageview_unlock);
 
                 final SubjectFragment.FilterAdapter.ViewHolder viewHolder = new SubjectFragment.FilterAdapter.ViewHolder(nameTextView, fullNameTextView, lockImageView);
