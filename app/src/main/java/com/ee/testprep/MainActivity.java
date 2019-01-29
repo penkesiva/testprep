@@ -1,12 +1,22 @@
 package com.ee.testprep;
 
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,20 +45,9 @@ import com.ee.testprep.fragment.TestQuizFragment;
 import com.ee.testprep.fragment.practice.ExamFragment;
 import com.ee.testprep.fragment.practice.SubjectFragment;
 import com.ee.testprep.fragment.practice.YearFragment;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
-
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -425,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             public void run() {
                 // update the main content by replacing fragments
                 Fragment fragment = getHomeFragment();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                         android.R.animator.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
@@ -646,7 +645,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             public void run() {
                 // update the main content by replacing fragments
                 Fragment fragment = questionQuizFragment;
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                         android.R.animator.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(TAG_HOME);
@@ -668,7 +667,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     // update the main content by replacing fragments
                     Fragment fragment = resultsFragment;
                     FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
+                            getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION)
@@ -693,7 +692,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     // update the main content by replacing fragments
                     Fragment fragment = quizFragment;
                     FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
+                            getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ).addToBackStack(TAG_HOME);
@@ -723,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     // update the main content by replacing fragments
                     Fragment fragment = yearFragment;
                     FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
+                            getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_YEAR).
@@ -748,7 +747,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     // update the main content by replacing fragments
                     Fragment fragment = subjectFragment;
                     FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
+                            getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_SUBJECT).addToBackStack(TAG_PRACTICE);
@@ -772,7 +771,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     // update the main content by replacing fragments
                     Fragment fragment = examFragment;
                     FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
+                            getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_EXAM).addToBackStack(TAG_PRACTICE);
@@ -832,7 +831,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     // update the main content by replacing fragments
                     Fragment fragment = questionPracticeFragment;
                     FragmentTransaction fragmentTransaction =
-                            getSupportFragmentManager().beginTransaction();
+                            getFragmentManager().beginTransaction();
                     fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_PRACTICE_QUESTION)

@@ -3,9 +3,7 @@ package com.ee.testprep.font;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import androidx.appcompat.widget.AppCompatTextView;
-
-public class RobotoThinItalicTextView extends AppCompatTextView {
+public class RobotoThinItalicTextView extends android.support.v7.widget.AppCompatTextView {
 
     private Context c;
 

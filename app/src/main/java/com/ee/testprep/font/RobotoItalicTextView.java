@@ -2,10 +2,9 @@ package com.ee.testprep.font;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.TextView;
 
-import androidx.appcompat.widget.AppCompatTextView;
-
-public class RobotoItalicTextView extends AppCompatTextView {
+public class RobotoItalicTextView extends android.support.v7.widget.AppCompatTextView {
 
     private Context c;
 
