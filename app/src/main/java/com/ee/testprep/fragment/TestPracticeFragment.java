@@ -10,16 +10,19 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.PracticeMetrics;
 import com.ee.testprep.PracticeMetrics.PracticeType;
 import com.ee.testprep.R;
+import com.ee.testprep.db.PracticeViewModel;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 public class TestPracticeFragment extends Fragment {
     public static String PRACTICE_CATEGORY = "practice_type";
     public static String PRACTICE_SUB_CATEGORY = "practice_sub_type";
+    private PracticeViewModel model;
     private ViewPager pager;
     private PracticePagerAdapter pagerAdapter;
     private PracticeMetrics practice;
@@ -35,6 +38,13 @@ public class TestPracticeFragment extends Fragment {
         fragment.setArguments(bundle);
 
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        model = ViewModelProviders.of(getActivity()).get(PracticeViewModel.class);
+        model.clearData();
     }
 
     @Override
@@ -59,6 +69,10 @@ public class TestPracticeFragment extends Fragment {
         pagerAdapter = new PracticePagerAdapter((MainActivity) getActivity());
         pager = view.findViewById(R.id.questions_sliding_pager);
         pager.setAdapter(pagerAdapter);
+
+        model.getQuestions().observe(getActivity(), data -> {
+            pagerAdapter.notifyDataSetChanged();
+        });
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();

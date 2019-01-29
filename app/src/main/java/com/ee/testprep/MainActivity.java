@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.ee.testprep.PracticeMetrics.PracticeType;
 import com.ee.testprep.db.DataBaseHelper;
+import com.ee.testprep.db.PracticeViewModel;
 import com.ee.testprep.fragment.DonateFragment;
 import com.ee.testprep.fragment.FeedbackFragment;
 import com.ee.testprep.fragment.HomeFragment;
@@ -49,6 +50,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -132,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //ViewModelProviders.of(getApplicationContext()).get(PracticeViewModel.class);
 
         View rootView = findViewById(android.R.id.content);
         //rootView.setBackgroundResource(R.drawable.cover);
