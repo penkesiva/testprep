@@ -2,6 +2,11 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +23,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-public class TestQuizFragment extends Fragment {
+public class TestQuizFragment extends android.app.Fragment {
     private static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
     private static String QUIZ_NAME = "quiz_name";
     private ViewPager pager;
@@ -163,11 +162,9 @@ public class TestQuizFragment extends Fragment {
             Fragment fragment;
             boolean isLastQuestion = (position == numQuestions - 1);
             if (currentPosition < prevPosition) {
-                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion(),
-                        isLastQuestion);
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion(), isLastQuestion);
             } else {
-                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion(),
-                        isLastQuestion);
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion(), isLastQuestion);
             }
             return fragment;
         }

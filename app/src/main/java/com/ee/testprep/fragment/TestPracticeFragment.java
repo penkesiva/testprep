@@ -1,6 +1,11 @@
 package com.ee.testprep.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +16,7 @@ import com.ee.testprep.PracticeMetrics;
 import com.ee.testprep.PracticeMetrics.PracticeType;
 import com.ee.testprep.R;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-public class TestPracticeFragment extends Fragment {
+public class TestPracticeFragment extends android.app.Fragment {
     public static String PRACTICE_CATEGORY = "practice_type";
     public static String PRACTICE_SUB_CATEGORY = "practice_sub_type";
     private ViewPager pager;
@@ -88,11 +87,9 @@ public class TestPracticeFragment extends Fragment {
             Fragment fragment;
             boolean isLastQuestion = (position == numQuestions - 1);
             if (currentPosition < prevPosition) {
-                fragment = QuestionPracticeFragment.newInstance(practice.getPrevQuestion(),
-                        isLastQuestion);
+                fragment = QuestionPracticeFragment.newInstance(practice.getPrevQuestion(), isLastQuestion);
             } else {
-                fragment = QuestionPracticeFragment.newInstance(practice.getNextQuestion(),
-                        isLastQuestion);
+                fragment = QuestionPracticeFragment.newInstance(practice.getNextQuestion(), isLastQuestion);
             }
             return fragment;
         }

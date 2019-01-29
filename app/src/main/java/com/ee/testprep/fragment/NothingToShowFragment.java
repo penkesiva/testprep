@@ -1,5 +1,7 @@
 package com.ee.testprep.fragment;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -8,9 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ee.testprep.R;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 public class NothingToShowFragment extends Fragment {
     private static String TAG = NothingToShowFragment.class.getSimpleName();

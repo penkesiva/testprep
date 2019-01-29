@@ -1,8 +1,10 @@
 package com.ee.testprep.fragment;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ee.testprep.R;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 public class FeedbackFragment extends Fragment {
     private static String FEEDBACK_EMAIL = "equalityempowerment@gmail.com";
