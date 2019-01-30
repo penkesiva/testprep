@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,8 @@ import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.util.SimpleVibaration;
+
+import androidx.fragment.app.Fragment;
 
 public class QuestionPracticeFragment extends Fragment {
 

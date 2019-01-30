@@ -1,10 +1,7 @@
 package com.ee.testprep.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,8 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
 
 public class QuizFragment extends Fragment {
 

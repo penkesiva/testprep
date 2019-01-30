@@ -1,7 +1,5 @@
 package com.ee.testprep.fragment;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,6 +16,9 @@ import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class ResultsFragment extends Fragment {
 

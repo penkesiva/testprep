@@ -2,7 +2,6 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
+
+import androidx.fragment.app.Fragment;
 
 public class QuestionQuizFragment extends Fragment {
 

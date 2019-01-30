@@ -1,7 +1,5 @@
 package com.ee.testprep.fragment.practice;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -19,6 +17,9 @@ import java.util.ArrayList;
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.fragment.OnFragmentInteractionListener;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class YearFragment extends Fragment {
 
