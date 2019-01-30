@@ -1,6 +1,5 @@
 package com.ee.testprep.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +15,8 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 
 import java.util.ArrayList;
+
+import androidx.fragment.app.Fragment;
 
 public class ModelTestFragment extends Fragment {
 

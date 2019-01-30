@@ -1,6 +1,5 @@
 package com.ee.testprep.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +13,8 @@ import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
+
+import androidx.fragment.app.Fragment;
 
 public class PracticeFragment extends Fragment {
 
