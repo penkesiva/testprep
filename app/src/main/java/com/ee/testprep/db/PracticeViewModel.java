@@ -22,13 +22,16 @@ public class PracticeViewModel extends AndroidViewModel {
         super(application);
         allQuestions = DataBaseHelper.getInstance(application).queryAllQuestions();
     }
+    public enum PracticeType {
+        YEAR, SUBJECT, EXAM, EASY, MEDIUM, HARD, RANDOM, STARRED, ALL
+    }
 
     public LiveData<List<DBRow>> getQuestions() {
         return questions;
     }
 
     public void clearData() {
-        questions.setValue(new ArrayList<DBRow>());
+        questions.setValue(new ArrayList<>());
     }
 
     public synchronized void setPracticeType(PracticeType practiceType, String value) {
