@@ -2,8 +2,6 @@ package com.ee.testprep.db;
 
 import android.app.Application;
 
-import com.ee.testprep.PracticeMetrics.PracticeType;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,9 +19,6 @@ public class PracticeViewModel extends AndroidViewModel {
     public PracticeViewModel(@NonNull Application application) {
         super(application);
         allQuestions = DataBaseHelper.getInstance(application).queryAllQuestions();
-    }
-    public enum PracticeType {
-        YEAR, SUBJECT, EXAM, EASY, MEDIUM, HARD, RANDOM, STARRED, ALL
     }
 
     public LiveData<List<DBRow>> getQuestions() {
@@ -129,5 +124,9 @@ public class PracticeViewModel extends AndroidViewModel {
         }
 
         questions.setValue(filteredQuestions);
+    }
+
+    public enum PracticeType {
+        YEAR, SUBJECT, EXAM, EASY, MEDIUM, HARD, RANDOM, STARRED, ALL
     }
 }
