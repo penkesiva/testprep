@@ -51,7 +51,7 @@ public class TestPracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Bundle args = getArguments();
         category = PracticeType.values()[args.getInt(PRACTICE_CATEGORY, 0)];
         subCategory = args.getString(PRACTICE_SUB_CATEGORY);
@@ -73,12 +73,12 @@ public class TestPracticeFragment extends Fragment {
         model.getQuestions().observe(mainActivity, data -> {
             if (mainActivity != null) pagerAdapter.addQuestions(data);
         });
-        view.postDelayed(new Runnable() {
+        view.post(new Runnable() {
             @Override
             public void run() {
                 model.setPracticeType(category, subCategory);
             }
-        }, 2000);
+        });
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
