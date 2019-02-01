@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ee.testprep.PracticeMetrics.PracticeType;
 import com.ee.testprep.db.DataBaseHelper;
+import com.ee.testprep.db.PracticeViewModel;
 import com.ee.testprep.fragment.DonateFragment;
 import com.ee.testprep.fragment.FeedbackFragment;
 import com.ee.testprep.fragment.HomeFragment;
@@ -49,6 +49,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProviders;
+
+import static com.ee.testprep.db.PracticeViewModel.*;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -132,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ViewModelProviders.of(this).get(PracticeViewModel.class);
 
         View rootView = findViewById(android.R.id.content);
         //rootView.setBackgroundResource(R.drawable.cover);
@@ -420,9 +425,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         // when switching between navigation menus
         // So using runnable, the fragment is loaded with cross fade effect
         // This effect can be seen in GMail app
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
+//        Runnable mPendingRunnable = new Runnable() {
+//            @Override
+//            public void run() {
                 // update the main content by replacing fragments
                 Fragment fragment = getHomeFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -430,13 +435,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         android.R.animator.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
                 fragmentTransaction.commitAllowingStateLoss();
-            }
-        };
+//            }
+//        };
 
         // If mPendingRunnable is not null, then add to the message queue
-        if (mPendingRunnable != null) {
-            mUIHandler.post(mPendingRunnable);
-        }
+//        if (mPendingRunnable != null) {
+//            mUIHandler.post(mPendingRunnable);
+//        }
 
         //Closing drawer on item click
         drawer.closeDrawers();
@@ -641,9 +646,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             questionQuizFragment = TestQuizFragment.newInstance(quizName);
         }
 
-        Runnable mPendingRunnable = new Runnable() {
-            @Override
-            public void run() {
+//        Runnable mPendingRunnable = new Runnable() {
+//            @Override
+//            public void run() {
                 // update the main content by replacing fragments
                 Fragment fragment = questionQuizFragment;
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -651,20 +656,20 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         android.R.animator.fade_out);
                 fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(TAG_HOME);
                 fragmentTransaction.commitAllowingStateLoss();
-            }
-        };
+//            }
+//        };
 
         // If mPendingRunnable is not null, then add to the message queue
-        mUIHandler.post(mPendingRunnable);
+//        mUIHandler.post(mPendingRunnable);
     }
 
     private void showQuizResult(String quizName) {
         if (dbHelper != null) {
             final ResultsFragment resultsFragment = ResultsFragment.newInstance(quizName);
 
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
+//            Runnable mPendingRunnable = new Runnable() {
+//                @Override
+//                public void run() {
                     // update the main content by replacing fragments
                     Fragment fragment = resultsFragment;
                     FragmentTransaction fragmentTransaction =
@@ -674,11 +679,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION)
                             .addToBackStack(TAG_QUIZ);
                     fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
+//                }
+//            };
 
             // If mPendingRunnable is not null, then add to the message queue
-            mUIHandler.post(mPendingRunnable);
+//            mUIHandler.post(mPendingRunnable);
         }
     }
 
@@ -687,9 +692,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             ArrayList<String> quizzes = (ArrayList<String>) dbHelper.queryAllQuizzes();
             quizFragment = QuizFragment.newInstance(quizzes);
 
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
+//            Runnable mPendingRunnable = new Runnable() {
+//                @Override
+//                public void run() {
                     // update the main content by replacing fragments
                     Fragment fragment = quizFragment;
                     FragmentTransaction fragmentTransaction =
@@ -698,11 +703,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ).addToBackStack(TAG_HOME);
                     fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
+//                }
+//            };
 
             // If mPendingRunnable is not null, then add to the message queue
-            MainActivity.mUIHandler.post(mPendingRunnable);
+//            MainActivity.mUIHandler.post(mPendingRunnable);
         }
     }
 
@@ -717,9 +722,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             ArrayList<String> years = dbHelper.queryYear();
             yearFragment = YearFragment.newInstance(years);
 
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
+//            Runnable mPendingRunnable = new Runnable() {
+//                @Override
+//                public void run() {
                     // update the main content by replacing fragments
                     Fragment fragment = yearFragment;
                     FragmentTransaction fragmentTransaction =
@@ -729,11 +734,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_YEAR).
                             addToBackStack(TAG_PRACTICE);
                     fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
+//                }
+//            };
 
             // If mPendingRunnable is not null, then add to the message queue
-            MainActivity.mUIHandler.post(mPendingRunnable);
+//            MainActivity.mUIHandler.post(mPendingRunnable);
         }
     }
 
@@ -742,9 +747,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             ArrayList<String> subjects = dbHelper.querySubject();
             subjectFragment = SubjectFragment.newInstance(subjects);
 
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
+//            Runnable mPendingRunnable = new Runnable() {
+//                @Override
+//                public void run() {
                     // update the main content by replacing fragments
                     Fragment fragment = subjectFragment;
                     FragmentTransaction fragmentTransaction =
@@ -753,11 +758,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_SUBJECT).addToBackStack(TAG_PRACTICE);
                     fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
+//                }
+//            };
 
             // If mPendingRunnable is not null, then add to the message queue
-            MainActivity.mUIHandler.post(mPendingRunnable);
+//            MainActivity.mUIHandler.post(mPendingRunnable);
         }
     }
 
@@ -766,9 +771,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             ArrayList<String> exams = dbHelper.queryExam(DataBaseHelper.TABLE_QBANK);
             examFragment = ExamFragment.newInstance(exams);
 
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
+//            Runnable mPendingRunnable = new Runnable() {
+//                @Override
+//                public void run() {
                     // update the main content by replacing fragments
                     Fragment fragment = examFragment;
                     FragmentTransaction fragmentTransaction =
@@ -777,11 +782,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                             android.R.animator.fade_out);
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_EXAM).addToBackStack(TAG_PRACTICE);
                     fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
+//                }
+//            };
 
             // If mPendingRunnable is not null, then add to the message queue
-            MainActivity.mUIHandler.post(mPendingRunnable);
+//            MainActivity.mUIHandler.post(mPendingRunnable);
         }
     }
 
@@ -826,9 +831,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         if (dbHelper != null) {
             questionPracticeFragment = TestPracticeFragment.newInstance(category, subCategory);
 
-            Runnable mPendingRunnable = new Runnable() {
-                @Override
-                public void run() {
+//            Runnable mPendingRunnable = new Runnable() {
+//                @Override
+//                public void run() {
                     // update the main content by replacing fragments
                     Fragment fragment = questionPracticeFragment;
                     FragmentTransaction fragmentTransaction =
@@ -838,11 +843,11 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                     fragmentTransaction.replace(R.id.frame, fragment, TAG_PRACTICE_QUESTION)
                             .addToBackStack(TAG_PRACTICE);
                     fragmentTransaction.commitAllowingStateLoss();
-                }
-            };
+//                }
+//            };
 
             // If mPendingRunnable is not null, then add to the message queue
-            mUIHandler.post(mPendingRunnable);
+//            mUIHandler.post(mPendingRunnable);
         }
     }
 

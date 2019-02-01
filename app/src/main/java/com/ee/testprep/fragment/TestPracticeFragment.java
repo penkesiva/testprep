@@ -7,23 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ee.testprep.MainActivity;
-import com.ee.testprep.PracticeMetrics;
-import com.ee.testprep.PracticeMetrics.PracticeType;
 import com.ee.testprep.R;
+import com.ee.testprep.db.DBRow;
+import com.ee.testprep.db.PracticeViewModel;
+import com.ee.testprep.db.PracticeViewModel.PracticeType;
+
+import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 public class TestPracticeFragment extends Fragment {
     public static String PRACTICE_CATEGORY = "practice_type";
     public static String PRACTICE_SUB_CATEGORY = "practice_sub_type";
+    private MainActivity mainActivity;
+    private PracticeViewModel model;
     private ViewPager pager;
     private PracticePagerAdapter pagerAdapter;
-    private PracticeMetrics practice;
-    private int numQuestions;
     private PracticeType category;
     private String subCategory;
 
@@ -38,14 +42,19 @@ public class TestPracticeFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        model = ViewModelProviders.of(mainActivity).get(PracticeViewModel.class);
+        model.clearData();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Bundle args = getArguments();
         category = PracticeType.values()[args.getInt(PRACTICE_CATEGORY, 0)];
         subCategory = args.getString(PRACTICE_SUB_CATEGORY);
-
-        practice = new PracticeMetrics(getContext(), category, subCategory);
-        numQuestions = practice.getNumQuestions();
 
         return inflater.inflate(R.layout.fragment_questions, container, false);
     }
@@ -56,48 +65,53 @@ public class TestPracticeFragment extends Fragment {
 
         view.findViewById(R.id.progress_header).setVisibility(View.GONE);
 
-        pagerAdapter = new PracticePagerAdapter((MainActivity) getActivity());
+        pagerAdapter = new PracticePagerAdapter(mainActivity);
         pager = view.findViewById(R.id.questions_sliding_pager);
         pager.setAdapter(pagerAdapter);
 
+        model.getQuestions().observe(mainActivity, data -> {
+            if (mainActivity != null) pagerAdapter.addQuestions(data);
+        });
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                model.setPracticeType(category, subCategory);
+            }
+        }, 2000);
+
         view.setFocusableInTouchMode(true);
         view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().popBackStack();
-                    return true;
-                }
-                return false;
+        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                getFragmentManager().popBackStack();
+                return true;
             }
+            return false;
         });
     }
 
-    private class PracticePagerAdapter extends FragmentPagerAdapter {
-        private int currentPosition;
+    private class PracticePagerAdapter extends FragmentStatePagerAdapter {
+        private List<DBRow> questions;
 
         public PracticePagerAdapter(FragmentActivity activity) {
             super(activity.getSupportFragmentManager());
         }
 
+        private void addQuestions(List<DBRow> questionsList) {
+            questions = questionsList;
+            notifyDataSetChanged();
+        }
+
         @Override
         public Fragment getItem(int position) {
-            int prevPosition = currentPosition;
-            currentPosition = position;
-            Fragment fragment;
-            boolean isLastQuestion = (position == numQuestions - 1);
-            if (currentPosition < prevPosition) {
-                fragment = QuestionPracticeFragment.newInstance(practice.getPrevQuestion(), isLastQuestion);
-            } else {
-                fragment = QuestionPracticeFragment.newInstance(practice.getNextQuestion(), isLastQuestion);
-            }
+            Fragment fragment = QuestionPracticeFragment.newInstance(questions.get(position),
+                    (position == questions.size() - 1));
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return numQuestions;
+            return questions == null ? 0 : questions.size();
         }
     }
 }
