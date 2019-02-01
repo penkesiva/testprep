@@ -1,6 +1,5 @@
 package com.ee.testprep.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,7 +20,7 @@ import java.util.TimerTask;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class TestQuizFragment extends Fragment {
@@ -76,6 +75,7 @@ public class TestQuizFragment extends Fragment {
 
         pagerAdapter = new SlidePagerAdapter((MainActivity) getActivity());
         pager = view.findViewById(R.id.questions_sliding_pager);
+        pager.setSaveFromParentEnabled(false);
         pager.setAdapter(pagerAdapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -147,13 +147,11 @@ public class TestQuizFragment extends Fragment {
         }
     }
 
-    private class SlidePagerAdapter extends FragmentPagerAdapter {
-        private final Context context;
+    private class SlidePagerAdapter extends FragmentStatePagerAdapter {
         private int currentPosition;
 
         public SlidePagerAdapter(FragmentActivity activity) {
             super(activity.getSupportFragmentManager());
-            context = activity;
         }
 
         @Override
@@ -163,9 +161,11 @@ public class TestQuizFragment extends Fragment {
             Fragment fragment;
             boolean isLastQuestion = (position == numQuestions - 1);
             if (currentPosition < prevPosition) {
-                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion(), isLastQuestion);
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion(),
+                        isLastQuestion);
             } else {
-                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion(), isLastQuestion);
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion(),
+                        isLastQuestion);
             }
             return fragment;
         }

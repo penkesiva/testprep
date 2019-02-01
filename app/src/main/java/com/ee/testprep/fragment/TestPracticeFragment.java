@@ -51,7 +51,7 @@ public class TestPracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         Bundle args = getArguments();
         category = PracticeType.values()[args.getInt(PRACTICE_CATEGORY, 0)];
         subCategory = args.getString(PRACTICE_SUB_CATEGORY);
@@ -67,6 +67,7 @@ public class TestPracticeFragment extends Fragment {
 
         pagerAdapter = new PracticePagerAdapter(mainActivity);
         pager = view.findViewById(R.id.questions_sliding_pager);
+        pager.setSaveFromParentEnabled(false);
         pager.setAdapter(pagerAdapter);
 
         model.getQuestions().observe(mainActivity, data -> {

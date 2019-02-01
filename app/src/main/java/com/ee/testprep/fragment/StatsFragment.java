@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class StatsFragment extends Fragment {
@@ -34,13 +34,14 @@ public class StatsFragment extends Fragment {
 
         pagerAdapter = new SlidePagerAdapter((MainActivity) getActivity());
         pager = view.findViewById(R.id.stats_sliding_pager);
+        pager.setSaveFromParentEnabled(false);
         pager.setAdapter(pagerAdapter);
 
         tabLayout = view.findViewById(R.id.stats_sliding_tabs);
         tabLayout.setupWithViewPager(pager);
     }
 
-    private class SlidePagerAdapter extends FragmentPagerAdapter {
+    private class SlidePagerAdapter extends FragmentStatePagerAdapter {
         private final Context context;
 
         public SlidePagerAdapter(FragmentActivity activity) {
