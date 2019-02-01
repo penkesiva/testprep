@@ -81,8 +81,7 @@
                 android:id="@+id/settings_signout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_drawable"
-                android:textColor="@color/colorOrange"
+                android:background="@drawable/button2_drawable"
                 android:layout_gravity="right"
                 android:text="SIGN OUT"/>
 

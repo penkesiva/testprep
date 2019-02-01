@@ -2,6 +2,7 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarFinalValueListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
-import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 import java.util.ArrayList;
 
@@ -48,7 +53,7 @@ public class PracticeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_practice2, container, false);
+        View view = inflater.inflate(R.layout.fragment_practice2, container, false);
 
         /* EXAM expandable view - start */
         examGridView = view.findViewById(R.id.expanded_exam_grid);
@@ -68,23 +73,6 @@ public class PracticeFragment extends Fragment {
         PracticeFragment.LocalAdapter examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
         examGridView.setAdapter(examAdapter);
 
-        examGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-            }
-        });
-
-        ImageButton examView = view.findViewById(R.id.ib_exam);
-        examView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(examGridView.getVisibility() == View.VISIBLE)
-                    examGridView.setVisibility(View.GONE);
-                else
-                    examGridView.setVisibility(View.VISIBLE);
-            }
-        });
         /* EXAM - expandable view done */
 
         /* SUBJECT - expandable view start */
@@ -97,65 +85,68 @@ public class PracticeFragment extends Fragment {
         PracticeFragment.LocalAdapter subjectAdapter = new PracticeFragment.LocalAdapter(getActivity(), mSubjectList);
         subjectGridView.setAdapter(subjectAdapter);
 
-        subjectGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-            }
-        });
+        setDynamicHeight(subjectGridView, 3);
+        setDynamicHeight(examGridView, 3);
 
-        ImageButton subjectView = view.findViewById(R.id.ib_subject);
-        subjectView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(subjectGridView.getVisibility() == View.VISIBLE)
-                    subjectGridView.setVisibility(View.GONE);
-                else
-                    subjectGridView.setVisibility(View.VISIBLE);
-            }
-        });
         /* SUBJECT - expandable view done */
 
         /* Year - range bar setup */
-        final RangeSeekBar<Integer> seekBar = view.findViewById(R.id.rangeSeekbar);
+        final CrystalRangeSeekbar rangeSeekbar = view.findViewById(R.id.range_seekbar);
         ArrayList<String> yearList = MainActivity.getYears();
-        seekBar.setRangeValues(Integer.valueOf(yearList.get(0)), Integer.valueOf(yearList.get(yearList.size() - 1)) + 1);
-        seekBar.setNotifyWhileDragging(true);
+        final TextView tvMin = view.findViewById(R.id.textMin1);
+        final TextView tvMax = view.findViewById(R.id.textMax1);
+        tvMin.setText("" + yearList.get(0));
+        tvMax.setText("" + yearList.get(yearList.size() - 1));
+        rangeSeekbar.setBarColor(getResources().getColor(android.R.color.holo_orange_light));
 
-        seekBar.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
+        rangeSeekbar.setOnRangeSeekbarChangeListener(new OnRangeSeekbarChangeListener() {
             @Override
-            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-                //Toast.makeText(getContext(), "" + minValue + "   " + maxValue, Toast.LENGTH_SHORT).show();
-
+            public void valueChanged(Number minValue, Number maxValue) {
+                tvMin.setText("" + minValue.intValue());
+                tvMax.setText("" + maxValue.intValue());
             }
         });
+
         /* Year - range bar done */
 
         /* Difficulty - start */
-        final Button allBtnView = view.findViewById(R.id.btn_all);
         final Button easyBtnView = view.findViewById(R.id.btn_easy);
         final Button mediumBtnView = view.findViewById(R.id.btn_medium);
         final Button hardBtnView = view.findViewById(R.id.btn_hard);
 
-        allBtnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!allBtnView.isPressed()) {
-                    allBtnView.setPressed(true);
-                    easyBtnView.setPressed(true);
-                    mediumBtnView.setPressed(true);
-                    hardBtnView.setPressed(true);
-
-                } else {
-                    allBtnView.setPressed(false);
-                    easyBtnView.setPressed(false);
-                    mediumBtnView.setPressed(false);
-                    hardBtnView.setPressed(false);
-                }
-            }
-        });
+        //Log.v(TAG, "penke all button state focus " + allBtnView.isFocused() + " pressed " + allBtnView.isPressed() + " enabled " + allBtnView.isEnabled());
 
         return view;
+    }
+
+    private void setDynamicHeight(GridView gridView, int columns) {
+        ListAdapter gridViewAdapter = gridView.getAdapter();
+        if (gridViewAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        int items = gridViewAdapter.getCount();
+        int rows = 0;
+
+        View listItem = gridViewAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if (items > columns) {
+            x = items / columns;
+            rows = (int) (x + 2);
+            totalHeight *= rows;
+        } else if (items < columns && items > 0) {
+            totalHeight *= 2;
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight;
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        gridView.setLayoutParams(params);
     }
 
     public void onButtonPressed(int status) {
@@ -222,7 +213,7 @@ public class PracticeFragment extends Fragment {
                 convertView.setTag(viewHolder);
             }
 
-            final PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder)convertView.getTag();
+            final PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder) convertView.getTag();
             //viewHolder.item.setText(filterName.toUpperCase());
 
             return convertView;
