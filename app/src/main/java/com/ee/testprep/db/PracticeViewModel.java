@@ -1,6 +1,7 @@
 package com.ee.testprep.db;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 
 public class PracticeViewModel extends AndroidViewModel {
     private static int QUESTION_COUNT = 25;
+    private static String USER_STATUS = "z";
     private List<DBRow> allQuestions;
     private MutableLiveData<List<DBRow>> questions = new MutableLiveData<>();
 
@@ -37,7 +39,7 @@ public class PracticeViewModel extends AndroidViewModel {
             switch (practiceType) {
                 case YEAR:
                     for (DBRow question : allQuestions) {
-                        if (question.year == value) {
+                        if (question.year.toLowerCase().contains(value.toLowerCase())) {
                             filteredQuestions.add(question);
                             i++;
                             if (i == QUESTION_COUNT) break;
@@ -46,7 +48,7 @@ public class PracticeViewModel extends AndroidViewModel {
                     break;
                 case SUBJECT:
                     for (DBRow question : allQuestions) {
-                        if (question.subject == value) {
+                        if (question.subject.toLowerCase().contains(value.toLowerCase())) {
                             filteredQuestions.add(question);
                             i++;
                             if (i == QUESTION_COUNT) break;
@@ -55,7 +57,7 @@ public class PracticeViewModel extends AndroidViewModel {
                     break;
                 case EXAM:
                     for (DBRow question : allQuestions) {
-                        if (question.exam == value) {
+                        if (question.exam.toLowerCase().contains(value.toLowerCase())) {
                             filteredQuestions.add(question);
                             i++;
                             if (i == QUESTION_COUNT) break;
@@ -90,11 +92,9 @@ public class PracticeViewModel extends AndroidViewModel {
                     }
                     break;
                 case RANDOM:
-                    List<DBRow> randomizedQuestions = new ArrayList<>(allQuestions.size());
-                    Collections.copy(randomizedQuestions, allQuestions);
-                    Collections.shuffle(randomizedQuestions);
-                    for (DBRow question : randomizedQuestions) {
-                        if (question.userstatus == "Z" || question.userstatus == "") {
+                    Collections.shuffle(allQuestions);
+                    for (DBRow question : allQuestions) {
+                        if (question.userstatus.isEmpty() || question.userstatus.toLowerCase().contains(USER_STATUS)) {
                             filteredQuestions.add(question);
                             i++;
                             if (i == QUESTION_COUNT) break;
@@ -103,7 +103,7 @@ public class PracticeViewModel extends AndroidViewModel {
                     break;
                 case STARRED:
                     for (DBRow question : allQuestions) {
-                        if (question.userstatus == "Z") {
+                        if (question.userstatus.toLowerCase().contains(USER_STATUS)) {
                             filteredQuestions.add(question);
                             i++;
                             if (i == QUESTION_COUNT) break;
@@ -113,7 +113,7 @@ public class PracticeViewModel extends AndroidViewModel {
                 case ALL:
                 default:
                     for (DBRow question : allQuestions) {
-                        if (question.userstatus == "Z" || question.userstatus == "") {
+                        if (question.userstatus.isEmpty() || question.userstatus.toLowerCase().contains(USER_STATUS)) {
                             filteredQuestions.add(question);
                             i++;
                             if (i == QUESTION_COUNT) break;
@@ -123,6 +123,7 @@ public class PracticeViewModel extends AndroidViewModel {
             }
         }
 
+        Log.e("PracticeViewModel", "setPracticeType:  practice size = " + filteredQuestions.size());
         questions.setValue(filteredQuestions);
     }
 
