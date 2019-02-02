@@ -5,6 +5,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
@@ -39,6 +40,14 @@ public class TestQuizFragment extends Fragment {
     private TextView tvProgress;
     //private ProgressBar progressBar;
     private int numQuestions;
+    private View startDisplay;
+    private TextView startTitle;
+    private TextView startSubject;
+    private TextView startTime;
+    private TextView startCounter;
+    private Button startButton;
+    private int counter;
+    private Timer countDownTimer;
 
     public static TestQuizFragment newInstance(String quizName) {
         TestQuizFragment fragment = new TestQuizFragment();
@@ -67,6 +76,45 @@ public class TestQuizFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        startCounter = view.findViewById(R.id.quiz_q_counter);
+        startDisplay = view.findViewById(R.id.quiz_q_root);
+        startTitle = view.findViewById(R.id.quiz_q_title);
+        startSubject = view.findViewById(R.id.quiz_q_subject);
+        startTime = view.findViewById(R.id.quiz_q_time);
+
+        startTitle.setText("Starting quiz: " + quizName.toUpperCase());
+        startSubject.setText("Subject: " + quizList.get(0).subject.toUpperCase());
+        startTime.setText("Time limit: " + getRemainingQuizTime());
+
+        startButton = view.findViewById(R.id.quiz_q_start);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                counter = 5;
+                startCounter.setVisibility(View.VISIBLE);
+                countDownTimer = new Timer();
+                countDownTimer.scheduleAtFixedRate(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (getActivity() == null) return;
+                        if (counter == 0) {
+                            countDownTimer.cancel();
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    startCounter.setVisibility(View.GONE);
+                                    startDisplay.setVisibility(View.GONE);
+                                }
+                            });
+                        } else {
+                            startCounter.setText("" + counter);
+                            counter--;
+                        }
+                    }
+                }, 0, 1000);
+            }
+        });
 
         tvTimer = view.findViewById(R.id.timer);
         tvTimer.setText("");
@@ -101,7 +149,12 @@ public class TestQuizFragment extends Fragment {
         view.requestFocus();
         view.setOnKeyListener((view1, keyCode, keyEvent) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                showExitQuizAlert();
+                if (startDisplay.getVisibility() == View.VISIBLE) {
+                    getFragmentManager().popBackStack();
+                    return true;
+                } else {
+                    showExitQuizAlert();
+                }
                 return true;
             }
             return false;
@@ -113,26 +166,25 @@ public class TestQuizFragment extends Fragment {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (quiz != null) {
-                    uiRefreshTime(quiz.getRemainingTimeInSec());
+                if (quiz != null && getActivity() != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvTimer.setText(getRemainingQuizTime());
+                        }
+                    });
                 }
             }
         }, 0, 1000);
     }
 
-    public void uiRefreshTime(final int time) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    int p1 = time % 60;
-                    int p2 = time / 60;
-                    int p3 = p2 % 60;
-                    p2 = p2 / 60;
-                    tvTimer.setText(p2 + " : " + p3 + " : " + p1);
-                }
-            });
-        }
+    public String getRemainingQuizTime() {
+        int time = quiz.getRemainingTimeInSec();
+        int p1 = time % 60;
+        int p2 = time / 60;
+        int p3 = p2 % 60;
+        p2 = p2 / 60;
+        return (p2 + " : " + p3 + " : " + p1);
     }
 
     public void uiRefreshCount(final int currentQuestion) {

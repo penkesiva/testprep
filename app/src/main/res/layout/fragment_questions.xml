@@ -1,48 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/progress_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/padding_large"
-        android:background="@drawable/rectangle_blue">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_progress"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/progress_header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/padding_8sp"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_font"
-            android:textStyle="bold" />
+            android:layout_margin="@dimen/padding_large"
+            android:background="@drawable/rectangle_blue">
 
-        <View
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary3" />
+            <TextView
+                android:id="@+id/tv_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/padding_8sp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/timer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary3"/>
+
+            <TextView
+                android:id="@+id/timer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="@dimen/padding_8sp"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium_font"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/questions_sliding_pager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
-            android:padding="@dimen/padding_8sp"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/medium_font"
-            android:textStyle="bold" />
+            android:background="@android:color/white"/>
     </LinearLayout>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/questions_sliding_pager"
+    <LinearLayout
+        android:id="@+id/quiz_q_root"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/quiz_q_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/padding_large"
+            android:textColor="@android:color/black"
+            android:textSize="32sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/quiz_q_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_small"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/padding_large"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/big_font"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/quiz_q_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/padding_large"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/big_font"/>
+
+        <Button
+            android:id="@+id/quiz_q_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/padding_large"
+            android:background="@drawable/rectangle_green"
+            android:padding="@dimen/padding_small"
+            android:text="START"
+            android:textSize="@dimen/medium2_font"/>
+
+        <TextView
+            android:id="@+id/quiz_q_counter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="200sp"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+</FrameLayout>
