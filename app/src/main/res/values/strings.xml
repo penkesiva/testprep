@@ -82,4 +82,8 @@
         completions."
     </string>
 
+    <string-array name="quiz_exit">
+        <item>Save quiz status</item>
+        <item>Exit without saving</item>
+    </string-array>
 </resources>

@@ -18,14 +18,17 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 public class TestQuizFragment extends Fragment {
-    private static final int TIME_INSEC_PER_QUESTION = 30; //30s/question
+    private static final int TIME_INSEC_PER_QUESTION = 30; //30s per question
     private static String QUIZ_NAME = "quiz_name";
+    private AlertDialog alertDialog;
+    private int saveQuizStatus;
     private ViewPager pager;
     private SlidePagerAdapter pagerAdapter;
     private ArrayList<DBRow> quizList;
@@ -34,8 +37,8 @@ public class TestQuizFragment extends Fragment {
     private DataBaseHelper dbHelper;
     private TextView tvTimer;
     private TextView tvProgress;
-    private int numQuestions;
     //private ProgressBar progressBar;
+    private int numQuestions;
 
     public static TestQuizFragment newInstance(String quizName) {
         TestQuizFragment fragment = new TestQuizFragment();
@@ -96,15 +99,12 @@ public class TestQuizFragment extends Fragment {
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().popBackStack();
-                    return true;
-                }
-                return false;
+        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                showExitQuizAlert();
+                return true;
             }
+            return false;
         });
     }
 
@@ -145,6 +145,26 @@ public class TestQuizFragment extends Fragment {
                 }
             });
         }
+    }
+
+    private void showExitQuizAlert() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Exiting quiz " + quizName.toUpperCase());
+
+        builder.setPositiveButton("EXIT", (dialog, id) -> {
+            if (saveQuizStatus == 0) {
+                for (DBRow q : quizList) {
+                    // TODO: save quiz
+                }
+            }
+            getFragmentManager().popBackStack();
+        });
+
+        builder.setSingleChoiceItems(R.array.quiz_exit, 1,
+                (dialog, which) -> saveQuizStatus = which);
+
+        alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private class SlidePagerAdapter extends FragmentStatePagerAdapter {
