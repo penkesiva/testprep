@@ -51,7 +51,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.ee.testprep.db.PracticeViewModel.*;
+import static com.ee.testprep.db.PracticeViewModel.PracticeType;
 
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final int STATUS_PRACTICE_YEAR_XX = 3002;
     public static final int STATUS_PRACTICE_SUBJECT_XX = 3003;
     public static final int STATUS_PRACTICE_EXAM_XX = 3004;
+    public static final int STATUS_PRACTICE_MORE = 3005;
     public static final int STATUS_MODELTEST_XX = 4001;
     private static final int INDEX_HOME = 0;
     private static final int INDEX_LEARN = 1;
@@ -131,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private boolean loadHomeOnBackPress = true;
     private TestQuizFragment questionQuizFragment;
     private TestPracticeFragment questionPracticeFragment;
+    private PracticeType savedPracticeCategory;
+    private String savedPracticeSubCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -593,6 +596,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case STATUS_PRACTICE_ALL:
                 showAllQuestions();
                 break;
+            case STATUS_PRACTICE_MORE:
+                showPracticeQuestions(savedPracticeCategory, savedPracticeSubCategory);
+                break;
 
             default:
                 break;
@@ -827,6 +833,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     private void showPracticeQuestions(PracticeType category, String subCategory) {
+        savedPracticeCategory = category;
+        savedPracticeSubCategory = subCategory;
 
         if (dbHelper != null) {
             questionPracticeFragment = TestPracticeFragment.newInstance(category, subCategory);
