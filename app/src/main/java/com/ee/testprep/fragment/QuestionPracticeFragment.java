@@ -20,6 +20,7 @@ import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.util.SimpleVibaration;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class QuestionPracticeFragment extends Fragment {
@@ -37,6 +38,8 @@ public class QuestionPracticeFragment extends Fragment {
     private Dialog statusDialog;
     private Button summary;
     private boolean isLastQuestion;
+    private Button wrong;
+    private Button correct;
 
     public QuestionPracticeFragment() {
     }
@@ -62,9 +65,14 @@ public class QuestionPracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.practice_question, container, false);
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.practice_question, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        correct = view.findViewById(R.id.practice_q_correct);
+        wrong = view.findViewById(R.id.practice_q_wrong);
 
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question.trim());
@@ -75,28 +83,22 @@ public class QuestionPracticeFragment extends Fragment {
         if (isLastQuestion) {
             summary = view.findViewById(R.id.practice_summary);
             summary.setVisibility(View.VISIBLE);
-            summary.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mListener != null) {
-                        mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_END);
-                    }
+            summary.setOnClickListener(view1 -> {
+                if (mListener != null) {
+                    mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_END);
                 }
             });
         }
 
         iv_fav = view.findViewById(R.id.fav);
-        iv_fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                iv_fav.setActivated(!iv_fav.isActivated());
+        iv_fav.setOnClickListener(view12 -> {
+            iv_fav.setActivated(!iv_fav.isActivated());
 
-                //if activate - update user-status
-                if (iv_fav.isActivated()) {
-                    dbHelper.setUserStatus(mQuestion.qNo, true);
-                } else {
-                    dbHelper.setUserStatus(mQuestion.qNo, false);
-                }
+            //if activate - update user-status
+            if (iv_fav.isActivated()) {
+                dbHelper.setUserStatus(mQuestion.qNo, true);
+            } else {
+                dbHelper.setUserStatus(mQuestion.qNo, false);
             }
         });
 
@@ -104,101 +106,105 @@ public class QuestionPracticeFragment extends Fragment {
             iv_fav.setActivated(true);
         }
 
+        int green = getResources().getColor(R.color.colorGreen);
+        int red = getResources().getColor(R.color.colorRed);
+
         cb[0] = view.findViewById(R.id.rb_optA);
         cb[0].setText(mQuestion.optionA.trim());
 
-        cb[0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        cb[0].setOnClickListener(v -> {
 
-                clearCheckBoxes();
-                cb[0].setChecked(true);
+            clearCheckBoxes();
+            cb[0].setChecked(true);
 
-                if (mQuestion.answer.toLowerCase().equals("a")) {
-                    cb[0].setTypeface(null, Typeface.BOLD);
-                    cb[0].setTextColor(getResources().getColor(R.color.colorGreen));
-                } else {
-                    cb[0].setTextColor(getResources().getColor(R.color.colorRed));
-                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
-                    cb[i].setTypeface(null, Typeface.BOLD);
-                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
+            if (mQuestion.answer.toLowerCase().equals("a")) {
+                wrong.setVisibility(View.INVISIBLE);
+                correct.setVisibility(View.VISIBLE);
+                cb[0].setTypeface(null, Typeface.BOLD);
+                cb[0].setTextColor(green);
+            } else {
+                correct.setVisibility(View.INVISIBLE);
+                wrong.setVisibility(View.VISIBLE);
+                cb[0].setTextColor(red);
+                int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                cb[i].setTypeface(null, Typeface.BOLD);
+                cb[i].setTextColor(green);
 
-                    new SimpleVibaration(mContext);
-                }
+                new SimpleVibaration(mContext);
             }
         });
 
         cb[1] = view.findViewById(R.id.rb_optB);
         cb[1].setText(mQuestion.optionB.trim());
-        cb[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        cb[1].setOnClickListener(v -> {
 
-                clearCheckBoxes();
-                cb[1].setChecked(true);
+            clearCheckBoxes();
+            cb[1].setChecked(true);
 
-                if (mQuestion.answer.toLowerCase().equals("b")) {
-                    cb[1].setTypeface(null, Typeface.BOLD);
-                    cb[1].setTextColor(getResources().getColor(R.color.colorGreen));
-                } else {
-                    cb[1].setTextColor(getResources().getColor(R.color.colorRed));
-                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
-                    cb[i].setTypeface(null, Typeface.BOLD);
-                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
+            if (mQuestion.answer.toLowerCase().equals("b")) {
+                wrong.setVisibility(View.INVISIBLE);
+                correct.setVisibility(View.VISIBLE);
+                cb[1].setTypeface(null, Typeface.BOLD);
+                cb[1].setTextColor(green);
+            } else {
+                correct.setVisibility(View.INVISIBLE);
+                wrong.setVisibility(View.VISIBLE);
+                cb[1].setTextColor(red);
+                int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                cb[i].setTypeface(null, Typeface.BOLD);
+                cb[i].setTextColor(green);
 
-                    new SimpleVibaration(getActivity().getApplicationContext());
-                }
+                new SimpleVibaration(getActivity().getApplicationContext());
             }
         });
 
         cb[2] = view.findViewById(R.id.rb_optC);
         cb[2].setText(mQuestion.optionC.trim());
-        cb[2].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        cb[2].setOnClickListener(v -> {
 
-                clearCheckBoxes();
-                cb[2].setChecked(true);
+            clearCheckBoxes();
+            cb[2].setChecked(true);
 
-                if (mQuestion.answer.toLowerCase().equals("c")) {
-                    cb[2].setTypeface(null, Typeface.BOLD);
-                    cb[2].setTextColor(getResources().getColor(R.color.colorGreen));
-                } else {
-                    cb[2].setTextColor(getResources().getColor(R.color.colorRed));
-                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
-                    cb[i].setTypeface(null, Typeface.BOLD);
-                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
+            if (mQuestion.answer.toLowerCase().equals("c")) {
+                wrong.setVisibility(View.INVISIBLE);
+                correct.setVisibility(View.VISIBLE);
+                cb[2].setTypeface(null, Typeface.BOLD);
+                cb[2].setTextColor(green);
+            } else {
+                correct.setVisibility(View.INVISIBLE);
+                wrong.setVisibility(View.VISIBLE);
+                cb[2].setTextColor(red);
+                int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                cb[i].setTypeface(null, Typeface.BOLD);
+                cb[i].setTextColor(green);
 
-                    new SimpleVibaration(getActivity().getApplicationContext());
-                }
+                new SimpleVibaration(getActivity().getApplicationContext());
             }
         });
 
         cb[3] = view.findViewById(R.id.rb_optD);
         cb[3].setText(mQuestion.optionD.trim());
-        cb[3].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        cb[3].setOnClickListener(v -> {
 
-                clearCheckBoxes();
-                cb[3].setChecked(true);
+            clearCheckBoxes();
+            cb[3].setChecked(true);
 
-                if (mQuestion.answer.toLowerCase().equals("d")) {
-                    cb[3].setTypeface(null, Typeface.BOLD);
-                    cb[3].setTextColor(getResources().getColor(R.color.colorGreen));
-                } else {
-                    cb[3].setTextColor(getResources().getColor(R.color.colorRed));
-                    int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
-                    cb[i].setTypeface(null, Typeface.BOLD);
-                    cb[i].setTextColor(getResources().getColor(R.color.colorGreen));
+            if (mQuestion.answer.toLowerCase().equals("d")) {
+                wrong.setVisibility(View.INVISIBLE);
+                correct.setVisibility(View.VISIBLE);
+                cb[3].setTypeface(null, Typeface.BOLD);
+                cb[3].setTextColor(green);
+            } else {
+                correct.setVisibility(View.INVISIBLE);
+                wrong.setVisibility(View.VISIBLE);
+                cb[3].setTextColor(red);
+                int i = getIndexMap(mQuestion.answer.toLowerCase()); // right answer
+                cb[i].setTypeface(null, Typeface.BOLD);
+                cb[i].setTextColor(green);
 
-                    new SimpleVibaration(getActivity().getApplicationContext());
-                }
+                new SimpleVibaration(getActivity().getApplicationContext());
             }
         });
-
-        // populate the question
-        return view;
     }
 
     private void clearCheckBoxes() {
