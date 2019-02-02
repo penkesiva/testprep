@@ -256,11 +256,14 @@
     </RadioGroup>
 
     <Button
-        android:id="@+id/practice_summary"
+        android:id="@+id/practice_q_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:text="SUMMARY"
+        android:layout_margin="5dp"
+        android:background="@drawable/rectangle_blue"
+        android:padding="5dp"
+        android:text="Practice More"
         android:visibility="gone" />
 
 </LinearLayout>

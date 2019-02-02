@@ -36,8 +36,8 @@ public class QuestionPracticeFragment extends Fragment {
     private ImageView iv_fav;
     private DataBaseHelper dbHelper;
     private Dialog statusDialog;
-    private Button summary;
     private boolean isLastQuestion;
+    private Button more;
     private Button wrong;
     private Button correct;
 
@@ -81,11 +81,11 @@ public class QuestionPracticeFragment extends Fragment {
         dbHelper = DataBaseHelper.getInstance(getActivity());
 
         if (isLastQuestion) {
-            summary = view.findViewById(R.id.practice_summary);
-            summary.setVisibility(View.VISIBLE);
-            summary.setOnClickListener(view1 -> {
+            more = view.findViewById(R.id.practice_q_more);
+            more.setVisibility(View.VISIBLE);
+            more.setOnClickListener(view1 -> {
                 if (mListener != null) {
-                    mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_END);
+                    mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_MORE);
                 }
             });
         }
@@ -240,13 +240,6 @@ public class QuestionPracticeFragment extends Fragment {
             return 2;
         } else {
             return 3;
-        }
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(int status) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(status);
         }
     }
 }
