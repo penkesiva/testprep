@@ -74,12 +74,9 @@ public class QuestionQuizFragment extends Fragment {
         if (isLastQuestion) {
             Button submit = view.findViewById(R.id.quiz_submit);
             submit.setVisibility(View.VISIBLE);
-            submit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (mListener != null) {
-                        mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_END, mQuizName);
-                    }
+            submit.setOnClickListener(view1 -> {
+                if (mListener != null) {
+                    mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_END, mQuizName);
                 }
             });
         }
@@ -113,7 +110,7 @@ public class QuestionQuizFragment extends Fragment {
 
     private void configureCheckBox(View view) {
         cbA = view.findViewById(R.id.rb_optA);
-        cbA.setText(mQuestion.optionA);
+        cbA.setText(mQuestion.optionA.trim());
         cbA.setOnCheckedChangeListener((compoundButton, b) -> {
             clearCheckBoxes();
             cbA.setChecked(b);
@@ -121,7 +118,7 @@ public class QuestionQuizFragment extends Fragment {
         });
 
         cbB = view.findViewById(R.id.rb_optB);
-        cbB.setText(mQuestion.optionB);
+        cbB.setText(mQuestion.optionB.trim());
         cbB.setOnCheckedChangeListener((compoundButton, b) -> {
             clearCheckBoxes();
             cbB.setChecked(b);
@@ -129,7 +126,7 @@ public class QuestionQuizFragment extends Fragment {
         });
 
         cbC = view.findViewById(R.id.rb_optC);
-        cbC.setText(mQuestion.optionC);
+        cbC.setText(mQuestion.optionC.trim());
         cbC.setOnCheckedChangeListener((compoundButton, b) -> {
             clearCheckBoxes();
             cbC.setChecked(b);
@@ -137,7 +134,7 @@ public class QuestionQuizFragment extends Fragment {
         });
 
         cbD = view.findViewById(R.id.rb_optD);
-        cbD.setText(mQuestion.optionD);
+        cbD.setText(mQuestion.optionD.trim());
         cbD.setOnCheckedChangeListener((compoundButton, b) -> {
             clearCheckBoxes();
             cbD.setChecked(b);

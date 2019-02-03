@@ -54,12 +54,9 @@ public class QuizFragment extends Fragment {
         final QuizFragment.QuizAdapter quizAdapter = new QuizFragment.QuizAdapter(getActivity(), mQuizList);
         gridView.setAdapter(quizAdapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                onButtonPressed(MainActivity.STATUS_QUIZ_XX, item);
-            }
+        gridView.setOnItemClickListener((parent, view1, position, id) -> {
+            final String item = (String) parent.getItemAtPosition(position);
+            onButtonPressed(MainActivity.STATUS_QUIZ_XX, item);
         });
 
         return view;

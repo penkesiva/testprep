@@ -2,6 +2,7 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -165,8 +166,10 @@ public class ResultsFragment extends Fragment {
             viewHolder.userOption.setText(getUserOption(row));
             viewHolder.explanation.setText(""); //TODO
 
-            if(mAnswerKey.get(position).answer.equals(mAnswerKey.get(position).userstatus)) {
+            if(mAnswerKey.get(position).answer.trim().equals(mAnswerKey.get(position).userstatus.trim())) {
                 viewHolder.validateImage.setImageResource(R.drawable.right);
+            } else {
+                viewHolder.validateImage.setImageResource(R.drawable.wrong);
             }
 
             return convertView;

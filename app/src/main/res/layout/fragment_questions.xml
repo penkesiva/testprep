@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +14,10 @@
             android:id="@+id/progress_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_large"
+            android:layout_marginTop="@dimen/padding_8sp"
+            android:layout_marginLeft="@dimen/padding_8sp"
+            android:layout_marginRight="@dimen/padding_8sp"
+            android:padding="@dimen/padding_5sp"
             android:background="@drawable/rectangle_blue">
 
             <TextView
@@ -107,7 +112,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@android:color/black"
-            android:textSize="200sp"
+            android:textSize="100sp"
             android:visibility="invisible"/>
     </LinearLayout>
 
