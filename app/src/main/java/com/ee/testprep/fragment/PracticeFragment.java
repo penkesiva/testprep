@@ -4,11 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
@@ -24,6 +28,7 @@ import com.ee.testprep.R;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 public class PracticeFragment extends Fragment {
@@ -33,6 +38,8 @@ public class PracticeFragment extends Fragment {
     private String[] mExamList = new String[0];
     private String[] mSubjectList = new String[0];
     private GridView examGridView, subjectGridView;
+    private PracticeFragment.LocalAdapter examAdapter;
+    private PracticeFragment.LocalAdapter subjectAdapter;
 
     public PracticeFragment() {
     }
@@ -55,14 +62,28 @@ public class PracticeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_practice2, container, false);
 
-        /* EXAM expandable view - start */
+        /**
+         * EXAM expandable view - start
+         */
         examGridView = view.findViewById(R.id.expanded_exam_grid);
 
         Switch examSwitch = view.findViewById(R.id.sw_exam);
-        examSwitch.setOnClickListener(new View.OnClickListener() {
+        examSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(examGridView == null) return;
 
+                if(isChecked) {
+                    //set all checkbox
+                    for (int i = 0; i < examAdapter.getCount(); i++) {
+                        examAdapter.getViewHolder(i).item.setChecked(true);
+                    }
+                } else {
+                    //unset all checkbox
+                    for (int i = 0; i < examAdapter.getCount(); i++) {
+                        examAdapter.getViewHolder(i).item.setChecked(false);
+                    }
+                }
             }
         });
 
@@ -70,19 +91,28 @@ public class PracticeFragment extends Fragment {
         mExamList = new String[examList.size()];
         mExamList = examList.toArray(mExamList);
 
-        PracticeFragment.LocalAdapter examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
+        examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
         examGridView.setAdapter(examAdapter);
 
-        /* EXAM - expandable view done */
-
-        /* SUBJECT - expandable view start */
+        /**
+         *  SUBJECT - expandable view start
+         */
         subjectGridView = view.findViewById(R.id.expanded_subject_grid);
+
+        Switch subjectSwitch = view.findViewById(R.id.sw_subject);
+        subjectSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+
+            }
+        });
 
         ArrayList<String> subjectList = MainActivity.getSubjects();
         mSubjectList = new String[subjectList.size()];
         mSubjectList = subjectList.toArray(mSubjectList);
 
-        PracticeFragment.LocalAdapter subjectAdapter = new PracticeFragment.LocalAdapter(getActivity(), mSubjectList);
+        subjectAdapter = new PracticeFragment.LocalAdapter(getActivity(), mSubjectList);
         subjectGridView.setAdapter(subjectAdapter);
 
         setDynamicHeight(subjectGridView, 3);
@@ -108,11 +138,6 @@ public class PracticeFragment extends Fragment {
         });
 
         /* Year - range bar done */
-
-        /* Difficulty - start */
-        final Button easyBtnView = view.findViewById(R.id.btn_easy);
-        final Button mediumBtnView = view.findViewById(R.id.btn_medium);
-        final Button hardBtnView = view.findViewById(R.id.btn_hard);
 
         //Log.v(TAG, "penke all button state focus " + allBtnView.isFocused() + " pressed " + allBtnView.isPressed() + " enabled " + allBtnView.isEnabled());
 
@@ -175,57 +200,77 @@ public class PracticeFragment extends Fragment {
     public class LocalAdapter extends BaseAdapter {
 
         private final Context mContext;
-        private String mItems[];
+        private ArrayList<Obj> list;
+
+        public class Obj {
+            private String mTitle;
+            private ViewHolder mViewHolder;
+
+            public Obj(String title) {
+                mTitle = title;
+            }
+
+            public Obj(String title, ViewHolder holder) {
+                mTitle = title;
+                mViewHolder = holder;
+            }
+        }
+
+        private class ViewHolder {
+            private final CheckBox item;
+
+            public ViewHolder(CheckBox box) {
+                this.item = box;
+            }
+        }
 
         public LocalAdapter(Context context, String[] items) {
-            this.mContext = context;
-            this.mItems = items;
+            mContext = context;
+            list = new ArrayList<>(items.length);
+
+            for (int i = 0; i < items.length; i++) {
+                list.add(i, new Obj(items[0]));
+            }
         }
 
         @Override
         public int getCount() {
-            return mItems.length;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
+            return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return mItems[position];
+            return list.get(position).mTitle;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public ViewHolder getViewHolder(int position) {
+            return list.get(position).mViewHolder;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            final String filterName = mItems[position];
+            final String titleName = list.get(position).mTitle;
 
             if (convertView == null) {
                 final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
                 convertView = layoutInflater.inflate(R.layout.gridview_item, null);
 
-                final Button btn = convertView.findViewById(R.id.btn_item);
-                btn.setText(filterName);
+                final CheckBox cb = convertView.findViewById(R.id.btn_item);
+                cb.setText(titleName);
 
-                final PracticeFragment.LocalAdapter.ViewHolder viewHolder = new PracticeFragment.LocalAdapter.ViewHolder(btn);
+                final PracticeFragment.LocalAdapter.ViewHolder viewHolder = new PracticeFragment.LocalAdapter.ViewHolder(cb);
                 convertView.setTag(viewHolder);
+                list.set(position, new Obj(titleName, viewHolder));
             }
-
-            final PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder) convertView.getTag();
-            //viewHolder.item.setText(filterName.toUpperCase());
 
             return convertView;
         }
 
-        private class ViewHolder {
-            private final Button item;
-
-            public ViewHolder(Button button) {
-                this.item = button;
-            }
-        }
     }
-
 }

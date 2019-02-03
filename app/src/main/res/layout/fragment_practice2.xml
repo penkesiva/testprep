@@ -243,7 +243,7 @@
                 android:layout_marginTop="@dimen/padding_8sp"
                 android:gravity="center_horizontal">
 
-                <Button
+                <CheckBox
                     android:id="@+id/btn_easy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -251,11 +251,10 @@
                     android:layout_marginEnd="@dimen/padding_2sp"
                     android:layout_marginStart="@dimen/padding_2sp"
                     android:layout_weight="1"
-                    android:onClick="onClickBtnDifficulty"
                     android:singleLine="true"
                     android:text="EASY" />
 
-                <Button
+                <CheckBox
                     android:id="@+id/btn_medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -263,11 +262,10 @@
                     android:layout_marginEnd="@dimen/padding_2sp"
                     android:layout_marginStart="@dimen/padding_2sp"
                     android:layout_weight="1"
-                    android:onClick="onClickBtnDifficulty"
                     android:singleLine="true"
                     android:text="MEDIUM" />
 
-                <Button
+                <CheckBox
                     android:id="@+id/btn_hard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -275,7 +273,6 @@
                     android:layout_marginEnd="@dimen/padding_2sp"
                     android:layout_marginStart="@dimen/padding_2sp"
                     android:layout_weight="1"
-                    android:onClick="onClickBtnDifficulty"
                     android:singleLine="true"
                     android:text="HARD" />
 
@@ -329,6 +326,26 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="To Review Later"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/medium_font" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_5sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Completed Questions"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/medium_font" />
 
