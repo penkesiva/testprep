@@ -508,15 +508,11 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return "SELECT * FROM " + tableName;
     }
 
-    public void setUserStatus(int qNo, boolean status) {
+    public void setUserStatus(String tableName, int qNo, String status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        if (status) {
-            values.put("userstatus", "Z");
-        } else {
-            values.put("userstatus", "");
-        }
-        db.update(TABLE_QBANK, values, "qno=" + qNo, null);
+        values.put("userstatus", status);
+        db.update(tableName, values, "qno=" + qNo, null);
         db.close();
     }
 

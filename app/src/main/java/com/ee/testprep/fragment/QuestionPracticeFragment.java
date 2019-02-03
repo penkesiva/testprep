@@ -33,13 +33,14 @@ public class QuestionPracticeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private CheckBox[] cb = new CheckBox[4];
     private String recordedAnswer;
-    private ImageView iv_fav;
+    private ImageView ivFav;
     private DataBaseHelper dbHelper;
     private Dialog statusDialog;
     private boolean isLastQuestion;
     private Button more;
     private Button wrong;
     private Button correct;
+    private String reviewLater = "Z";
 
     public QuestionPracticeFragment() {
     }
@@ -90,21 +91,16 @@ public class QuestionPracticeFragment extends Fragment {
             });
         }
 
-        iv_fav = view.findViewById(R.id.fav);
-        iv_fav.setOnClickListener(view12 -> {
-            iv_fav.setActivated(!iv_fav.isActivated());
+        ivFav = view.findViewById(R.id.fav);
+        ivFav.setOnClickListener(view12 -> {
+            ivFav.setActivated(!ivFav.isActivated());
 
             //if activate - update user-status
-            if (iv_fav.isActivated()) {
-                dbHelper.setUserStatus(mQuestion.qNo, true);
-            } else {
-                dbHelper.setUserStatus(mQuestion.qNo, false);
+            if (ivFav.isActivated()) {
+                dbHelper.setUserStatus(dbHelper.TABLE_QBANK, mQuestion.qNo, reviewLater);
+                ivFav.setActivated(true);
             }
         });
-
-        if (mQuestion.userstatus.equals("Z")) {
-            iv_fav.setActivated(true);
-        }
 
         int green = getResources().getColor(R.color.colorGreen);
         int red = getResources().getColor(R.color.colorRed);

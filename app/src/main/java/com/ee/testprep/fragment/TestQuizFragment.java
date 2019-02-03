@@ -88,34 +88,28 @@ public class TestQuizFragment extends Fragment {
         startTime.setText("Time limit: " + getRemainingQuizTime(quizList.size() * TIME_INSEC_PER_QUESTION));
 
         startButton = view.findViewById(R.id.quiz_q_start);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (counter < 5) return;
-                counter = 5;
-                startCounter.setVisibility(View.VISIBLE);
-                countDownTimer = new Timer();
-                countDownTimer.scheduleAtFixedRate(new TimerTask() {
-                    @Override
-                    public void run() {
-                        if (getActivity() == null) return;
-                        if (counter == 0) {
-                            counter = 5;
-                            countDownTimer.cancel();
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    startCounter.setVisibility(View.GONE);
-                                    startDisplay.setVisibility(View.GONE);
-                                }
-                            });
-                        } else {
-                            startCounter.setText("" + counter);
-                            counter--;
-                        }
+        startButton.setOnClickListener(v -> {
+            if (counter < 5) return;
+            counter = 5;
+            startCounter.setVisibility(View.VISIBLE);
+            countDownTimer = new Timer();
+            countDownTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    if (getActivity() == null) return;
+                    if (counter == 0) {
+                        counter = 5;
+                        countDownTimer.cancel();
+                        getActivity().runOnUiThread(() -> {
+                            startCounter.setVisibility(View.GONE);
+                            startDisplay.setVisibility(View.GONE);
+                        });
+                    } else {
+                        startCounter.setText("" + counter);
+                        counter--;
                     }
-                }, 0, 1000);
-            }
+                }
+            }, 0, 1000);
         });
 
         tvTimer = view.findViewById(R.id.timer);
@@ -126,7 +120,7 @@ public class TestQuizFragment extends Fragment {
         //progressBar = view.findViewById(R.id.progressBar);
         //progressBar.setMax(numQuestions);
 
-        pagerAdapter = new SlidePagerAdapter((MainActivity) getActivity());
+        pagerAdapter = new SlidePagerAdapter(getActivity());
         pager = view.findViewById(R.id.questions_sliding_pager);
         pager.setSaveFromParentEnabled(false);
         pager.setAdapter(pagerAdapter);

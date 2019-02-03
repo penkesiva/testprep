@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
+import com.ee.testprep.db.DataBaseHelper;
 
 import androidx.fragment.app.Fragment;
 
@@ -24,7 +24,8 @@ public class QuestionQuizFragment extends Fragment {
     private static final String QUIZ_LAST_QUESTION = "is_last_question";
     private static String TAG = QuestionQuizFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
-    private String quizName;
+    private DataBaseHelper dbHelper;
+    private String mQuizName;
     private boolean isLastQuestion;
     private DBRow mQuestion;
     private CheckBox cbA;
@@ -51,7 +52,7 @@ public class QuestionQuizFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         if (args != null) {
-            quizName = args.getString(QUIZ_NAME);
+            mQuizName = args.getString(QUIZ_NAME);
             mQuestion = (DBRow) args.getSerializable(QUIZ_QUESTION);
             isLastQuestion = args.getBoolean(QUIZ_LAST_QUESTION);
         }
@@ -61,6 +62,8 @@ public class QuestionQuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.quiz_question, container, false);
+
+        dbHelper = DataBaseHelper.getInstance(getActivity());
 
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question);
@@ -75,7 +78,7 @@ public class QuestionQuizFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     if (mListener != null) {
-                        mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_END, quizName);
+                        mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_END, mQuizName);
                     }
                 }
             });
@@ -111,43 +114,36 @@ public class QuestionQuizFragment extends Fragment {
     private void configureCheckBox(View view) {
         cbA = view.findViewById(R.id.rb_optA);
         cbA.setText(mQuestion.optionA);
-        cbA.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clearCheckBoxes();
-                cbA.setChecked(b);
-            }
+        cbA.setOnCheckedChangeListener((compoundButton, b) -> {
+            clearCheckBoxes();
+            cbA.setChecked(b);
+            dbHelper.setUserStatus(mQuizName, mQuestion.qNo, "A");
         });
 
         cbB = view.findViewById(R.id.rb_optB);
         cbB.setText(mQuestion.optionB);
-        cbB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clearCheckBoxes();
-                cbB.setChecked(b);
-            }
+        cbB.setOnCheckedChangeListener((compoundButton, b) -> {
+            clearCheckBoxes();
+            cbB.setChecked(b);
+            dbHelper.setUserStatus(mQuizName, mQuestion.qNo, "B");
         });
 
         cbC = view.findViewById(R.id.rb_optC);
         cbC.setText(mQuestion.optionC);
-        cbC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clearCheckBoxes();
-                cbC.setChecked(b);
-            }
+        cbC.setOnCheckedChangeListener((compoundButton, b) -> {
+            clearCheckBoxes();
+            cbC.setChecked(b);
+            dbHelper.setUserStatus(mQuizName, mQuestion.qNo, "C");
         });
 
         cbD = view.findViewById(R.id.rb_optD);
         cbD.setText(mQuestion.optionD);
-        cbD.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                clearCheckBoxes();
-                cbD.setChecked(b);
-            }
+        cbD.setOnCheckedChangeListener((compoundButton, b) -> {
+            clearCheckBoxes();
+            cbD.setChecked(b);
+            dbHelper.setUserStatus(mQuizName, mQuestion.qNo, "D");
         });
+
     }
 
     private int getIndexMap(String option) {

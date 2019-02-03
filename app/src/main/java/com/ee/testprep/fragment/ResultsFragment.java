@@ -26,6 +26,9 @@ public class ResultsFragment extends Fragment {
     private static String TAG = ResultsFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
     private ArrayList<DBRow> mAnswerKey = new ArrayList<>();
+    private String unAttempted = "You didn't attempt this question!";
+    private TextView tvScore;
+    private int mUserScore = 0;
 
     public ResultsFragment() {
     }
@@ -56,18 +59,18 @@ public class ResultsFragment extends Fragment {
         final FilterAdapter filterAdapter = new FilterAdapter(getActivity(), mAnswerKey);
         listView.setAdapter(filterAdapter);
 
+        tvScore = view.findViewById(R.id.score);
+        tvScore.setText(Integer.toString(getUserScore()));
+
         view.setFocusableInTouchMode(true);
         view.requestFocus();
-        view.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
-                if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                    getFragmentManager().popBackStack(null,
-                            FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    return true;
-                }
-                return false;
+        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                getFragmentManager().popBackStack(null,
+                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                return true;
             }
+            return false;
         });
 
         return view;
@@ -77,6 +80,16 @@ public class ResultsFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(status);
         }
+    }
+
+    private int getUserScore() {
+        for (int i = 0; i < mAnswerKey.size(); i++) {
+            if(mAnswerKey.get(i).answer.equals(mAnswerKey.get(i).userstatus)) {
+                ++mUserScore;
+            }
+        }
+
+        return mUserScore;
     }
 
     @Override
@@ -132,37 +145,71 @@ public class ResultsFragment extends Fragment {
 
                 final TextView question = convertView.findViewById(R.id.question);
                 final ImageView questionImage = convertView.findViewById(R.id.ques_img);
-                final TextView correctAnswer = convertView.findViewById(R.id.answeroption);
-                final TextView userAnswer = convertView.findViewById(R.id.useranswer);
+                final TextView correctAnswer = convertView.findViewById(R.id.correct_answer);
+                final TextView correctOption = convertView.findViewById(R.id.option_detail);
+                final TextView userAnswer = convertView.findViewById(R.id.user_answer);
+                final TextView userOption = convertView.findViewById(R.id.user_option_detail);
+                final ImageView validateImage = convertView.findViewById(R.id.validate_image);
                 final TextView explanation = convertView.findViewById(R.id.explanation);
 
                 final ViewHolder viewHolder = new ViewHolder(question, questionImage,
-                        correctAnswer, userAnswer, explanation);
+                        correctAnswer, correctOption, userAnswer, userOption, validateImage, explanation);
                 convertView.setTag(viewHolder);
             }
 
             final ViewHolder viewHolder = (ViewHolder) convertView.getTag();
             viewHolder.question.setText(row.question);
             viewHolder.correctAnswer.setText(row.answer);
+            viewHolder.correctOption.setText(getCorrectOption(row));
             viewHolder.userAnswer.setText(row.userstatus);
+            viewHolder.userOption.setText(getUserOption(row));
             viewHolder.explanation.setText(""); //TODO
 
+            if(mAnswerKey.get(position).answer.equals(mAnswerKey.get(position).userstatus)) {
+                viewHolder.validateImage.setImageResource(R.drawable.right);
+            }
+
             return convertView;
+        }
+
+        private String getCorrectOption(DBRow row) {
+            if(row.answer.equals("A")) return row.optionA;
+            if(row.answer.equals("B")) return row.optionB;
+            if(row.answer.equals("C")) return row.optionC;
+            if(row.answer.equals("D")) return row.optionD;
+
+            return unAttempted;
+        }
+
+        private String getUserOption(DBRow row) {
+            if(row.userstatus.equals("A")) return row.optionA;
+            if(row.userstatus.equals("B")) return row.optionB;
+            if(row.userstatus.equals("C")) return row.optionC;
+            if(row.userstatus.equals("D")) return row.optionD;
+
+            return unAttempted;
         }
 
         private class ViewHolder {
             private final TextView question;
             private final ImageView questionImage;
             private final TextView correctAnswer;
+            private final TextView correctOption;
             private final TextView userAnswer;
+            private final TextView userOption;
+            private final ImageView validateImage;
             private final TextView explanation;
 
             public ViewHolder(TextView question, ImageView questionImage, TextView correctAnswer,
-                    TextView userAnswer, TextView explanation) {
+                              TextView correctOption, TextView userAnswer, TextView userOption,
+                              ImageView validateImage, TextView explanation) {
                 this.question = question;
                 this.questionImage = questionImage;
                 this.correctAnswer = correctAnswer;
+                this.correctOption = correctOption;
                 this.userAnswer = userAnswer;
+                this.userOption = userOption;
+                this.validateImage = validateImage;
                 this.explanation = explanation;
             }
         }

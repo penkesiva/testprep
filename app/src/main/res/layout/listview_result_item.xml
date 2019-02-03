@@ -37,6 +37,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/padding_5sp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -49,7 +50,7 @@
                     android:textColor="@color/colorBlack"/>
 
                 <TextView
-                    android:id="@+id/answeroption"
+                    android:id="@+id/correct_answer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -66,6 +67,7 @@
                 android:id="@+id/option_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="@dimen/padding_16sp"
                 android:text="correct option content here"
                 android:textStyle="italic"
                 android:textColor="@color/colorGreen"/>
@@ -93,19 +95,19 @@
                     android:textColor="@color/colorBlack"/>
 
                 <TextView
-                    android:id="@+id/useranswer"
+                    android:id="@+id/user_answer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-light"
                     android:paddingLeft="@dimen/padding_8sp"
                     android:paddingRight="@dimen/padding_8sp"
-                    android:text="C"
+                    android:text="Answer "
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
 
                 <ImageView
-                    android:id="@+id/user_img"
+                    android:id="@+id/validate_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/padding_8sp"
@@ -122,7 +124,8 @@
                 android:id="@+id/user_option_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="correct option content here"
+                android:paddingStart="@dimen/padding_16sp"
+                android:text="user option content here"
                 android:textStyle="italic"
                 android:textColor="@color/colorGreen"/>
 

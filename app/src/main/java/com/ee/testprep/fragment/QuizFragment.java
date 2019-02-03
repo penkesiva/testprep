@@ -89,7 +89,6 @@ public class QuizFragment extends Fragment {
         mListener = null;
     }
 
-
     public class QuizAdapter extends BaseAdapter {
 
         private final Context mContext;
@@ -156,6 +155,5 @@ public class QuizFragment extends Fragment {
             }
         }
     }
-
 
 }
