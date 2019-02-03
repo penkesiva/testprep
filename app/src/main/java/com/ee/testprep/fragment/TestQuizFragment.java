@@ -46,7 +46,7 @@ public class TestQuizFragment extends Fragment {
     private TextView startTime;
     private TextView startCounter;
     private Button startButton;
-    private int counter;
+    private int counter = 5;
     private Timer countDownTimer;
 
     public static TestQuizFragment newInstance(String quizName) {
@@ -85,12 +85,13 @@ public class TestQuizFragment extends Fragment {
 
         startTitle.setText("Starting quiz: " + quizName.toUpperCase());
         startSubject.setText("Subject: " + quizList.get(0).subject.toUpperCase());
-        startTime.setText("Time limit: " + getRemainingQuizTime());
+        startTime.setText("Time limit: " + getRemainingQuizTime(quizList.size() * TIME_INSEC_PER_QUESTION));
 
         startButton = view.findViewById(R.id.quiz_q_start);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (counter < 5) return;
                 counter = 5;
                 startCounter.setVisibility(View.VISIBLE);
                 countDownTimer = new Timer();
@@ -99,6 +100,7 @@ public class TestQuizFragment extends Fragment {
                     public void run() {
                         if (getActivity() == null) return;
                         if (counter == 0) {
+                            counter = 5;
                             countDownTimer.cancel();
                             getActivity().runOnUiThread(new Runnable() {
                                 @Override
@@ -170,7 +172,7 @@ public class TestQuizFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvTimer.setText(getRemainingQuizTime());
+                            tvTimer.setText(getRemainingQuizTime(quiz.getRemainingTimeInSec()));
                         }
                     });
                 }
@@ -178,8 +180,7 @@ public class TestQuizFragment extends Fragment {
         }, 0, 1000);
     }
 
-    public String getRemainingQuizTime() {
-        int time = quiz.getRemainingTimeInSec();
+    public String getRemainingQuizTime(int time) {
         int p1 = time % 60;
         int p2 = time / 60;
         int p3 = p2 % 60;
