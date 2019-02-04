@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.ee.testprep.MainActivity;
 import com.ee.testprep.QuizMetrics;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
@@ -67,7 +66,6 @@ public class TestQuizFragment extends Fragment {
         dbHelper = DataBaseHelper.getInstance(getContext());
         quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
         quiz = new QuizMetrics(quizList, quizList.size() * TIME_INSEC_PER_QUESTION);
-        quiz.startQuiz();
         numQuestions = quizList.size();
 
         return inflater.inflate(R.layout.fragment_questions, container, false);
@@ -101,6 +99,7 @@ public class TestQuizFragment extends Fragment {
                         counter = 5;
                         countDownTimer.cancel();
                         getActivity().runOnUiThread(() -> {
+                            quiz.startQuiz();
                             startCounter.setVisibility(View.GONE);
                             startDisplay.setVisibility(View.GONE);
                         });
@@ -175,11 +174,16 @@ public class TestQuizFragment extends Fragment {
     }
 
     public String getRemainingQuizTime(int time) {
+        if (time == 0) return "";
         int p1 = time % 60;
         int p2 = time / 60;
         int p3 = p2 % 60;
         p2 = p2 / 60;
-        return (p2 + " : " + p3 + " : " + p1);
+        if (p2 == 0) {
+            return (p3 + "m : " + p1 + "s");
+        } else {
+            return (p2 + "h : " + p3 + "m : " + p1 + "s");
+        }
     }
 
     public void uiRefreshCount(final int currentQuestion) {
