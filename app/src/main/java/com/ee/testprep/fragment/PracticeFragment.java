@@ -2,36 +2,65 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
-
-import com.ee.testprep.MainActivity;
-import com.ee.testprep.R;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
+import com.ee.testprep.MainActivity;
+import com.ee.testprep.R;
+import com.ee.testprep.db.DataBaseHelper;
 
 public class PracticeFragment extends Fragment {
 
     private static String TAG = PracticeFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
+    private String[] mExamList = new String[0];
+    private String[] mSubjectList = new String[0];
+    private GridView examGridView, subjectGridView;
+    private PracticeFragment.LocalAdapter examAdapter;
+    private PracticeFragment.LocalAdapter subjectAdapter;
+    private CheckBox cbEasy, cbMedium, cbHard;
+    private CheckBox cbRandom, cbTRL, cbCompletedQ;
+    private Button btnStart;
+    private Switch cbAllDifficulty;
 
-    private final static String mFilter[][] = {
-            {"Year", "ex: 2016"},
-            {"Subject", "ex: Politics"},
-            {"Exam", "ex: CSP"},
-            {"Easy", "scale: 0-3"},
-            {"Medium", "scale 4-6"},
-            {"Hard", "scale: 7-9"},
-            {"Random", "random"},
-            {"Starred", "to review later"},
-            {"All", "no filters"}
-    };
+    //Query strings
+    private String mWhereClause = " WHERE ";
+    private String mAnd = " AND ";
+    private String mOR = " OR ";
+    private String mQRandom = "SELECT * FROM " + DataBaseHelper.TABLE_QBANK;
+    private String mQTRL = "";
+    private String mQCompletedQ = "";
+    private String mQEasy = " DIFFICULTY BETWEEN 0 and 3 ";
+    private String mQMedium = " DIFFICULTY BETWEEN 4 and 6 ";
+    private String mQHard = " DIFFICULTY BETWEEN 7 and 9 ";
+    private String mQAllDifficulty = " DIFFICULTY BETWEEN 0 and 9 ";
+    private List<String> mExamListChecked = new ArrayList<>();
+    private List<String> mSubjectListChecked = new ArrayList<>();
+    private List<String> mCheckedList = new ArrayList<>();
+    private HashSet<String> mExamHash = new HashSet<>();
+    private HashSet<String> mSubjectHash = new HashSet<>();
+    private StringBuffer finalQuery = new StringBuffer();
 
     public PracticeFragment() {
     }
@@ -46,63 +75,254 @@ public class PracticeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_practice, container, false);
 
-        GridView gridView = view.findViewById(R.id.practice_gridview);
-        final FilterAdapter filterAdapter = new FilterAdapter(getActivity(), mFilter);
-        gridView.setAdapter(filterAdapter);
+        View view = inflater.inflate(R.layout.fragment_practice2, container, false);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //String filter = mFilter[position][0];
-                //filterAdapter.notifyDataSetChanged();
-                switch (position) {
-                    case 0:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_YEAR);
-                        break;
-                    case 1:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_SUBJECT);
-                        break;
-                    case 2:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_EXAM);
-                        break;
-                    case 3:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_EASY);
-                        break;
-                    case 4:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_MEDIUM);
-                        break;
-                    case 5:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_HARD);
-                        break;
-                    case 6:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_RANDOM);
-                        break;
-                    case 7:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_USERSTATUS);
-                        break;
-                    case 8:
-                        onButtonPressed(MainActivity.STATUS_PRACTICE_ALL);
-                        break;
+        // EXAM expandable view - start
+        examGridView = view.findViewById(R.id.expanded_exam_grid);
+
+        Switch cbAllExams = view.findViewById(R.id.sw_exam);
+        cbAllExams.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (examGridView == null) return;
+            examAdapter.isAll = isChecked;
+            examAdapter.notifyDataSetChanged();
+        });
+
+        ArrayList<String> examList = MainActivity.getExams();
+        mExamList = new String[examList.size()];
+        mExamList = examList.toArray(mExamList);
+        mExamHash.addAll(Arrays.asList(mExamList));
+
+        examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
+        examGridView.setAdapter(examAdapter);
+
+        // SUBJECT - expandable view start
+        subjectGridView = view.findViewById(R.id.expanded_subject_grid);
+
+        Switch cbAllSubjects = view.findViewById(R.id.sw_subject);
+        cbAllSubjects.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (subjectGridView == null) return;
+            subjectAdapter.isAll = isChecked;
+            subjectAdapter.notifyDataSetChanged();
+        });
+
+        ArrayList<String> subjectList = MainActivity.getSubjects();
+        mSubjectList = new String[subjectList.size()];
+        mSubjectList = subjectList.toArray(mSubjectList);
+        mSubjectHash.addAll(Arrays.asList(mSubjectList));
+
+        subjectAdapter = new PracticeFragment.LocalAdapter(getActivity(), mSubjectList);
+        subjectGridView.setAdapter(subjectAdapter);
+
+        setDynamicHeight(subjectGridView, 3);
+        setDynamicHeight(examGridView, 3);
+
+        // Year - range bar setup
+        final CrystalRangeSeekbar rangeSeekbar = view.findViewById(R.id.range_seekbar);
+        ArrayList<String> yearList = MainActivity.getYears();
+        final TextView tvMin = view.findViewById(R.id.textMin1);
+        final TextView tvMax = view.findViewById(R.id.textMax1);
+        tvMin.setText("" + yearList.get(0));
+        tvMax.setText("" + yearList.get(yearList.size() - 1));
+        rangeSeekbar.setBarColor(getResources().getColor(android.R.color.holo_orange_light));
+
+        rangeSeekbar.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
+            tvMin.setText("" + minValue.intValue());
+            tvMax.setText("" + maxValue.intValue());
+        });
+
+        // Difficulty
+        cbEasy = view.findViewById(R.id.btn_easy);
+        cbEasy.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mCheckedList.add(mQEasy);
+            } else {
+                mCheckedList.remove(mQEasy);
+                cbAllDifficulty.setChecked(false);
+            }
+        });
+
+        cbMedium = view.findViewById(R.id.btn_medium);
+        cbMedium.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mCheckedList.add(mQMedium);
+            } else {
+                mCheckedList.remove(mQMedium);
+                cbAllDifficulty.setChecked(false);
+            }
+        });
+
+        cbHard = view.findViewById(R.id.btn_hard);
+        cbHard.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mCheckedList.add(mQHard);
+            } else {
+                mCheckedList.remove(mQHard);
+                cbAllDifficulty.setChecked(false);
+            }
+        });
+
+        cbAllDifficulty = view.findViewById(R.id.sw_difficulty);
+        cbAllDifficulty.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                setDifficultyGUI(true);
+                mCheckedList.add(mQAllDifficulty);
+            } else {
+                setDifficultyGUI(false);
+                mCheckedList.remove(mQAllDifficulty);
+            }
+        });
+
+        //Others
+        cbRandom = view.findViewById(R.id.cb_random);
+        cbTRL = view.findViewById(R.id.cb_trl);
+        cbCompletedQ = view.findViewById(R.id.cb_completed);
+        cbRandom.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mQRandom = "SELECT DISTINCT * FROM " + DataBaseHelper.TABLE_QBANK;
+            } else {
+                mQRandom = "SELECT * FROM " + DataBaseHelper.TABLE_QBANK;
+            }
+        });
+
+        cbTRL.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mQTRL = " userstatus " + "IN ('Z')";
+                cbCompletedQ.setChecked(false);
+            } else {
+                mQTRL = "";
+            }
+        });
+
+        cbCompletedQ.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                mQCompletedQ = " userstatus " + "IN ('A','B','C','D')";
+                cbTRL.setChecked(false);
+            } else {
+                mQCompletedQ = "";
+            }
+        });
+
+        //Start
+        btnStart = view.findViewById(R.id.btn_start);
+        btnStart.setOnClickListener(v -> {
+
+            finalQuery.setLength(0);
+
+            if(mCheckedList.size() == 0) {
+                //Nothing selected
+                Toast t = Toast.makeText(getContext(), "select a filter", Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.BOTTOM, 0, 200);
+                t.show();
+                return;
+            }
+            //separate exam and subject lists; it is done this way as its not known at this point
+            //on how to add in separate lists in the adapter
+            for (int i = 0; i < mCheckedList.size(); i++) {
+                String str = mCheckedList.get(i);
+                if(mExamHash.contains(str)) {
+                    mExamListChecked.add(str);
+                } else if(mSubjectHash.contains(str)) {
+                    mSubjectListChecked.add(str);
                 }
             }
+
+            //create a query string
+            finalQuery.append(mQRandom);
+            finalQuery.append(mWhereClause);
+
+            for (int i = 0; i < mExamListChecked.size(); i++) {
+                //exam item
+                finalQuery.append(" examName=\"");
+                finalQuery.append(mExamListChecked.get(i));
+                finalQuery.append("\"");
+
+                if (i != mExamListChecked.size() - 1)
+                    finalQuery.append(mOR);
+            }
+
+            if(mSubjectListChecked.size() > 0 && mExamListChecked.size() > 0)
+                finalQuery.append(mAnd);
+
+            for (int i = 0; i < mSubjectListChecked.size(); i++) {
+                //subject item
+                finalQuery.append(" subject=\"");
+                finalQuery.append(mSubjectListChecked.get(i));
+                finalQuery.append("\"");
+
+                if (i != mSubjectListChecked.size() - 1)
+                    finalQuery.append(mOR);
+            }
+            Log.d(TAG, finalQuery.toString());
+
+            clearLists();
+
+            onButtonPressed(MainActivity.STATUS_PRACTICE_MORE, finalQuery.toString());
+
         });
 
         return view;
     }
 
-    public void onButtonPressed(int status) {
+    private void clearLists() {
+        mCheckedList.clear();
+
+        mSubjectListChecked.clear();
+        mSubjectHash.clear();
+
+        mExamListChecked.clear();
+        mExamHash.clear();
+    }
+
+    private void setDifficultyGUI(boolean checked) {
+        if (checked) {
+            cbEasy.setChecked(true);
+            cbMedium.setChecked(true);
+            cbHard.setChecked(true);
+        } else {
+            cbEasy.setChecked(false);
+            cbMedium.setChecked(false);
+            cbHard.setChecked(false);
+        }
+    }
+
+    private void setDynamicHeight(GridView gridView, int columns) {
+        ListAdapter gridViewAdapter = gridView.getAdapter();
+        if (gridViewAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        int items = gridViewAdapter.getCount();
+        int rows = 0;
+
+        View listItem = gridViewAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalHeight = listItem.getMeasuredHeight();
+
+        float x = 1;
+        if (items > columns) {
+            x = items / columns;
+            rows = (int) (x + 2);
+            totalHeight *= rows;
+        } else if (items < columns && items > 0) {
+            totalHeight *= 2;
+        }
+
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.height = totalHeight;
+        params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        gridView.setLayoutParams(params);
+    }
+
+    public void onButtonPressed(int status, String query) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(status);
+            mListener.onFragmentInteraction(status, query);
         }
     }
 
@@ -123,72 +343,68 @@ public class PracticeFragment extends Fragment {
         mListener = null;
     }
 
-    public class FilterAdapter extends BaseAdapter {
+    public class LocalAdapter extends BaseAdapter {
 
         private final Context mContext;
-        private String mFilter[][];
+        private String[] mItems;
+        public boolean isAll;
 
-        public FilterAdapter(Context context, String[][] filter) {
-            this.mContext = context;
-            this.mFilter = filter;
+        private class ViewHolder {
+            private final CheckBox item;
+
+            public ViewHolder(CheckBox box) {
+                this.item = box;
+            }
+        }
+
+        public LocalAdapter(Context context, String[] items) {
+            mContext = context;
+            mItems = items;
         }
 
         @Override
         public int getCount() {
-            return mFilter.length;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
+            return mItems.length;
         }
 
         @Override
         public Object getItem(int position) {
-            return null;
+            return mItems[position];
         }
 
-        private boolean getIsLocked() {
-            return false; //TODO
+        @Override
+        public long getItemId(int position) {
+            return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            final String filterName = mFilter[position][0];
-            final String filterExample = mFilter[position][1];
+            final String titleName = mItems[position];
 
             if (convertView == null) {
                 final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-                convertView = layoutInflater.inflate(R.layout.gridview_practice_item, null);
+                convertView = layoutInflater.inflate(R.layout.gridview_item, null);
 
-                final ImageView lockImageView = convertView.findViewById(R.id.imageview_unlock);
-                final TextView nameTextView = convertView.findViewById(R.id.textview_filter_name);
-                final TextView exampleTextView = convertView.findViewById(R.id.textview_example);
+                final CheckBox cb = convertView.findViewById(R.id.btn_item);
+                cb.setText(titleName);
+                cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    if (isChecked) {
+                        mCheckedList.add(titleName);
+                    } else {
+                        mCheckedList.remove(titleName);
+                    }
+                });
 
-                final ViewHolder viewHolder = new ViewHolder(nameTextView, exampleTextView, lockImageView);
+                final PracticeFragment.LocalAdapter.ViewHolder viewHolder = new PracticeFragment.LocalAdapter.ViewHolder(cb);
                 convertView.setTag(viewHolder);
             }
 
-            final ViewHolder viewHolder = (ViewHolder)convertView.getTag();
-            viewHolder.nameTextView.setText(filterName);
-            viewHolder.exampleTextView.setText(filterExample);
-            viewHolder.lockImageview.setImageResource(getIsLocked() ? R.drawable.lock : R.drawable.unlock);
+            PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder) convertView.getTag();
+            viewHolder.item.setChecked(isAll);
 
             return convertView;
         }
 
-        private class ViewHolder {
-            private final TextView nameTextView;
-            private final TextView exampleTextView;
-            private final ImageView lockImageview;
-
-            public ViewHolder(TextView nameTextView, TextView exampleTextView, ImageView lockImageview) {
-                this.nameTextView = nameTextView;
-                this.exampleTextView = exampleTextView;
-                this.lockImageview = lockImageview;
-            }
-        }
     }
-
 }

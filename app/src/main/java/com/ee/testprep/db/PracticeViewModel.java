@@ -20,7 +20,7 @@ public class PracticeViewModel extends AndroidViewModel {
 
     public PracticeViewModel(@NonNull Application application) {
         super(application);
-        allQuestions = DataBaseHelper.getInstance(application).queryAllQuestions();
+        //allQuestions = DataBaseHelper.getInstance(application).queryAllQuestions();
     }
 
     public LiveData<List<DBRow>> getQuestions() {
@@ -31,7 +31,18 @@ public class PracticeViewModel extends AndroidViewModel {
         questions.setValue(new ArrayList<>());
     }
 
-    public synchronized void setPracticeType(PracticeType practiceType, String value) {
+    public synchronized void practiceQuery(String query) {
+        List<DBRow> filteredQuestions;
+        filteredQuestions = DataBaseHelper.getInstance(getApplication()).queryPracticeQuestions(query);
+
+        Log.d("PracticeViewModel", "practice questions size = " + filteredQuestions.size());
+
+        if(filteredQuestions.size() > 0) {
+            questions.setValue(filteredQuestions);
+        }
+    }
+
+    /*public synchronized void setPracticeType(PracticeType practiceType, String value) {
         int i = 0;
         List<DBRow> filteredQuestions = new ArrayList<>();
 
@@ -125,7 +136,7 @@ public class PracticeViewModel extends AndroidViewModel {
 
         Log.e("PracticeViewModel", "setPracticeType:  practice size = " + filteredQuestions.size());
         questions.setValue(filteredQuestions);
-    }
+    }*/
 
     public enum PracticeType {
         YEAR, SUBJECT, EXAM, EASY, MEDIUM, HARD, RANDOM, STARRED, ALL
