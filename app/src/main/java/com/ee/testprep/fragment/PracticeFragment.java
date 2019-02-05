@@ -72,18 +72,8 @@ public class PracticeFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(examGridView == null) return;
-
-                if(isChecked) {
-                    //set all checkbox
-                    for (int i = 0; i < examAdapter.getCount(); i++) {
-                        examAdapter.getViewHolder(i).item.setChecked(true);
-                    }
-                } else {
-                    //unset all checkbox
-                    for (int i = 0; i < examAdapter.getCount(); i++) {
-                        examAdapter.getViewHolder(i).item.setChecked(false);
-                    }
-                }
+                examAdapter.isAll = isChecked;
+                examAdapter.notifyDataSetChanged();
             }
         });
 
@@ -201,6 +191,7 @@ public class PracticeFragment extends Fragment {
 
         private final Context mContext;
         private ArrayList<Obj> list;
+        public boolean isAll;
 
         public class Obj {
             private String mTitle;
@@ -268,6 +259,9 @@ public class PracticeFragment extends Fragment {
                 convertView.setTag(viewHolder);
                 list.set(position, new Obj(titleName, viewHolder));
             }
+
+            PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder)convertView.getTag();
+            viewHolder.item.setChecked(isAll);
 
             return convertView;
         }
