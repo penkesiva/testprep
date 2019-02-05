@@ -577,27 +577,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case STATUS_PRACTICE_EXAM:
                 getExams();
                 break;
-            case STATUS_PRACTICE_EASY:
-                showEasyQuestions();
-                break;
-            case STATUS_PRACTICE_MEDIUM:
-                showMediumQuestions();
-                break;
-            case STATUS_PRACTICE_HARD:
-                showHardQuestions();
-                break;
-            case STATUS_PRACTICE_RANDOM:
-                showRandomQuestions();
-                break;
-            case STATUS_PRACTICE_USERSTATUS:
-                showUserStatus();
-                break;
-            case STATUS_PRACTICE_ALL:
-                showAllQuestions();
-                break;
-            case STATUS_PRACTICE_MORE:
-                showPracticeQuestions(savedPracticeCategory, savedPracticeSubCategory);
-                break;
 
             default:
                 break;
@@ -610,20 +589,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case STATUS_QUIZ_END:
                 showQuizResult(param);
                 break;
-            case STATUS_PRACTICE_YEAR_XX:
-                showYearXX(param);
-                break;
-            case STATUS_PRACTICE_SUBJECT_XX:
-                showSubjectXX(param);
-                break;
-            case STATUS_PRACTICE_EXAM_XX:
-                showExamXX(param);
-                break;
             case STATUS_QUIZ_XX:
                 startQuiz(param);
                 break;
             case STATUS_MODELTEST_XX:
                 startQuiz(param);
+                break;
+            case STATUS_PRACTICE_MORE:
+                showPracticeQuestions(param);
                 break;
             default:
                 break;
@@ -702,50 +675,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         return new ArrayList<>();
     }
 
-    private void showUserStatus() {
-        showPracticeQuestions(PracticeType.STARRED, null);
-    }
-
-    private void showEasyQuestions() {
-        showPracticeQuestions(PracticeType.EASY, null);
-    }
-
-    private void showMediumQuestions() {
-        showPracticeQuestions(PracticeType.MEDIUM, null);
-    }
-
-    private void showHardQuestions() {
-        showPracticeQuestions(PracticeType.HARD, null);
-    }
-
-    private void showRandomQuestions() {
-        showPracticeQuestions(PracticeType.RANDOM, null);
-    }
-
-    private void showAllQuestions() {
-        showPracticeQuestions(PracticeType.ALL, null);
-    }
-
-    private void showYearXX(String year) {
-        showPracticeQuestions(PracticeType.YEAR, year);
-    }
-
-    private void showSubjectXX(String subject) {
-        showPracticeQuestions(PracticeType.SUBJECT, subject);
-    }
-
-    private void showExamXX(String exam) {
-        showPracticeQuestions(PracticeType.EXAM, exam);
-    }
-
-    private void showPracticeQuestions(PracticeType category, String subCategory) {
+    private void showPracticeQuestions(String query) {
         if (dbHelper == null) return;
 
         // Save practice selection to load more questions
-        savedPracticeCategory = category;
-        savedPracticeSubCategory = subCategory;
 
-        Fragment fragment = TestPracticeFragment.newInstance(category, subCategory);
+        Fragment fragment = TestPracticeFragment.newInstance(query);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
@@ -753,6 +688,4 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 .addToBackStack(TAG_PRACTICE);
         fragmentTransaction.commitAllowingStateLoss();
     }
-
-    /******************************* END OF PRACTICE **********************************************/
 }

@@ -22,20 +22,17 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 public class TestPracticeFragment extends Fragment {
-    public static String PRACTICE_CATEGORY = "practice_type";
-    public static String PRACTICE_SUB_CATEGORY = "practice_sub_type";
+    public static String PRACTICE_QUERY = "practice_query";
     private MainActivity mainActivity;
     private PracticeViewModel model;
     private ViewPager pager;
     private PracticePagerAdapter pagerAdapter;
-    private PracticeType category;
-    private String subCategory;
+    private String mQuery;
 
-    public static TestPracticeFragment newInstance(PracticeType category, String subCategory) {
+    public static TestPracticeFragment newInstance(String query) {
         TestPracticeFragment fragment = new TestPracticeFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(PRACTICE_SUB_CATEGORY, subCategory);
-        bundle.putInt(PRACTICE_CATEGORY, category.ordinal());
+        bundle.putString(PRACTICE_QUERY, query);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -53,8 +50,7 @@ public class TestPracticeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
-        category = PracticeType.values()[args.getInt(PRACTICE_CATEGORY, 0)];
-        subCategory = args.getString(PRACTICE_SUB_CATEGORY);
+        mQuery = args.getString(PRACTICE_QUERY);
 
         return inflater.inflate(R.layout.fragment_questions, container, false);
     }
@@ -74,12 +70,7 @@ public class TestPracticeFragment extends Fragment {
         model.getQuestions().observe(mainActivity, data -> {
             if (mainActivity != null) pagerAdapter.addQuestions(data);
         });
-        view.post(new Runnable() {
-            @Override
-            public void run() {
-                model.setPracticeType(category, subCategory);
-            }
-        });
+        view.post(() -> model.practiceQuery(mQuery));
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();

@@ -387,6 +387,21 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         return questions;
     }
 
+    public List<DBRow> queryPracticeQuestions(String query) {
+        List<DBRow> questions = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(query, null);
+
+        // loop through all rows and add to the list
+        if (c != null && c.moveToFirst()) {
+            do {
+                questions.add(setRow(c));
+            } while (c.moveToNext());
+        }
+
+        return questions;
+    }
+
     public List<DBRow> queryQuestionsRandom() {
 
         long numQ = Math.min(getNumofQuestions(), MAX_QUESTIONS);

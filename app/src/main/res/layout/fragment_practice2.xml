@@ -310,6 +310,7 @@
                     android:textSize="@dimen/medium_font" />
 
                 <CheckBox
+                    android:id="@+id/cb_random"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true" />
@@ -330,6 +331,7 @@
                     android:textSize="@dimen/medium_font" />
 
                 <CheckBox
+                    android:id="@+id/cb_trl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true" />
@@ -350,6 +352,7 @@
                     android:textSize="@dimen/medium_font" />
 
                 <CheckBox
+                    android:id="@+id/cb_completed"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true" />
@@ -367,6 +370,7 @@
             android:padding="@dimen/padding_5sp">
 
             <Button
+                android:id="@+id/btn_start"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="Start"
