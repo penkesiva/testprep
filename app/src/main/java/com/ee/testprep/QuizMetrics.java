@@ -87,7 +87,7 @@ public class QuizMetrics {
         mQTimer = new Timer();
         initializeTimerTask();
         //schedule the timer, with a small delay of 1sec, and run mQTimerTask for every sec
-        mQTimer.schedule(mQTimerTask, 1000, 1000);
+        mQTimer.schedule(mQTimerTask, 0, 1000);
     }
 
     private void stoptimertask() {

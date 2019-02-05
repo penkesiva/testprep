@@ -1,6 +1,7 @@
 package com.ee.testprep.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,8 @@ public class TestQuizFragment extends Fragment {
     private Button startButton;
     private int counter = 5;
     private Timer countDownTimer;
+    private int quizTime;
+    private boolean quizStarted;
 
     public static TestQuizFragment newInstance(String quizName) {
         TestQuizFragment fragment = new TestQuizFragment();
@@ -65,7 +68,8 @@ public class TestQuizFragment extends Fragment {
 
         dbHelper = DataBaseHelper.getInstance(getContext());
         quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
-        quiz = new QuizMetrics(quizList, quizList.size() * TIME_INSEC_PER_QUESTION);
+        quizTime = quizList.size() * TIME_INSEC_PER_QUESTION;
+        quiz = new QuizMetrics(quizList, quizTime);
         numQuestions = quizList.size();
 
         return inflater.inflate(R.layout.fragment_questions, container, false);
@@ -83,7 +87,7 @@ public class TestQuizFragment extends Fragment {
 
         startTitle.setText("Starting quiz: " + quizName.toUpperCase());
         startSubject.setText("Subject: " + quizList.get(0).subject.toUpperCase());
-        startTime.setText("Time limit: " + getRemainingQuizTime(quizList.size() * TIME_INSEC_PER_QUESTION));
+        startTime.setText("Time limit: " + getQuizTime(quizTime));
 
         startButton = view.findViewById(R.id.quiz_q_start);
         startButton.setOnClickListener(v -> {
@@ -95,13 +99,10 @@ public class TestQuizFragment extends Fragment {
                 @Override
                 public void run() {
                     if (getActivity() == null) return;
-                    if (counter == 0) {
-                        counter = 5;
-                        countDownTimer.cancel();
+                    if (counter <= 0) {
                         getActivity().runOnUiThread(() -> {
-                            quiz.startQuiz();
-                            startCounter.setVisibility(View.GONE);
                             startDisplay.setVisibility(View.GONE);
+                            startTimeRefresh();
                         });
                     } else {
                         startCounter.setText("" + counter);
@@ -112,7 +113,6 @@ public class TestQuizFragment extends Fragment {
         });
 
         tvTimer = view.findViewById(R.id.timer);
-        tvTimer.setText("");
 
         tvProgress = view.findViewById(R.id.tv_progress);
 
@@ -138,7 +138,6 @@ public class TestQuizFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        uiRefreshTime();
 
         view.setFocusableInTouchMode(true);
         view.requestFocus();
@@ -156,7 +155,8 @@ public class TestQuizFragment extends Fragment {
         });
     }
 
-    private void uiRefreshTime() {
+    private void startTimeRefresh() {
+        countDownTimer.cancel();
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -165,7 +165,11 @@ public class TestQuizFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tvTimer.setText(getRemainingQuizTime(quiz.getRemainingTimeInSec()));
+                            if (!quizStarted) {
+                                quizStarted = true;
+                                quiz.startQuiz();
+                            }
+                            tvTimer.setText(getQuizTime(quiz.getRemainingTimeInSec() + 1));
                         }
                     });
                 }
@@ -173,12 +177,13 @@ public class TestQuizFragment extends Fragment {
         }, 0, 1000);
     }
 
-    public String getRemainingQuizTime(int time) {
-        if (time == 0) return "";
+    public String getQuizTime(int time) {
+        if (time <= 1) return "";
         int p1 = time % 60;
         int p2 = time / 60;
         int p3 = p2 % 60;
         p2 = p2 / 60;
+        Log.e("Quiz", "Quiz time: " + (p2 + "h : " + p3 + "m : " + p1 + "s"));
         if (p2 == 0) {
             return (p3 + "m : " + p1 + "s");
         } else {
