@@ -3,6 +3,7 @@ package com.ee.testprep.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -58,7 +60,7 @@ public class PracticeFragment extends Fragment {
     private List<String> mCheckedList = new ArrayList<>();
     private HashSet<String> mExamHash = new HashSet<>();
     private HashSet<String> mSubjectHash = new HashSet<>();
-
+    private StringBuffer finalQuery = new StringBuffer();
 
     public PracticeFragment() {
     }
@@ -210,6 +212,15 @@ public class PracticeFragment extends Fragment {
         btnStart = view.findViewById(R.id.btn_start);
         btnStart.setOnClickListener(v -> {
 
+            finalQuery.setLength(0);
+
+            if(mCheckedList.size() == 0) {
+                //Nothing selected
+                Toast t = Toast.makeText(getContext(), "select a filter", Toast.LENGTH_SHORT);
+                t.setGravity(Gravity.BOTTOM, 0, 200);
+                t.show();
+                return;
+            }
             //separate exam and subject lists; it is done this way as its not known at this point
             //on how to add in separate lists in the adapter
             for (int i = 0; i < mCheckedList.size(); i++) {
@@ -222,8 +233,6 @@ public class PracticeFragment extends Fragment {
             }
 
             //create a query string
-            StringBuffer finalQuery = new StringBuffer();
-
             finalQuery.append(mQRandom);
             finalQuery.append(mWhereClause);
 
@@ -237,7 +246,7 @@ public class PracticeFragment extends Fragment {
                     finalQuery.append(mOR);
             }
 
-            if(mSubjectListChecked.size() > 0)
+            if(mSubjectListChecked.size() > 0 && mExamListChecked.size() > 0)
                 finalQuery.append(mAnd);
 
             for (int i = 0; i < mSubjectListChecked.size(); i++) {
@@ -261,6 +270,8 @@ public class PracticeFragment extends Fragment {
     }
 
     private void clearLists() {
+        mCheckedList.clear();
+
         mSubjectListChecked.clear();
         mSubjectHash.clear();
 
@@ -380,6 +391,8 @@ public class PracticeFragment extends Fragment {
                 cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         mCheckedList.add(titleName);
+                    } else {
+                        mCheckedList.remove(titleName);
                     }
                 });
 
