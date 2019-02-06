@@ -6,29 +6,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ee.testprep.LoginActivity;
+import com.ee.testprep.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import com.ee.testprep.R;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class SettingsFragment extends Fragment {
+    public static boolean nightMode = false;
     private static String className = SettingsFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
-    private Button signout;
-
-    public static boolean nightMode = false;
-
-    public SettingsFragment() {
-    }
+    private TextView displayName;
+    private EditText displayNameEdit;
+    private Button displayNameEditButton;
 
     public static SettingsFragment newInstance() {
         SettingsFragment fragment = new SettingsFragment();
@@ -41,33 +39,15 @@ public class SettingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        final Switch swNightMode =  view.findViewById(R.id.sw_night_mode);
-
-        swNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked) {
-                    nightMode = true;
-                } else {
-                    nightMode = false;
-                }
-            }
-        });
-
-        return view;
-
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_settings, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(int status) {
         if (mListener != null) {
             mListener.onFragmentInteraction(status);
@@ -96,12 +76,13 @@ public class SettingsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        TextView name = view.findViewById(R.id.settings_name);
-        name.setText(user.getDisplayName());
+        displayNameEdit = view.findViewById(R.id.settings_display_name_edit);
+        displayName = view.findViewById(R.id.settings_display_name);
+        displayName.setText(user.getDisplayName());
         TextView email = view.findViewById(R.id.settings_email);
         email.setText(user.getEmail());
 
-        signout = view.findViewById(R.id.settings_signout);
+        Button signout = view.findViewById(R.id.settings_signout);
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,5 +93,58 @@ public class SettingsFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        displayNameEditButton = view.findViewById(R.id.settings_display_name_edit_button);
+        disableDisplayNameEdit();
+        displayNameEditButton.setOnClickListener(v -> {
+            if (displayNameEditButton.getText().toString().toLowerCase().equals("save")) {
+                CharSequence editedName = displayNameEdit.getText();
+
+                if (editedName == null || editedName.toString().isEmpty()) return;
+
+                FirebaseUser u = FirebaseAuth.getInstance().getCurrentUser();
+                String savedName = u.getDisplayName();
+                String newName = editedName.toString();
+
+                if (!newName.equals(savedName)) {
+                    UserProfileChangeRequest request =
+                            new UserProfileChangeRequest.Builder().setDisplayName(newName).build();
+                    u.updateProfile(request);
+                    displayName.setText(newName);
+                }
+                disableDisplayNameEdit();
+            } else {
+                enableDisplayNameEdit();
+            }
+        });
+
+//        final Switch swNightMode = view.findViewById(R.id.settings_night_mode);
+//
+//        swNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+//                if (isChecked) {
+//                    nightMode = true;
+//                } else {
+//                    nightMode = false;
+//                }
+//            }
+//        });
+    }
+
+    private void enableDisplayNameEdit() {
+        displayNameEditButton.setText("SAVE");
+        displayNameEdit.setVisibility(View.VISIBLE);
+        displayNameEdit.setText(displayName.getText());
+        displayName.setVisibility(View.GONE);
+    }
+
+    private void disableDisplayNameEdit() {
+        displayNameEditButton.setText("EDIT");
+        InputMethodManager imm =
+                (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(displayNameEdit.getWindowToken(), 0);
+        displayNameEdit.setVisibility(View.GONE);
+        displayName.setVisibility(View.VISIBLE);
     }
 }

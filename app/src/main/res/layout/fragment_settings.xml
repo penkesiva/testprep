@@ -7,48 +7,60 @@
     android:padding="@dimen/padding_16sp">
 
     <LinearLayout
-        android:id="@+id/user_info"
+        android:id="@+id/settings_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User Info"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/padding_24sp"
             android:textStyle="bold"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text="Display Name:" />
+                android:text="Display Name:"
+                android:textColor="@android:color/black"/>
+
+            <EditText
+                android:id="@+id/settings_display_name_edit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/padding_small"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/small_font"
+                android:textStyle="bold"
+                android:visibility="gone"/>
 
             <TextView
-                android:id="@+id/settings_name"
-                android:layout_width="wrap_content"
+                android:id="@+id/settings_display_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_small"
-                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/small_font"
                 android:textStyle="bold"/>
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/settings_display_name_edit_button"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/ic_menu_edit"
-                android:scaleType="fitXY"
-                android:adjustViewBounds="true" />
+                android:background="@drawable/button2_drawable"
+                android:text="Edit"/>
 
         </LinearLayout>
 
@@ -61,28 +73,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email:" />
+                android:text="Email:"
+                android:textColor="@android:color/black"/>
 
             <TextView
                 android:id="@+id/settings_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/padding_small"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textStyle="bold"/>
-
-            <Space
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/padding_small"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/settings_signout"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button2_drawable"
-                android:layout_gravity="right"
                 android:text="SIGN OUT"/>
 
         </LinearLayout>
@@ -92,17 +101,17 @@
     <View style="@style/FullDivider"/>
 
 
-    <Switch
-        android:id="@+id/sw_night_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Night Mode"/>
+    <!--<Switch-->
+    <!--android:id="@+id/settings_night_mode"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Night Mode"/>-->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Toggles background color for pleasant reading at night"
-        android:textSize="12sp"/>
+    <!--<TextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="Toggles background color for pleasant reading at night"-->
+    <!--android:textSize="12sp"/>-->
 
-    <View style="@style/FullDivider"/>
+    <!--<View style="@style/FullDivider"/>-->
 </LinearLayout>
