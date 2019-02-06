@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FE9A2E</color>
+    <color name="india_saffron">#FF9933</color>
+    <color name="india_green">#138808</color>
+    <color name="india_navy_blue">#000080</color>
+    <color name="india_navy_blue_lite_bg">#19000080</color>
+
+    <color name="colorPrimary">#FF9933</color>
     <color name="colorPrimary2">#0174DF</color>
     <color name="colorPrimary3">#0080FF</color>
     <color name="colorPrimaryDark">#303F9F</color>
