@@ -162,6 +162,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 // Store values at the time of the login attempt.
                 email = mSignInEmailView.getText().toString();
+                name = null;
 
                 if (validateSignInForm()) {
                     signInUser();
@@ -486,11 +487,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Toast toast = new Toast(getApplicationContext());
             if (task.isSuccessful()) {
                 FirebaseAuth auth = FirebaseAuth.getInstance();
-                UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(name)
-                        .build();
-                FirebaseUser user = auth.getCurrentUser();
-                user.updateProfile(request);
+                if (name != null) {
+                    UserProfileChangeRequest request =
+                            new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                    FirebaseUser user = auth.getCurrentUser();
+                    user.updateProfile(request);
+                }
                 hideKeyBoard();
                 launchMainActivity();
                 showToast("Authentication Successful!");
