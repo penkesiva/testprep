@@ -263,10 +263,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                         CURRENT_TAG = TAG_RATEUS;
                         break;
 
-                    case R.id.nav_donate:
-                        navItemIndex = INDEX_DONATE;
-                        CURRENT_TAG = TAG_DONATE;
-                        break;
+//                    case R.id.nav_donate:
+//                        navItemIndex = INDEX_DONATE;
+//                        CURRENT_TAG = TAG_DONATE;
+//                        break;
 
                     default:
                         navItemIndex = INDEX_HOME;
