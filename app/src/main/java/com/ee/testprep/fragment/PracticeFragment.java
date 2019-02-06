@@ -57,10 +57,12 @@ public class PracticeFragment extends Fragment {
     private String mQAllDifficulty = " DIFFICULTY BETWEEN 0 and 9 ";
     private List<String> mExamListChecked = new ArrayList<>();
     private List<String> mSubjectListChecked = new ArrayList<>();
+    private List<String> mDifficultyListChecked = new ArrayList<>();
     private List<String> mCheckedList = new ArrayList<>();
     private HashSet<String> mExamHash = new HashSet<>();
     private HashSet<String> mSubjectHash = new HashSet<>();
     private StringBuffer finalQuery = new StringBuffer();
+    private boolean checked = false;
 
     public PracticeFragment() {
     }
@@ -83,6 +85,17 @@ public class PracticeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_practice2, container, false);
 
+        setUpExamSection(view);
+        setUpSubjectSection(view);
+        setUpYearSection(view);
+        setUpDifficultySection(view);
+        setUpOtherSection(view);
+        setUpStartButton(view);
+
+        return view;
+    }
+
+    private void setUpExamSection(View view) {
         // EXAM expandable view - start
         examGridView = view.findViewById(R.id.expanded_exam_grid);
 
@@ -100,7 +113,9 @@ public class PracticeFragment extends Fragment {
 
         examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
         examGridView.setAdapter(examAdapter);
+    }
 
+    private void setUpSubjectSection(View view) {
         // SUBJECT - expandable view start
         subjectGridView = view.findViewById(R.id.expanded_subject_grid);
 
@@ -121,7 +136,9 @@ public class PracticeFragment extends Fragment {
 
         setDynamicHeight(subjectGridView, 3);
         setDynamicHeight(examGridView, 3);
+    }
 
+    private void setUpYearSection(View view) {
         // Year - range bar setup
         final CrystalRangeSeekbar rangeSeekbar = view.findViewById(R.id.range_seekbar);
         ArrayList<String> yearList = MainActivity.getYears();
@@ -135,7 +152,9 @@ public class PracticeFragment extends Fragment {
             tvMin.setText("" + minValue.intValue());
             tvMax.setText("" + maxValue.intValue());
         });
+    }
 
+    private void setUpDifficultySection(View view) {
         // Difficulty
         cbEasy = view.findViewById(R.id.btn_easy);
         cbEasy.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -177,7 +196,9 @@ public class PracticeFragment extends Fragment {
                 mCheckedList.remove(mQAllDifficulty);
             }
         });
+    }
 
+    private void setUpOtherSection(View view) {
         //Others
         cbRandom = view.findViewById(R.id.cb_random);
         cbTRL = view.findViewById(R.id.cb_trl);
@@ -207,66 +228,108 @@ public class PracticeFragment extends Fragment {
                 mQCompletedQ = "";
             }
         });
+    }
 
+    private void setUpStartButton(View view) {
         //Start
         btnStart = view.findViewById(R.id.btn_start);
-        btnStart.setOnClickListener(v -> {
+        btnStart.setOnClickListener(v -> setUpStart());
+    }
 
-            finalQuery.setLength(0);
+    private void setUpStart() {
 
-            if(mCheckedList.size() == 0) {
-                //Nothing selected
-                Toast t = Toast.makeText(getContext(), "select a filter", Toast.LENGTH_SHORT);
-                t.setGravity(Gravity.BOTTOM, 0, 200);
-                t.show();
-                return;
+        finalQuery.setLength(0);
+
+        if (mCheckedList.size() == 0) {
+            Toast t = Toast.makeText(getContext(), "select a filter", Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.BOTTOM, 0, 200);
+            t.show();
+            return;
+        }
+
+        //create a query string
+        finalQuery.append(mQRandom);
+        finalQuery.append(mWhereClause);
+
+        if (!mQTRL.equals("")) {
+            finalQuery.append(mQTRL);
+            checked = true;
+        }
+
+        if (!mQCompletedQ.equals("")) {
+            if (checked) finalQuery.append(mAnd);
+
+            finalQuery.append(mQCompletedQ);
+            checked = true;
+        }
+
+        //separate exam and subject lists; it is done this way as its not known at this point
+        //on how to add in separate lists in the adapter
+        for (int i = 0; i < mCheckedList.size(); i++) {
+            String str = mCheckedList.get(i);
+            if (mExamHash.contains(str)) {
+                mExamListChecked.add(str);
+            } else if (mSubjectHash.contains(str)) {
+                mSubjectListChecked.add(str);
+            } else {
+                mDifficultyListChecked.add(str);
             }
-            //separate exam and subject lists; it is done this way as its not known at this point
-            //on how to add in separate lists in the adapter
-            for (int i = 0; i < mCheckedList.size(); i++) {
-                String str = mCheckedList.get(i);
-                if(mExamHash.contains(str)) {
-                    mExamListChecked.add(str);
-                } else if(mSubjectHash.contains(str)) {
-                    mSubjectListChecked.add(str);
-                }
-            }
+        }
 
-            //create a query string
-            finalQuery.append(mQRandom);
-            finalQuery.append(mWhereClause);
+        int size = mExamListChecked.size();
 
-            for (int i = 0; i < mExamListChecked.size(); i++) {
-                //exam item
-                finalQuery.append(" examName=\"");
-                finalQuery.append(mExamListChecked.get(i));
-                finalQuery.append("\"");
+        if (checked && size > 0) {
+            finalQuery.append(mAnd);
+            //finalQuery.append(" (");
+        }
 
-                if (i != mExamListChecked.size() - 1)
-                    finalQuery.append(mOR);
-            }
+        for (int i = 0; i < size; i++) {
+            finalQuery.append("examName=\"");
+            finalQuery.append(mExamListChecked.get(i));
+            finalQuery.append("\"");
+            checked = true;
 
-            if(mSubjectListChecked.size() > 0 && mExamListChecked.size() > 0)
-                finalQuery.append(mAnd);
+            if (i < size - 1)
+                finalQuery.append(mOR);
+        }
+        //finalQuery.append(")");
 
-            for (int i = 0; i < mSubjectListChecked.size(); i++) {
-                //subject item
-                finalQuery.append(" subject=\"");
-                finalQuery.append(mSubjectListChecked.get(i));
-                finalQuery.append("\"");
+        size = mSubjectListChecked.size();
 
-                if (i != mSubjectListChecked.size() - 1)
-                    finalQuery.append(mOR);
-            }
-            Log.d(TAG, finalQuery.toString());
+        if (checked && size > 0) {
+            finalQuery.append(mAnd);
+            //finalQuery.append(" (");
+        }
 
-            clearLists();
+        for (int i = 0; i < size; i++) {
+            finalQuery.append("subject=\"");
+            finalQuery.append(mSubjectListChecked.get(i));
+            finalQuery.append("\"");
+            checked = true;
 
-            onButtonPressed(MainActivity.STATUS_PRACTICE_MORE, finalQuery.toString());
+            if (i < size - 1)
+                finalQuery.append(mOR);
+        }
+        //finalQuery.append(")");
 
-        });
+        size = mDifficultyListChecked.size();
 
-        return view;
+        if (checked && size > 0) {
+            finalQuery.append(mAnd);
+        }
+
+        for (int i = 0; i < size; i++) {
+            finalQuery.append(mDifficultyListChecked.get(i));
+
+            if (i < size - 1)
+                finalQuery.append(mOR);
+        }
+
+        Log.d(TAG, finalQuery.toString());
+
+        clearLists();
+
+        onButtonPressed(MainActivity.STATUS_PRACTICE_MORE, finalQuery.toString());
     }
 
     private void clearLists() {
@@ -277,6 +340,10 @@ public class PracticeFragment extends Fragment {
 
         mExamListChecked.clear();
         mExamHash.clear();
+
+        mDifficultyListChecked.clear();
+
+        checked = false;
     }
 
     private void setDifficultyGUI(boolean checked) {
