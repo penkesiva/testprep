@@ -32,6 +32,7 @@ import com.ee.testprep.fragment.SettingsFragment;
 import com.ee.testprep.fragment.StatsFragment;
 import com.ee.testprep.fragment.TestPracticeFragment;
 import com.ee.testprep.fragment.TestQuizFragment;
+import com.ee.testprep.fragment.TestsListFragment;
 import com.ee.testprep.fragment.practice.ExamFragment;
 import com.ee.testprep.fragment.practice.SubjectFragment;
 import com.ee.testprep.fragment.practice.YearFragment;
@@ -373,10 +374,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 return PracticeFragment.newInstance();
             case INDEX_QUIZ:
                 ArrayList<String> quizzes = (ArrayList<String>) dbHelper.queryAllQuizzes();
-                return QuizFragment.newInstance(quizzes);
+                return TestsListFragment.newInstance(quizzes);
             case INDEX_MODELTEST:
                 ArrayList<String> modelTests = (ArrayList<String>) dbHelper.queryAllModelTests();
-                return ModelTestFragment.newInstance(modelTests);
+                return TestsListFragment.newInstance(modelTests);
             case INDEX_STATS:
                 return new StatsFragment();
             case INDEX_SETTINGS:
