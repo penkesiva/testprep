@@ -2,9 +2,11 @@ package com.ee.testprep;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
@@ -22,10 +24,8 @@ import com.ee.testprep.db.PracticeViewModel;
 import com.ee.testprep.fragment.DonateFragment;
 import com.ee.testprep.fragment.FeedbackFragment;
 import com.ee.testprep.fragment.HomeFragment;
-import com.ee.testprep.fragment.ModelTestFragment;
 import com.ee.testprep.fragment.OnFragmentInteractionListener;
 import com.ee.testprep.fragment.PracticeFragment;
-import com.ee.testprep.fragment.QuizFragment;
 import com.ee.testprep.fragment.RateUsFragment;
 import com.ee.testprep.fragment.ResultsFragment;
 import com.ee.testprep.fragment.SettingsFragment;
@@ -33,9 +33,6 @@ import com.ee.testprep.fragment.StatsFragment;
 import com.ee.testprep.fragment.TestPracticeFragment;
 import com.ee.testprep.fragment.TestQuizFragment;
 import com.ee.testprep.fragment.TestsListFragment;
-import com.ee.testprep.fragment.practice.ExamFragment;
-import com.ee.testprep.fragment.practice.SubjectFragment;
-import com.ee.testprep.fragment.practice.YearFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -257,12 +254,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
                     case R.id.nav_rateus:
                         // Uncomment after testing
-                        //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse
-                        // ("market://details?id=PackageName")));
-                        //return true;
-                        navItemIndex = INDEX_RATEUS;
-                        CURRENT_TAG = TAG_RATEUS;
-                        break;
+                        startActivity(new Intent(Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=" + getPackageName())));
+                        return true;
+                    //navItemIndex = INDEX_RATEUS;
+                    //CURRENT_TAG = TAG_RATEUS;
+                    //break;
 
 //                    case R.id.nav_donate:
 //                        navItemIndex = INDEX_DONATE;
