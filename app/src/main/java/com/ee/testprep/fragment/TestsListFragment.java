@@ -12,8 +12,6 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.MetaData;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
