@@ -1,7 +1,6 @@
 package com.ee.testprep.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,9 @@ import com.ee.testprep.QuizMetrics;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
+import com.ee.testprep.db.Test;
+import com.ee.testprep.db.UserDataViewModel;
+import com.ee.testprep.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -23,11 +25,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 public class TestQuizFragment extends Fragment {
-    private static final int TIME_INSEC_PER_QUESTION = 30; //30s per question
     private static String QUIZ_NAME = "quiz_name";
+
+    private UserDataViewModel viewModel;
+    private Test userdata;
     private AlertDialog alertDialog;
     private int saveQuizStatus;
     private ViewPager pager;
@@ -61,17 +66,32 @@ public class TestQuizFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            quizName = getArguments().getString(QUIZ_NAME);
+        }
+        viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Bundle args = getArguments();
-        quizName = args.getString(QUIZ_NAME);
-
+        viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
+        //userdata = TestDatabase.getDatabase(getContext()).testDao().findByName(quizName);
         dbHelper = DataBaseHelper.getInstance(getContext());
         quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
-        quizTime = quizList.size() * TIME_INSEC_PER_QUESTION;
+        quizTime = Constants.getQuizTime(quizList.size());
         quiz = new QuizMetrics(quizList, quizTime);
         numQuestions = quizList.size();
 
+        viewModel.getUserData().observe(getActivity(), data -> {
+            userdata = data;
+            if (userdata != null) {
+                quizTime = Constants.getQuizTime(quizList.size()) - userdata.timeUsed;
+                quiz.updateAllotedTime(quizTime);
+            }
+        });
         return inflater.inflate(R.layout.fragment_questions, container, false);
     }
 
@@ -87,7 +107,7 @@ public class TestQuizFragment extends Fragment {
 
         startTitle.setText("Starting quiz: " + quizName.toUpperCase());
         startSubject.setText("Subject: " + quizList.get(0).subject.toUpperCase());
-        startTime.setText("Time limit: " + getQuizTime(quizTime));
+        startTime.setText("Time limit: " + Constants.getTime(quizTime));
 
         startButton = view.findViewById(R.id.quiz_q_start);
         startButton.setOnClickListener(v -> {
@@ -169,25 +189,11 @@ public class TestQuizFragment extends Fragment {
                             quizStarted = true;
                             quiz.startQuiz();
                         }
-                        tvTimer.setText(getQuizTime(quiz.getRemainingTimeInSec() + 1));
+                        tvTimer.setText(Constants.getTime(quiz.getRemainingTimeInSec() + 1));
                     });
                 }
             }
         }, 0, 1000);
-    }
-
-    public String getQuizTime(int time) {
-        if (time <= 1) return "";
-        int p1 = time % 60;
-        int p2 = time / 60;
-        int p3 = p2 % 60;
-        p2 = p2 / 60;
-        Log.e("Quiz", "Quiz time: " + (p2 + "h : " + p3 + "m : " + p1 + "s"));
-        if (p2 == 0) {
-            return (p3 + "m : " + p1 + "s");
-        } else {
-            return (p2 + "h : " + p3 + "m : " + p1 + "s");
-        }
     }
 
     public void uiRefreshCount(final int currentQuestion) {
@@ -208,9 +214,7 @@ public class TestQuizFragment extends Fragment {
 
         builder.setPositiveButton("EXIT", (dialog, id) -> {
             if (saveQuizStatus == 0) {
-                for (DBRow q : quizList) {
-                    // TODO: save quiz
-                }
+                saveUserData();
             }
             getFragmentManager().popBackStack();
         });
@@ -220,6 +224,27 @@ public class TestQuizFragment extends Fragment {
 
         alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void saveUserData() {
+        int correct = 0;
+        int wrong = 0;
+
+        for (DBRow q : quizList) {
+            if (q.userstatus.isEmpty()) {
+                continue;
+            }
+
+            if (q.userstatus == q.answer) {
+                correct++;
+            } else {
+                wrong++;
+            }
+        }
+
+        int timeUsed = Constants.getQuizTime(quizList.size()) - quiz.getRemainingTimeInSec();
+        viewModel.updateUserData(new Test(quizName, numQuestions, (correct + wrong), correct, wrong,
+                timeUsed));
     }
 
     private class SlidePagerAdapter extends FragmentStatePagerAdapter {

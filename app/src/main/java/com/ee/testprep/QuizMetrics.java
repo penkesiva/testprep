@@ -1,10 +1,10 @@
 package com.ee.testprep;
 
+import com.ee.testprep.db.DBRow;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import com.ee.testprep.db.DBRow;
 
 public class QuizMetrics {
     private int mNumQuestions;
@@ -35,6 +35,10 @@ public class QuizMetrics {
         mTimeAllotedInMS = timeInSec * 1000;
         mCurrTime = System.currentTimeMillis();
         mQStatus = QuizStatus.QSTARTED;
+    }
+
+    public void updateAllotedTime(int timeInSec) {
+        mTimeAllotedInMS = timeInSec * 1000;
     }
 
     public void startQuiz() {

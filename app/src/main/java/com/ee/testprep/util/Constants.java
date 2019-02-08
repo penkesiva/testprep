@@ -6,6 +6,13 @@ public class Constants {
     public static final int TIME_PER_QUESTION = 30; //30 seconds per question
 
     /*
+     * Get total quiz time in seconds
+     */
+    public static int getQuizTime(int numQuestions) {
+        return numQuestions * TIME_PER_QUESTION;
+    }
+
+    /*
      * Get time in readable string format
      */
     public static String getTime(int time) {
