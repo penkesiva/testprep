@@ -14,6 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:clickable="true"
+        android:focusable="true"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
@@ -32,6 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
+                    android:text="title name"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/big_font"
                     android:textStyle="bold"/>
@@ -56,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:padding="8dp"
+                    android:text="subject"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/medium2_font"/>
 

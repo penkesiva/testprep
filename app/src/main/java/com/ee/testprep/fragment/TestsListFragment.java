@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
+import com.ee.testprep.db.MetaData;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ public class TestsListFragment extends Fragment {
 
     private static final String TESTS_LIST = "tests_list";
     private OnFragmentInteractionListener mListener;
-    private List<String> mTestsList;
+    private List<MetaData> mTestsList;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -40,7 +43,7 @@ public class TestsListFragment extends Fragment {
         }
     };
 
-    public static TestsListFragment newInstance(ArrayList<String> testsList) {
+    public static TestsListFragment newInstance(ArrayList<MetaData> testsList) {
         TestsListFragment fragment = new TestsListFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable(TESTS_LIST, testsList);
@@ -52,7 +55,7 @@ public class TestsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mTestsList = (List<String>) getArguments().getSerializable(TESTS_LIST);
+            mTestsList = (List<MetaData>) getArguments().getSerializable(TESTS_LIST);
         }
     }
 
@@ -105,14 +108,11 @@ public class TestsListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TestsListItemViewHolder holder, int position) {
-            holder.titleView.setText(mTestsList.get(position).toUpperCase());
-            holder.subjectView.setText("Subject: " + "History");
-
-            holder.titleView.setTag(mTestsList.get(position));
-            holder.titleView.setOnClickListener(onListItemClickListener);
-            holder.subjectView.setTag(mTestsList.get(position));
-            holder.subjectView.setOnClickListener(onListItemClickListener);
-            holder.cardView.setTag(mTestsList.get(position));
+            holder.titleView.setText(mTestsList.get(position).mName.toUpperCase());
+            holder.subjectView.setText(mTestsList.get(position).mSubject);
+            holder.timeView.setText(mTestsList.get(position).mTime);
+            //set view's tag with quizname; it is used to query with quizname later
+            holder.cardView.setTag(mTestsList.get(position).mName);
             holder.cardView.setOnClickListener(onListItemClickListener);
         }
 
@@ -122,14 +122,16 @@ public class TestsListFragment extends Fragment {
         }
 
         public class TestsListItemViewHolder extends RecyclerView.ViewHolder {
-            public TextView titleView;
-            public TextView subjectView;
-            public CardView cardView;
+            private TextView titleView;
+            private TextView subjectView;
+            private TextView timeView;
+            private CardView cardView;
 
             public TestsListItemViewHolder(View root) {
                 super(root);
                 titleView = root.findViewById(R.id.tests_item_title);
                 subjectView = root.findViewById(R.id.tests_item_subject);
+                timeView = root.findViewById(R.id.tests_item_time);
                 cardView = root.findViewById(R.id.tests_card_view);
             }
         }

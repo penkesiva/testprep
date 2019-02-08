@@ -86,6 +86,18 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         onCreate(db);
     }
 
+    private String createMetaTable(String tableName) {
+        return "CREATE TABLE "
+                + tableName + "(" +
+                BaseColumns._ID + " INTEGER PRIMARY KEY, "
+                + MetaData.KEY_NAME + " TEXT, "
+                + MetaData.KEY_EXAM + " TEXT, "
+                + MetaData.KEY_SUBJECT + " TEXT, "
+                + MetaData.KEY_LANGUAGE + " TEXT, "
+                + MetaData.KEY_TOTALQ + " TEXT, "
+                + MetaData.KEY_TIME + " TEXT)";
+    }
+
     private String createTable(String tableName) {
         return "CREATE TABLE "
                 + tableName + "(" +
@@ -138,7 +150,12 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 Worksheet worksheet = workbook.getWorksheets().get(i);
                 String sheetName = worksheet.getName();
                 tableList.add(sheetName);//sheetName is the table name
-                db.execSQL(createTable(sheetName));
+
+                if (sheetName.contains("metadata")) {
+                    db.execSQL(createMetaTable(sheetName));
+                } else {
+                    db.execSQL(createTable(sheetName));
+                }
             }
         }
     }
@@ -161,68 +178,108 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 if (workbook != null) {
                     Worksheet worksheet = workbook.getWorksheets().get(tableName);
                     Iterator<Row> rowIterator = worksheet.getCells().getRows().iterator();
-                    rowIterator.hasNext();//skip header TODO
+                    rowIterator.hasNext();//skip header
 
-                    while (rowIterator.hasNext()) {
-                        int colIndex = 0;
-                        Row row = rowIterator.next();
-                        Iterator<Cell> cellIterator = row.iterator();
-                        DBRow dbRow = new DBRow();
+                    //metadata
+                    if (tableName.contains("metadata")) {
+                        while (rowIterator.hasNext()) {
+                            int colIndex = 0;
+                            Row row = rowIterator.next();
+                            Iterator<Cell> cellIterator = row.iterator();
+                            MetaData metaData = new MetaData();
 
-                        //dont change the case numbers as they relate to column numbers
-                        while (cellIterator.hasNext()) {
-                            Cell cell = cellIterator.next();
-                            switch (colIndex) {
-                                case 0:
-                                    dbRow.exam = cell.getDisplayStringValue();
-                                    break;
-                                case 1:
-                                    dbRow.year = cell.getDisplayStringValue();
-                                    break;
-                                case 2:
-                                    dbRow.qNo = Integer.valueOf(cell.getDisplayStringValue());
-                                    break;
-                                case 3:
-                                    dbRow.question = cell.getDisplayStringValue();
-                                    break;
-                                case 4:
-                                    dbRow.optionA = cell.getDisplayStringValue();
-                                    break;
-                                case 5:
-                                    dbRow.optionB = cell.getDisplayStringValue();
-                                    break;
-                                case 6:
-                                    dbRow.optionC = cell.getDisplayStringValue();
-                                    break;
-                                case 7:
-                                    dbRow.optionD = cell.getDisplayStringValue();
-                                    break;
-                                case 8:
-                                    dbRow.answer = cell.getDisplayStringValue();
-                                    break;
-                                case 9:
-                                    dbRow.ipc = cell.getDisplayStringValue();
-                                    break;
-                                case 10:
-                                    dbRow.subject = cell.getDisplayStringValue();
-                                    break;
-                                case 11:
-                                    dbRow.chapter = Integer.valueOf(cell.getDisplayStringValue());
-                                    break;
-                                case 12:
-                                    dbRow.difficulty = Integer.valueOf(cell.getDisplayStringValue());
-                                    break;
-                                case 13:
-                                    dbRow.userstatus = "";
-                                    break;
+                            while (cellIterator.hasNext()) {
+                                Cell cell = cellIterator.next();
+                                switch (colIndex) {
+                                    case 0:
+                                        metaData.mName = cell.getDisplayStringValue();
+                                        break;
+                                    case 1:
+                                        metaData.mExam = cell.getDisplayStringValue();
+                                        break;
+                                    case 2:
+                                        metaData.mSubject = cell.getDisplayStringValue();
+                                        break;
+                                    case 3:
+                                        metaData.mLanguage = cell.getDisplayStringValue();
+                                        break;
+                                    case 4:
+                                        metaData.mTotalQ = cell.getDisplayStringValue();
+                                        break;
+                                    case 6:
+                                        metaData.mTime = cell.getDisplayStringValue();
+                                        break;
 
-                                default:
-                                    break;
+                                    default:
+                                        break;
+                                }
+                                colIndex++;
                             }
-                            colIndex++;
+                            insertMetaRow(tableName, metaData);
                         }
+                    } else {
+                        //main data
+                        while (rowIterator.hasNext()) {
+                            int colIndex = 0;
+                            Row row = rowIterator.next();
+                            Iterator<Cell> cellIterator = row.iterator();
+                            DBRow dbRow = new DBRow();
 
-                        insertRow(tableName, dbRow);
+                            //dont change the case numbers as they relate to column numbers
+                            while (cellIterator.hasNext()) {
+                                Cell cell = cellIterator.next();
+                                switch (colIndex) {
+                                    case 0:
+                                        dbRow.exam = cell.getDisplayStringValue();
+                                        break;
+                                    case 1:
+                                        dbRow.year = cell.getDisplayStringValue();
+                                        break;
+                                    case 2:
+                                        dbRow.qNo = Integer.valueOf(cell.getDisplayStringValue());
+                                        break;
+                                    case 3:
+                                        dbRow.question = cell.getDisplayStringValue();
+                                        break;
+                                    case 4:
+                                        dbRow.optionA = cell.getDisplayStringValue();
+                                        break;
+                                    case 5:
+                                        dbRow.optionB = cell.getDisplayStringValue();
+                                        break;
+                                    case 6:
+                                        dbRow.optionC = cell.getDisplayStringValue();
+                                        break;
+                                    case 7:
+                                        dbRow.optionD = cell.getDisplayStringValue();
+                                        break;
+                                    case 8:
+                                        dbRow.answer = cell.getDisplayStringValue();
+                                        break;
+                                    case 9:
+                                        dbRow.ipc = cell.getDisplayStringValue();
+                                        break;
+                                    case 10:
+                                        dbRow.subject = cell.getDisplayStringValue();
+                                        break;
+                                    case 11:
+                                        dbRow.chapter = Integer.valueOf(cell.getDisplayStringValue());
+                                        break;
+                                    case 12:
+                                        dbRow.difficulty = Integer.valueOf(cell.getDisplayStringValue());
+                                        break;
+                                    case 13:
+                                        dbRow.userstatus = "";
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+                                colIndex++;
+                            }
+
+                            insertRow(tableName, dbRow);
+                        }
                     }
                 }
             }
@@ -242,7 +299,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         SQLiteDatabase db = this.getWritableDatabase();
 
         //avoid any empty rows
-        if(row.question == null) return;
+        if (row.question == null) return;
 
         ContentValues values = new ContentValues();
         values.put(DBRow.KEY_EXAM, row.exam);
@@ -259,6 +316,24 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         values.put(DBRow.KEY_CHAPTER, row.chapter);
         values.put(DBRow.KEY_DIFFICULTY, row.difficulty);
         values.put(DBRow.KEY_USER_STATUS, row.userstatus);
+
+        // insert row
+        db.insert(tableName, null, values);
+    }
+
+    private void insertMetaRow(String tableName, MetaData row) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        //avoid any empty rows
+        if (row.mExam == null || row.mName.compareTo("") == 0) return;
+
+        ContentValues values = new ContentValues();
+        values.put(MetaData.KEY_NAME, row.mName);
+        values.put(MetaData.KEY_EXAM, row.mExam);
+        values.put(MetaData.KEY_SUBJECT, row.mSubject);
+        values.put(MetaData.KEY_LANGUAGE, row.mLanguage);
+        values.put(MetaData.KEY_TOTALQ, row.mTotalQ);
+        values.put(MetaData.KEY_TIME, row.mTime);
 
         // insert row
         db.insert(tableName, null, values);
@@ -440,20 +515,17 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     /*
         return list of all quiz names aka table names starting with suffix quiz
      */
-    public List<String> queryAllQuizzes() {
+    public List<MetaData> queryAllQuizzes() {
 
-        List<String> quizTableList = new ArrayList<>();
-        String selectQuery = queryStringAllTables();
+        List<MetaData> quizTableList = new ArrayList<>();
+        String selectQuery = queryStringMetaData(TABLE_QUIZ);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
         // loop through all rows and add to the list
         if (c != null && c.moveToFirst()) {
             do {
-                String tableName = c.getString(c.getColumnIndex("name"));
-                if(tableName.contains(TABLE_QUIZ)) {
-                    quizTableList.add(tableName);
-                }
+                quizTableList.add(setMetaRow(c));
             } while (c.moveToNext());
         }
 
@@ -463,24 +535,25 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     /*
     return list of all modeltest names aka table names starting with suffix modeltest
  */
-    public List<String> queryAllModelTests() {
+    public List<MetaData> queryAllModelTests() {
 
-        List<String> modeltestTableList = new ArrayList<>();
-        String selectQuery = queryStringAllTables();
+        List<MetaData> modeltestTableList = new ArrayList<>();
+        String selectQuery = queryStringMetaData(TABLE_MODELTEST);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
         // loop through all rows and add to the list
         if (c != null && c.moveToFirst()) {
             do {
-                String tableName = c.getString(c.getColumnIndex("name"));
-                if(tableName.contains(TABLE_MODELTEST)) {
-                    modeltestTableList.add(tableName);
-                }
+                modeltestTableList.add(setMetaRow(c));
             } while (c.moveToNext());
         }
 
         return modeltestTableList;
+    }
+
+    private String queryStringMetaData(String type) {
+        return "SELECT * FROM metadata_" + type;
     }
 
     private String queryStringAllTables() {
@@ -590,6 +663,19 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         }
 
         return questions;
+    }
+
+    private MetaData setMetaRow(Cursor c) {
+
+        MetaData row = new MetaData();
+        row.mName = c.getString(c.getColumnIndex(MetaData.KEY_NAME));
+        row.mExam = c.getString(c.getColumnIndex(MetaData.KEY_EXAM));
+        row.mSubject = c.getString(c.getColumnIndex(MetaData.KEY_SUBJECT));
+        row.mLanguage = c.getString(c.getColumnIndex(MetaData.KEY_LANGUAGE));
+        row.mTotalQ = c.getString(c.getColumnIndex(MetaData.KEY_TOTALQ));
+        row.mTime = c.getString(c.getColumnIndex(MetaData.KEY_TIME));
+
+        return row;
     }
 
     private DBRow setRow(Cursor c) {
@@ -728,28 +814,28 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 tests.add(new Test(subject, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
             }
         } else if (testType == TestType.QUIZ) {
-            List<String> quizzes = queryAllQuizzes();
-            for (String quiz : quizzes) {
-                query = "SELECT COUNT(*) FROM " + quiz;
+            List<MetaData> quizzes = queryAllQuizzes();
+            for (MetaData quiz : quizzes) {
+                query = "SELECT COUNT(*) FROM " + quiz.mName;
                 maxQuestions = runCountQuery(query);
                 answeredQuestions = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS +
                         " != ''" + " AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
                 correctAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
                 wrongAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(quiz, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(quiz.mName, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
             }
         } else if (testType == TestType.MODELTEST) {
-            List<String> quizzes = queryAllModelTests();
-            for (String quiz : quizzes) {
-                query = "SELECT COUNT(*) FROM " + quiz;
+            List<MetaData> quizzes = queryAllModelTests();
+            for (MetaData quiz : quizzes) {
+                query = "SELECT COUNT(*) FROM " + quiz.mName;
                 maxQuestions = runCountQuery(query);
                 answeredQuestions = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS +
                         " != ''" + " AND " + DBRow.KEY_USER_STATUS + " != 'Z'");
                 correctAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
                 wrongAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(quiz, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(quiz.mName, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
             }
         } else if (testType == TestType.ALL) {
             tests.add(TestType.QBANK.getSummary(context));

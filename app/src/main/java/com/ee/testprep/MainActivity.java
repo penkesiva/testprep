@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ee.testprep.db.DataBaseHelper;
+import com.ee.testprep.db.MetaData;
 import com.ee.testprep.db.PracticeViewModel;
 import com.ee.testprep.fragment.DonateFragment;
 import com.ee.testprep.fragment.FeedbackFragment;
@@ -370,10 +371,10 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             case INDEX_LEARN:
                 return PracticeFragment.newInstance();
             case INDEX_QUIZ:
-                ArrayList<String> quizzes = (ArrayList<String>) dbHelper.queryAllQuizzes();
+                ArrayList<MetaData> quizzes = (ArrayList<MetaData>) dbHelper.queryAllQuizzes();
                 return TestsListFragment.newInstance(quizzes);
             case INDEX_MODELTEST:
-                ArrayList<String> modelTests = (ArrayList<String>) dbHelper.queryAllModelTests();
+                ArrayList<MetaData> modelTests = (ArrayList<MetaData>) dbHelper.queryAllModelTests();
                 return TestsListFragment.newInstance(modelTests);
             case INDEX_STATS:
                 return new StatsFragment();
