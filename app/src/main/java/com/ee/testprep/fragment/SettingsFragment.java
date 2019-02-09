@@ -91,6 +91,7 @@ public class SettingsFragment extends Fragment {
                 String action = "SignOut";
                 intent.putExtra("ACTION", action);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
