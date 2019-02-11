@@ -9,7 +9,7 @@ android {
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
-        setProperty("archivesBaseName", "TestPrep")//app_name
+        setProperty("archivesBaseName", "EqualityIAS")//app_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
