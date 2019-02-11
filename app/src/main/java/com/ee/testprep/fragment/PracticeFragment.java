@@ -16,17 +16,18 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
+import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
+import com.ee.testprep.MainActivity;
+import com.ee.testprep.R;
+import com.ee.testprep.db.DataBaseHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
-import com.ee.testprep.MainActivity;
-import com.ee.testprep.R;
-import com.ee.testprep.db.DataBaseHelper;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 public class PracticeFragment extends Fragment {
 
@@ -79,9 +80,13 @@ public class PracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_practice2, container, false);
+    }
 
-        View view = inflater.inflate(R.layout.fragment_practice2, container, false);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         setUpExamSection(view);
         setUpSubjectSection(view);
@@ -89,8 +94,6 @@ public class PracticeFragment extends Fragment {
         setUpDifficultySection(view);
         setUpOtherSection(view);
         setUpStartButton(view);
-
-        return view;
     }
 
     private void setUpExamSection(View view) {

@@ -2,8 +2,6 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +16,8 @@ import com.ee.testprep.db.DataBaseHelper;
 
 import java.util.ArrayList;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 public class ResultsFragment extends Fragment {
 
@@ -55,26 +53,18 @@ public class ResultsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quiz_results, container, false);
+        return inflater.inflate(R.layout.fragment_quiz_results, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         ListView listView = view.findViewById(R.id.results_listview);
         final FilterAdapter filterAdapter = new FilterAdapter(getActivity(), mAnswerKey);
         listView.setAdapter(filterAdapter);
 
         tvScore = view.findViewById(R.id.score);
         tvScore.setText(Integer.toString(getUserScore()));
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                getFragmentManager().popBackStack(null,
-                        FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                return true;
-            }
-            return false;
-        });
-
-        return view;
     }
 
     public void onButtonPressed(int status) {

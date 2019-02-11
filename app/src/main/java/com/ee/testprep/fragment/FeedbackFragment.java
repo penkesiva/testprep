@@ -23,9 +23,7 @@ public class FeedbackFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle
             savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_feedback, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_feedback, container, false);
     }
 
     @Override

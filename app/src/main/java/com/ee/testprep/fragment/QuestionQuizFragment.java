@@ -15,6 +15,7 @@ import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class QuestionQuizFragment extends Fragment {
@@ -61,8 +62,12 @@ public class QuestionQuizFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.quiz_question, container, false);
+        return inflater.inflate(R.layout.quiz_question, container, false);
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         dbHelper = DataBaseHelper.getInstance(getActivity());
 
         TextView tvQuestion = view.findViewById(R.id.question);
@@ -80,8 +85,6 @@ public class QuestionQuizFragment extends Fragment {
                 }
             });
         }
-
-        return view;
     }
 
     @Override

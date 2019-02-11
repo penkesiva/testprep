@@ -1,7 +1,6 @@
 package com.ee.testprep.fragment;
 
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.PracticeViewModel;
-import com.ee.testprep.db.PracticeViewModel.PracticeType;
 
 import java.util.List;
 
@@ -48,7 +46,7 @@ public class TestPracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         Bundle args = getArguments();
         mQuery = args.getString(PRACTICE_QUERY);
 
@@ -71,16 +69,6 @@ public class TestPracticeFragment extends Fragment {
             if (mainActivity != null) pagerAdapter.addQuestions(data);
         });
         view.post(() -> model.practiceQuery(mQuery));
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                getFragmentManager().popBackStack();
-                return true;
-            }
-            return false;
-        });
     }
 
     private class PracticePagerAdapter extends FragmentStatePagerAdapter {

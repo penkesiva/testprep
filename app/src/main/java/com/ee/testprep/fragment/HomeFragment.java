@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Calendar;
 import java.util.Random;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class HomeFragment extends Fragment {
@@ -118,9 +119,13 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         greeting = view.findViewById(R.id.tv_home_wish);
@@ -135,8 +140,6 @@ public class HomeFragment extends Fragment {
         TextView author = view.findViewById(R.id.tv_home_author);
         author.setText(quotes[index][1]);
         author.setTextColor(Color.BLACK);
-
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

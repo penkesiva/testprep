@@ -2,7 +2,6 @@ package com.ee.testprep.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,21 +136,6 @@ public class TestQuizFragment extends Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {
             }
-        });
-
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                if (startDisplay.getVisibility() == View.VISIBLE) {
-                    getFragmentManager().popBackStack();
-                    return true;
-                } else {
-                    showExitQuizAlert();
-                }
-                return true;
-            }
-            return false;
         });
     }
 

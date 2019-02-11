@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +48,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -64,38 +66,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final String TAG_FEEDBACK = "nav_feedback";
     public static final String TAG_RATEUS = "nav_rateus";
     public static final String TAG_DONATE = "nav_donate";
-    public static final String TAG_YEAR = "year";
-    public static final String TAG_SUBJECT = "subject";
-    public static final String TAG_EXAM = "exam";
-    public static final String TAG_EASY = "easy";
-    public static final String TAG_MEDIUM = "medium";
-    public static final String TAG_HARD = "hard";
-    public static final String TAG_RANDOM = "random";
-    public static final String TAG_NOTHING_TO_SHOW = "nothing";
-    public static final String TAG_USERSTATUS = "userstatus";
-    public static final String TAG_ALL = "all";
-    public static final String TAG_YEAR_XX = "yearxx";
-    public static final String TAG_SUBJECT_XX = "subjectxx";
-    public static final String TAG_EXAM_XX = "examxx";
     public static final String TAG_QUIZ_QUESTION = "quizQ";
     public static final String TAG_PRACTICE_QUESTION = "quizP";
-    public static final int STATUS_QUIZ_END = 1004;
-    public static final int STATUS_QUIZ_XX = 1005;
+    public static final int STATUS_QUIZ_END = 1001;
+    public static final int STATUS_QUIZ_XX = 1002;
     public static final int STATUS_PRACTICE = 2001;
     public static final int STATUS_PRACTICE_YEAR = 2002;
     public static final int STATUS_PRACTICE_SUBJECT = 2003;
     public static final int STATUS_PRACTICE_EXAM = 2004;
-    public static final int STATUS_PRACTICE_EASY = 2005;
-    public static final int STATUS_PRACTICE_MEDIUM = 2006;
-    public static final int STATUS_PRACTICE_HARD = 2007;
-    public static final int STATUS_PRACTICE_RANDOM = 2008;
-    public static final int STATUS_PRACTICE_USERSTATUS = 2009;
-    public static final int STATUS_PRACTICE_ALL = 2012;
-    public static final int STATUS_PRACTICE_END = 2013;
-    public static final int STATUS_PRACTICE_YEAR_XX = 3002;
-    public static final int STATUS_PRACTICE_SUBJECT_XX = 3003;
-    public static final int STATUS_PRACTICE_EXAM_XX = 3004;
-    public static final int STATUS_PRACTICE_MORE = 3005;
+    public static final int STATUS_PRACTICE_END = 2005;
+    public static final int STATUS_PRACTICE_MORE = 2006;
     public static final int STATUS_MODELTEST_XX = 4001;
     private static final int INDEX_HOME = 0;
     private static final int INDEX_LEARN = 1;
@@ -112,6 +92,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static String CURRENT_TAG = TAG_HOME;
     public static Handler mUIHandler;
     private static Dialog statusDialog;
+    private static ArrayList<String> examList;
+    private static ArrayList<String> subjectList;
+    private static ArrayList<String> yearList;
     private String className = getClass().getSimpleName();
     private Context mContext;
     private DataBaseHelper dbHelper;
@@ -128,9 +111,35 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private PracticeType savedPracticeCategory;
     private String savedPracticeSubCategory;
 
-    private static ArrayList<String> examList;
-    private static ArrayList<String> subjectList;
-    private static ArrayList<String> yearList;
+    public static ArrayList<String> getYears() {
+        DataBaseHelper helper = DataBaseHelper.getInstance();
+        if (helper != null) {
+            yearList = helper.queryYears();
+            return yearList;
+        }
+
+        return new ArrayList<>();
+    }
+
+    public static ArrayList<String> getSubjects() {
+        DataBaseHelper helper = DataBaseHelper.getInstance();
+        if (helper != null) {
+            subjectList = helper.querySubjects();
+            return subjectList;
+        }
+
+        return new ArrayList<>();
+    }
+
+    public static ArrayList<String> getExams() {
+        DataBaseHelper helper = DataBaseHelper.getInstance();
+        if (helper != null) {
+            examList = helper.queryExams();
+            return examList;
+        }
+
+        return new ArrayList<>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,7 +298,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
                 toolbar, R.string.openDrawer, R.string.closeDrawer) {
-
             @Override
             public void onDrawerClosed(View drawerView) {
                 // Code here will be triggered once the drawer closes as we don't want anything to
@@ -306,14 +314,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         };
 
         //Setting the actionbarToggle to drawer layout
-        drawer.setDrawerListener(actionBarDrawerToggle);
+        drawer.addDrawerListener(actionBarDrawerToggle);
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
     }
 
     protected void showCustomDialog() {
-
         statusDialog = new Dialog(mContext, android.R.style.Theme_Translucent);
         statusDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         statusDialog.setCancelable(true);
@@ -374,7 +381,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
                 ArrayList<MetaData> quizzes = (ArrayList<MetaData>) dbHelper.queryAllQuizzes();
                 return TestsListFragment.newInstance(quizzes);
             case INDEX_MODELTEST:
-                ArrayList<MetaData> modelTests = (ArrayList<MetaData>) dbHelper.queryAllModelTests();
+                ArrayList<MetaData> modelTests =
+                        (ArrayList<MetaData>) dbHelper.queryAllModelTests();
                 return TestsListFragment.newInstance(modelTests);
             case INDEX_STATS:
                 return new StatsFragment();
@@ -421,27 +429,22 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             return;
         }
 
-        // Sometimes, when fragment has huge data, screen seems hanging
-        // when switching between navigation menus
-        // So using runnable, the fragment is loaded with cross fade effect
-        // This effect can be seen in GMail app
-//        Runnable mPendingRunnable = new Runnable() {
-//            @Override
-//            public void run() {
+        FragmentManager fm = getSupportFragmentManager();
+        int backStackEntryCount = fm.getBackStackEntryCount();
+        for (int i = 0; i < backStackEntryCount; i++) {
+            fm.popBackStack();
+        }
+
         // update the main content by replacing fragments
         Fragment fragment = getHomeFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
+        if (CURRENT_TAG == TAG_HOME)
+            fragmentTransaction.add(R.id.frame, fragment, TAG_HOME);
+        else
+            fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG).addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
-//            }
-//        };
-
-        // If mPendingRunnable is not null, then add to the message queue
-//        if (mPendingRunnable != null) {
-//            mUIHandler.post(mPendingRunnable);
-//        }
 
         //Closing drawer on item click
         drawer.closeDrawers();
@@ -453,26 +456,13 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
+            Log.e("MainActivity", "MainActivity.onBackPressed: current tag = drawer");
             drawer.closeDrawers();
             return;
         }
 
-        // This code loads nav_home fragment when back key is pressed
-        // when user is in other fragment than nav_home
-        if (loadHomeOnBackPress) {
-            // checking if user is on other navigation menu
-            // rather than nav_home
-            if (navItemIndex != INDEX_HOME) {
-                navItemIndex = INDEX_HOME;
-                CURRENT_TAG = TAG_HOME;
-                loadHomeFragment();
-                return;
-            }
-        }
-
         super.onBackPressed();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -544,7 +534,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-    //TODO
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[],
             int[] grantResults) {
@@ -602,17 +591,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
     }
 
-    /*
-    @Override
-    public void onSignOut() {
-        if (navItemIndex != INDEX_HOME) {
-            navItemIndex = INDEX_HOME;
-            CURRENT_TAG = TAG_HOME;
-            startActivity(new Intent(mContext, LoginActivity.class));
-            finish();
-        }
-    }*/
-
     /***************************** START OF QUIZ **************************************************/
 
     private void startQuiz(String quizName) {
@@ -622,7 +600,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(TAG_HOME);
+        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
     }
 
@@ -633,45 +611,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(TAG_QUIZ);
+        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
     }
-
 
     /***************************** START OF PRACTICE **********************************************/
 
     private void showFilters() {
 
-    }
-
-    public static ArrayList<String> getYears() {
-        DataBaseHelper helper = DataBaseHelper.getInstance();
-        if (helper != null) {
-            yearList = helper.queryYears();
-            return yearList;
-        }
-
-        return new ArrayList<>();
-    }
-
-    public static ArrayList<String> getSubjects() {
-        DataBaseHelper helper = DataBaseHelper.getInstance();
-        if (helper != null) {
-            subjectList = helper.querySubjects();
-            return subjectList;
-        }
-
-        return new ArrayList<>();
-    }
-
-    public static ArrayList<String> getExams() {
-        DataBaseHelper helper = DataBaseHelper.getInstance();
-        if (helper != null) {
-            examList = helper.queryExams();
-            return examList;
-        }
-
-        return new ArrayList<>();
     }
 
     private void showPracticeQuestions(String query) {
@@ -684,7 +631,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
         fragmentTransaction.replace(R.id.frame, fragment, TAG_PRACTICE_QUESTION)
-                .addToBackStack(TAG_PRACTICE);
+                .addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
     }
 }
