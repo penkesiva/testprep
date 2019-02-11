@@ -52,8 +52,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.ee.testprep.db.PracticeViewModel.PracticeType;
-
 public class MainActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
     // tags used to attach the fragments
@@ -68,10 +66,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final String TAG_DONATE = "nav_donate";
     public static final String TAG_QUIZ_QUESTION = "quizQ";
     public static final String TAG_PRACTICE_QUESTION = "quizP";
-    public static final int STATUS_QUIZ_END = 1001;
+    public static final int STATUS_QUIZ_MODELTEST_END = 1001;
     public static final int STATUS_QUIZ_MODELTEST_START = 1002;
     public static final int STATUS_PRACTICE_MORE = 1003;
-    public static final int STATUS_MODELTEST_XX = 1004;
     private static final int INDEX_HOME = 0;
     private static final int INDEX_LEARN = 1;
     private static final int INDEX_QUIZ = 2;
@@ -101,10 +98,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private Toolbar toolbar;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
-    // flag to load nav_home fragment when user presses back key
-    private boolean loadHomeOnBackPress = true;
-    private PracticeType savedPracticeCategory;
-    private String savedPracticeSubCategory;
 
     public static ArrayList<String> getYears() {
         DataBaseHelper helper = DataBaseHelper.getInstance();
@@ -323,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         final ImageView myImage = statusDialog.findViewById(R.id.loader);
         myImage.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.rotate));
-        statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000)); //TODO
+        statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
         statusDialog.show();
     }
 
@@ -546,7 +539,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     @Override
     public void onFragmentInteraction(int status, String param) {
         switch (status) {
-            case STATUS_QUIZ_END:
+            case STATUS_QUIZ_MODELTEST_END:
                 showQuizResult(param);
                 break;
             case STATUS_QUIZ_MODELTEST_START:
@@ -588,8 +581,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void showPracticeQuestions(String query) {
         if (dbHelper == null) return;
-
-        // Save practice selection to load more questions
 
         Fragment fragment = TestPracticeFragment.newInstance(query);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

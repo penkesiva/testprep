@@ -81,7 +81,7 @@ public class QuestionQuizFragment extends Fragment {
             submit.setVisibility(View.VISIBLE);
             submit.setOnClickListener(view1 -> {
                 if (mListener != null) {
-                    mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_END, mQuizName);
+                    mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_END, mQuizName);
                 }
             });
         }

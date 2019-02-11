@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
@@ -108,7 +109,9 @@ public class TestsListFragment extends Fragment {
         public void onBindViewHolder(@NonNull TestsListItemViewHolder holder, int position) {
             holder.titleView.setText(mTestsList.get(position).mName.toUpperCase());
             holder.subjectView.setText(mTestsList.get(position).mSubject);
-            holder.timeView.setText(mTestsList.get(position).mTime);
+            //holder.totalTimeView.setText(mTestsList.get(position).mTime);
+            holder.totalTimeView.setText("Time: " + "2h 10m 30s");
+            holder.countView.setText("( " + mTestsList.get(position).mTotalQ + " questions )");
 
             //set view's tag with quizname; it is used to query with quizname later
             holder.cardView.setTag(mTestsList.get(position).mName);
@@ -120,18 +123,24 @@ public class TestsListFragment extends Fragment {
             return mTestsList.size();
         }
 
-        public class TestsListItemViewHolder extends RecyclerView.ViewHolder {
+        private class TestsListItemViewHolder extends RecyclerView.ViewHolder {
+            private CardView cardView;
             private TextView titleView;
             private TextView subjectView;
-            private TextView timeView;
-            private CardView cardView;
+            private TextView totalTimeView;
+            private TextView leftOverTimeView;
+            private TextView countView;
+            private ImageView completedMarkView;
 
             public TestsListItemViewHolder(View root) {
                 super(root);
+                cardView = root.findViewById(R.id.tests_card_view);
                 titleView = root.findViewById(R.id.tests_item_title);
                 subjectView = root.findViewById(R.id.tests_item_subject);
-                timeView = root.findViewById(R.id.tests_item_time);
-                cardView = root.findViewById(R.id.tests_card_view);
+                totalTimeView = root.findViewById(R.id.tests_item_time_total);
+                leftOverTimeView = root.findViewById(R.id.tests_item_time_left);
+                countView = root.findViewById(R.id.tests_item_count);
+                completedMarkView = root.findViewById(R.id.tests_item_mark);
             }
         }
     }
