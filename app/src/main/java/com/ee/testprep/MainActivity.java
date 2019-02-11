@@ -172,20 +172,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             loadHomeFragment();
         }
 
-        /*
-        if (!checkPermission()) {
-            requestPermission();
-        } else {
-            L.v(className, "Permissions already granted");
-        }
-        */
-
         showCustomDialog();
-
-        //if there is no database already created, create one from .xlsx TODO
         dbHelper = DataBaseHelper.getInstance(this);
+        dbHelper.dummyDBCall();
 
-        cancelCustomDialog();
+        new Thread(() -> {
+
+            while (!dbHelper.isDataBaseReady()) {}
+            cancelCustomDialog();
+        }).start();
+
     }
 
     private void hideStatusBar() {

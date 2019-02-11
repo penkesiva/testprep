@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.aspose.cells.Cell;
 import com.aspose.cells.FileFormatType;
@@ -41,6 +42,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     private Context mContext;
     private static DataBaseHelper dbHelperInstance = null;
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_QBANK;
+    private boolean dataBaseInitDone = false;
 
     ArrayList<String> tableList = new ArrayList<>();
 
@@ -62,19 +64,27 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        updateTableList(db, R.raw.qbank_v1);
-        updateTableList(db, R.raw.quiz_v1);
-        updateTableList(db, R.raw.modeltest_v1);
 
-        for (int i = 0; i < tableList.size(); i++) {
-            if (tableList.get(i).contains(TABLE_QBANK)) {
-                convertXLStoSQL(R.raw.qbank_v1, tableList.get(i));
-            } else if (tableList.get(i).contains(TABLE_QUIZ)) {
-                convertXLStoSQL(R.raw.quiz_v1, tableList.get(i));
-            } else if (tableList.get(i).contains(TABLE_MODELTEST)) {
-                convertXLStoSQL(R.raw.modeltest_v1, tableList.get(i));
+        new Thread(() -> {
+
+            updateTableList(db, R.raw.qbank_v1);
+            updateTableList(db, R.raw.quiz_v1);
+            updateTableList(db, R.raw.modeltest_v1);
+
+            for (int i = 0; i < tableList.size(); i++) {
+                if (tableList.get(i).contains(TABLE_QBANK)) {
+                    convertXLStoSQL(R.raw.qbank_v1, tableList.get(i));
+                } else if (tableList.get(i).contains(TABLE_QUIZ)) {
+                    convertXLStoSQL(R.raw.quiz_v1, tableList.get(i));
+                } else if (tableList.get(i).contains(TABLE_MODELTEST)) {
+                    convertXLStoSQL(R.raw.modeltest_v1, tableList.get(i));
+                }
             }
-        }
+
+            //update init is done
+            dataBaseInitDone = true;
+
+        }).start();
     }
 
     @Override
@@ -84,6 +94,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
         // create new tables
         onCreate(db);
+    }
+
+    public boolean isDataBaseReady() {
+        return dataBaseInitDone;
     }
 
     private String createMetaTable(String tableName) {
@@ -116,6 +130,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 + DBRow.KEY_CHAPTER + " INTEGER, "
                 + DBRow.KEY_DIFFICULTY + " INTEGER, "
                 + DBRow.KEY_USER_STATUS + " TEXT)";
+    }
+
+    public void dummyDBCall() {
+        this.getReadableDatabase();
     }
 
     private boolean isTableExists(SQLiteDatabase db, String tableName) {
@@ -162,130 +180,121 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
     private void convertXLStoSQL(final int resourceId, final String tableName) {
 
-        Thread mThread = new Thread() {
+        try {
+            InputStream fstream = mContext.getResources().openRawResource(resourceId);
+            LoadOptions loadOptions = new LoadOptions(FileFormatType.XLSX);
+            workbook = new Workbook(fstream, loadOptions);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public void run() {
+        if (workbook != null) {
+            Worksheet worksheet = workbook.getWorksheets().get(tableName);
+            Iterator<Row> rowIterator = worksheet.getCells().getRows().iterator();
+            rowIterator.hasNext();//skip header
 
-                try {
-                    InputStream fstream = mContext.getResources().openRawResource(resourceId);
-                    LoadOptions loadOptions = new LoadOptions(FileFormatType.XLSX);
-                    workbook = new Workbook(fstream, loadOptions);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            //metadata
+            if (tableName.contains("metadata")) {
+                while (rowIterator.hasNext()) {
+                    int colIndex = 0;
+                    Row row = rowIterator.next();
+                    Iterator<Cell> cellIterator = row.iterator();
+                    MetaData metaData = new MetaData();
 
-                if (workbook != null) {
-                    Worksheet worksheet = workbook.getWorksheets().get(tableName);
-                    Iterator<Row> rowIterator = worksheet.getCells().getRows().iterator();
-                    rowIterator.hasNext();//skip header
+                    while (cellIterator.hasNext()) {
+                        Cell cell = cellIterator.next();
+                        switch (colIndex) {
+                            case 0:
+                                metaData.mName = cell.getDisplayStringValue();
+                                break;
+                            case 1:
+                                metaData.mExam = cell.getDisplayStringValue();
+                                break;
+                            case 2:
+                                metaData.mSubject = cell.getDisplayStringValue();
+                                break;
+                            case 3:
+                                metaData.mLanguage = cell.getDisplayStringValue();
+                                break;
+                            case 4:
+                                metaData.mTotalQ = cell.getDisplayStringValue();
+                                break;
+                            case 6:
+                                metaData.mTime = cell.getDisplayStringValue();
+                                break;
 
-                    //metadata
-                    if (tableName.contains("metadata")) {
-                        while (rowIterator.hasNext()) {
-                            int colIndex = 0;
-                            Row row = rowIterator.next();
-                            Iterator<Cell> cellIterator = row.iterator();
-                            MetaData metaData = new MetaData();
-
-                            while (cellIterator.hasNext()) {
-                                Cell cell = cellIterator.next();
-                                switch (colIndex) {
-                                    case 0:
-                                        metaData.mName = cell.getDisplayStringValue();
-                                        break;
-                                    case 1:
-                                        metaData.mExam = cell.getDisplayStringValue();
-                                        break;
-                                    case 2:
-                                        metaData.mSubject = cell.getDisplayStringValue();
-                                        break;
-                                    case 3:
-                                        metaData.mLanguage = cell.getDisplayStringValue();
-                                        break;
-                                    case 4:
-                                        metaData.mTotalQ = cell.getDisplayStringValue();
-                                        break;
-                                    case 6:
-                                        metaData.mTime = cell.getDisplayStringValue();
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                                colIndex++;
-                            }
-                            insertMetaRow(tableName, metaData);
+                            default:
+                                break;
                         }
-                    } else {
-                        //main data
-                        while (rowIterator.hasNext()) {
-                            int colIndex = 0;
-                            Row row = rowIterator.next();
-                            Iterator<Cell> cellIterator = row.iterator();
-                            DBRow dbRow = new DBRow();
-
-                            //dont change the case numbers as they relate to column numbers
-                            while (cellIterator.hasNext()) {
-                                Cell cell = cellIterator.next();
-                                switch (colIndex) {
-                                    case 0:
-                                        dbRow.exam = cell.getDisplayStringValue();
-                                        break;
-                                    case 1:
-                                        dbRow.year = cell.getDisplayStringValue();
-                                        break;
-                                    case 2:
-                                        dbRow.qNo = Integer.valueOf(cell.getDisplayStringValue());
-                                        break;
-                                    case 3:
-                                        dbRow.question = cell.getDisplayStringValue();
-                                        break;
-                                    case 4:
-                                        dbRow.optionA = cell.getDisplayStringValue();
-                                        break;
-                                    case 5:
-                                        dbRow.optionB = cell.getDisplayStringValue();
-                                        break;
-                                    case 6:
-                                        dbRow.optionC = cell.getDisplayStringValue();
-                                        break;
-                                    case 7:
-                                        dbRow.optionD = cell.getDisplayStringValue();
-                                        break;
-                                    case 8:
-                                        dbRow.answer = cell.getDisplayStringValue();
-                                        break;
-                                    case 9:
-                                        dbRow.ipc = cell.getDisplayStringValue();
-                                        break;
-                                    case 10:
-                                        dbRow.subject = cell.getDisplayStringValue();
-                                        break;
-                                    case 11:
-                                        dbRow.chapter = Integer.valueOf(cell.getDisplayStringValue());
-                                        break;
-                                    case 12:
-                                        dbRow.difficulty = Integer.valueOf(cell.getDisplayStringValue());
-                                        break;
-                                    case 13:
-                                        dbRow.userstatus = "";
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                                colIndex++;
-                            }
-
-                            insertRow(tableName, dbRow);
-                        }
+                        colIndex++;
                     }
+                    insertMetaRow(tableName, metaData);
+                }
+            } else {
+                //main data
+                while (rowIterator.hasNext()) {
+                    int colIndex = 0;
+                    Row row = rowIterator.next();
+                    Iterator<Cell> cellIterator = row.iterator();
+                    DBRow dbRow = new DBRow();
+
+                    //dont change the case numbers as they relate to column numbers
+                    while (cellIterator.hasNext()) {
+                        Cell cell = cellIterator.next();
+                        switch (colIndex) {
+                            case 0:
+                                dbRow.exam = cell.getDisplayStringValue();
+                                break;
+                            case 1:
+                                dbRow.year = cell.getDisplayStringValue();
+                                break;
+                            case 2:
+                                dbRow.qNo = Integer.valueOf(cell.getDisplayStringValue());
+                                break;
+                            case 3:
+                                dbRow.question = cell.getDisplayStringValue();
+                                break;
+                            case 4:
+                                dbRow.optionA = cell.getDisplayStringValue();
+                                break;
+                            case 5:
+                                dbRow.optionB = cell.getDisplayStringValue();
+                                break;
+                            case 6:
+                                dbRow.optionC = cell.getDisplayStringValue();
+                                break;
+                            case 7:
+                                dbRow.optionD = cell.getDisplayStringValue();
+                                break;
+                            case 8:
+                                dbRow.answer = cell.getDisplayStringValue();
+                                break;
+                            case 9:
+                                dbRow.ipc = cell.getDisplayStringValue();
+                                break;
+                            case 10:
+                                dbRow.subject = cell.getDisplayStringValue();
+                                break;
+                            case 11:
+                                dbRow.chapter = Integer.valueOf(cell.getDisplayStringValue());
+                                break;
+                            case 12:
+                                dbRow.difficulty = Integer.valueOf(cell.getDisplayStringValue());
+                                break;
+                            case 13:
+                                dbRow.userstatus = "";
+                                break;
+
+                            default:
+                                break;
+                        }
+                        colIndex++;
+                    }
+
+                    insertRow(tableName, dbRow);
                 }
             }
-        };
-        mThread.start();
-
+        }
     }
 
     private long getNumofQuestions() {

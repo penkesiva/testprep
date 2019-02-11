@@ -146,15 +146,12 @@ public class TestQuizFragment extends Fragment {
             @Override
             public void run() {
                 if (quiz != null && getActivity() != null) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!quizStarted) {
-                                quizStarted = true;
-                                quiz.startQuiz();
-                            }
-                            tvTimer.setText(getQuizTime(quiz.getRemainingTimeInSec() + 1));
+                    getActivity().runOnUiThread(() -> {
+                        if (!quizStarted) {
+                            quizStarted = true;
+                            quiz.startQuiz();
                         }
+                        tvTimer.setText(getQuizTime(quiz.getRemainingTimeInSec() + 1));
                     });
                 }
             }

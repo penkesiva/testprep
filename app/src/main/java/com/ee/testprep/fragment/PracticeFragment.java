@@ -80,7 +80,7 @@ public class PracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_practice2, container, false);
     }
 
@@ -360,14 +360,19 @@ public class PracticeFragment extends Fragment {
     }
 
     private void setDynamicHeight(GridView gridView, int columns) {
-        ListAdapter gridViewAdapter = gridView.getAdapter();
-        if (gridViewAdapter == null) {
+
+        if (gridView == null) {
             return;
         }
 
-        int totalHeight = 0;
+        int totalHeight, rows;
+        ListAdapter gridViewAdapter = gridView.getAdapter();
         int items = gridViewAdapter.getCount();
-        int rows = 0;
+
+        if (items <= 0) {
+            // looks like database is not ready, just return
+            return;
+        }
 
         View listItem = gridViewAdapter.getView(0, null, gridView);
         listItem.measure(0, 0);
