@@ -11,6 +11,5 @@ package com.ee.testprep.fragment;
  * >Communicating with Other Fragments</a> for more information.
  */
 public interface OnFragmentInteractionListener {
-    void onFragmentInteraction(int status);
     void onFragmentInteraction(int status, String filter);
 }

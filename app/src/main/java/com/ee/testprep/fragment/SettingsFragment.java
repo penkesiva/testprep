@@ -23,7 +23,6 @@ import androidx.fragment.app.Fragment;
 public class SettingsFragment extends Fragment {
     public static boolean nightMode = false;
     private static String className = SettingsFragment.class.getSimpleName();
-    private OnFragmentInteractionListener mListener;
     private TextView displayName;
     private EditText displayNameEdit;
     private Button displayNameEditButton;
@@ -36,39 +35,9 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_settings, container, false);
-    }
-
-    public void onButtonPressed(int status) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(status);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override

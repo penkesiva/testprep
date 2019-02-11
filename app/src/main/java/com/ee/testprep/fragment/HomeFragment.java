@@ -23,7 +23,6 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private TextView greeting;
-    private OnFragmentInteractionListener mListener;
 
     private static String author_kalam = "- APJ Kalam";
     private static String author_gandhi = "- MK Gandhi";
@@ -93,30 +92,6 @@ public class HomeFragment extends Fragment {
             {"There is more to life than increasing its speed.", author_gandhi},
     };
 
-    public HomeFragment() {
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment PracticeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -140,30 +115,6 @@ public class HomeFragment extends Fragment {
         TextView author = view.findViewById(R.id.tv_home_author);
         author.setText(quotes[index][1]);
         author.setTextColor(Color.BLACK);
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(int status) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(status);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     private String getGreeting(String displayName) {
@@ -192,6 +143,4 @@ public class HomeFragment extends Fragment {
             }
         }
     }
-
-
 }

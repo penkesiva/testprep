@@ -23,7 +23,6 @@ public class ResultsFragment extends Fragment {
 
     private static final String ARG_QUIZ_NAME = "quiz_name";
     private static String TAG = ResultsFragment.class.getSimpleName();
-    private OnFragmentInteractionListener mListener;
     private ArrayList<DBRow> mAnswerKey = new ArrayList<>();
     private String unAttempted = "You didn't attempt this question!";
     private TextView tvScore;
@@ -67,37 +66,14 @@ public class ResultsFragment extends Fragment {
         tvScore.setText(Integer.toString(getUserScore()));
     }
 
-    public void onButtonPressed(int status) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(status);
-        }
-    }
-
     private int getUserScore() {
         for (int i = 0; i < mAnswerKey.size(); i++) {
-            if(mAnswerKey.get(i).answer.equals(mAnswerKey.get(i).userstatus)) {
+            if (mAnswerKey.get(i).answer.equals(mAnswerKey.get(i).userstatus)) {
                 ++mUserScore;
             }
         }
 
         return mUserScore;
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     public class FilterAdapter extends BaseAdapter {
@@ -144,7 +120,8 @@ public class ResultsFragment extends Fragment {
                 final TextView explanation = convertView.findViewById(R.id.explanation);
 
                 final ViewHolder viewHolder = new ViewHolder(question, questionImage,
-                        correctAnswer, correctOption, userAnswer, userOption, validateImage, explanation);
+                        correctAnswer, correctOption, userAnswer, userOption, validateImage,
+                        explanation);
                 convertView.setTag(viewHolder);
             }
 
@@ -156,7 +133,7 @@ public class ResultsFragment extends Fragment {
             viewHolder.userOption.setText(getUserOption(row));
             viewHolder.explanation.setText(""); //TODO
 
-            if(mAnswerKey.get(position).answer.trim().equals(mAnswerKey.get(position).userstatus.trim())) {
+            if (mAnswerKey.get(position).answer.trim().equals(mAnswerKey.get(position).userstatus.trim())) {
                 viewHolder.validateImage.setImageResource(R.drawable.right);
             } else {
                 viewHolder.validateImage.setImageResource(R.drawable.wrong);
@@ -166,19 +143,19 @@ public class ResultsFragment extends Fragment {
         }
 
         private String getCorrectOption(DBRow row) {
-            if(row.answer.equals("A")) return row.optionA;
-            if(row.answer.equals("B")) return row.optionB;
-            if(row.answer.equals("C")) return row.optionC;
-            if(row.answer.equals("D")) return row.optionD;
+            if (row.answer.equals("A")) return row.optionA;
+            if (row.answer.equals("B")) return row.optionB;
+            if (row.answer.equals("C")) return row.optionC;
+            if (row.answer.equals("D")) return row.optionD;
 
             return unAttempted;
         }
 
         private String getUserOption(DBRow row) {
-            if(row.userstatus.equals("A")) return row.optionA;
-            if(row.userstatus.equals("B")) return row.optionB;
-            if(row.userstatus.equals("C")) return row.optionC;
-            if(row.userstatus.equals("D")) return row.optionD;
+            if (row.userstatus.equals("A")) return row.optionA;
+            if (row.userstatus.equals("B")) return row.optionB;
+            if (row.userstatus.equals("C")) return row.optionC;
+            if (row.userstatus.equals("D")) return row.optionD;
 
             return unAttempted;
         }
@@ -194,8 +171,8 @@ public class ResultsFragment extends Fragment {
             private final TextView explanation;
 
             public ViewHolder(TextView question, ImageView questionImage, TextView correctAnswer,
-                              TextView correctOption, TextView userAnswer, TextView userOption,
-                              ImageView validateImage, TextView explanation) {
+                    TextView correctOption, TextView userAnswer, TextView userOption,
+                    ImageView validateImage, TextView explanation) {
                 this.question = question;
                 this.questionImage = questionImage;
                 this.correctAnswer = correctAnswer;

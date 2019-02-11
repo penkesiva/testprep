@@ -86,7 +86,7 @@ public class QuestionPracticeFragment extends Fragment {
             more.setVisibility(View.VISIBLE);
             more.setOnClickListener(view1 -> {
                 if (mListener != null) {
-                    mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_MORE);
+                    mListener.onFragmentInteraction(MainActivity.STATUS_PRACTICE_MORE, null);
                 }
             });
         }

@@ -69,14 +69,9 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     public static final String TAG_QUIZ_QUESTION = "quizQ";
     public static final String TAG_PRACTICE_QUESTION = "quizP";
     public static final int STATUS_QUIZ_END = 1001;
-    public static final int STATUS_QUIZ_XX = 1002;
-    public static final int STATUS_PRACTICE = 2001;
-    public static final int STATUS_PRACTICE_YEAR = 2002;
-    public static final int STATUS_PRACTICE_SUBJECT = 2003;
-    public static final int STATUS_PRACTICE_EXAM = 2004;
-    public static final int STATUS_PRACTICE_END = 2005;
-    public static final int STATUS_PRACTICE_MORE = 2006;
-    public static final int STATUS_MODELTEST_XX = 4001;
+    public static final int STATUS_QUIZ_MODELTEST_START = 1002;
+    public static final int STATUS_PRACTICE_MORE = 1003;
+    public static final int STATUS_MODELTEST_XX = 1004;
     private static final int INDEX_HOME = 0;
     private static final int INDEX_LEARN = 1;
     private static final int INDEX_QUIZ = 2;
@@ -549,38 +544,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     @Override
-    public void onFragmentInteraction(int status) {
-        switch (status) {
-            case STATUS_PRACTICE_END:
-                break;
-            case STATUS_PRACTICE:
-                showFilters();
-                break;
-            case STATUS_PRACTICE_YEAR:
-                getYears();
-                break;
-            case STATUS_PRACTICE_SUBJECT:
-                getSubjects();
-                break;
-            case STATUS_PRACTICE_EXAM:
-                getExams();
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    @Override
     public void onFragmentInteraction(int status, String param) {
         switch (status) {
             case STATUS_QUIZ_END:
                 showQuizResult(param);
                 break;
-            case STATUS_QUIZ_XX:
-                startQuiz(param);
-                break;
-            case STATUS_MODELTEST_XX:
+            case STATUS_QUIZ_MODELTEST_START:
                 startQuiz(param);
                 break;
             case STATUS_PRACTICE_MORE:
@@ -616,10 +585,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     }
 
     /***************************** START OF PRACTICE **********************************************/
-
-    private void showFilters() {
-
-    }
 
     private void showPracticeQuestions(String query) {
         if (dbHelper == null) return;

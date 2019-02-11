@@ -36,7 +36,7 @@ public class TestsListFragment extends Fragment {
         public void onClick(View v) {
             String test = (String) v.getTag();
             if (mListener != null && test != null && !test.trim().isEmpty()) {
-                mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_XX, test);
+                mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_START, test);
             }
         }
     };
@@ -109,6 +109,7 @@ public class TestsListFragment extends Fragment {
             holder.titleView.setText(mTestsList.get(position).mName.toUpperCase());
             holder.subjectView.setText(mTestsList.get(position).mSubject);
             holder.timeView.setText(mTestsList.get(position).mTime);
+
             //set view's tag with quizname; it is used to query with quizname later
             holder.cardView.setTag(mTestsList.get(position).mName);
             holder.cardView.setOnClickListener(onListItemClickListener);
