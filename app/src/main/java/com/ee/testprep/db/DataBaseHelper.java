@@ -24,6 +24,7 @@ import java.util.List;
 
 import com.ee.testprep.R;
 import com.ee.testprep.db.Test.TestType;
+import com.ee.testprep.util.PreferenceUtils;
 
 public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
@@ -42,7 +43,9 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     private Context mContext;
     private static DataBaseHelper dbHelperInstance = null;
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_QBANK;
-    private boolean dataBaseInitDone = false;
+
+    private String dbCreatedPerf = "dbCreatedPerf";
+    private PreferenceUtils prefs;
 
     ArrayList<String> tableList = new ArrayList<>();
 
@@ -82,7 +85,8 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             }
 
             //update init is done
-            dataBaseInitDone = true;
+            prefs = PreferenceUtils.getInstance(mContext);
+            prefs.savePrefs(dbCreatedPerf, true);
 
         }).start();
     }
@@ -97,7 +101,10 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     public boolean isDataBaseReady() {
-        return dataBaseInitDone;
+        if(prefs != null)
+            return prefs.readPrefs(dbCreatedPerf, false);
+
+        return false;
     }
 
     private String createMetaTable(String tableName) {
