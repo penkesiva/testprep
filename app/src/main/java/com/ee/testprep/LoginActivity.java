@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private PreferenceUtils prefs;
     private static final String LOGIN_KEY = "LOGIN_KEY";
+    private static final String REMEMBER_ME = "REMEMBER_ME";
 
     // UI references.
     private TextInputEditText mRegisterEmailView, mSignInEmailView;
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private TextView eeTextView;
     private ImageView eeImageView;
     private CheckBox mTermsView;
+    private CheckBox mRememberMe;
 
     private String email;
     private String name;
@@ -126,56 +128,56 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         signInLayout = findViewById(R.id.signinLayout);
         registerLayout = findViewById(R.id.registerLayout);
         mTermsView = findViewById(R.id.terms_conditions);
+        mRememberMe = findViewById(R.id.remember_me);
 
         setUpFadeInAnimation(logoLayout);
 
         mSignInView.setAlpha(0.4f);
 
         // configure register/signin buttons
-        mRegisterView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSignInView.setAlpha(0.4f);
-                mRegisterView.setAlpha(1f);
+        mRegisterView.setOnClickListener(view -> {
+            mSignInView.setAlpha(0.4f);
+            mRegisterView.setAlpha(1f);
 
-                signInLayout.setVisibility(View.GONE);
-                registerLayout.setVisibility(View.VISIBLE);
+            signInLayout.setVisibility(View.GONE);
+            registerLayout.setVisibility(View.VISIBLE);
 
-                // Store values at the time of the login attempt.
-                email = mRegisterEmailView.getText().toString();
-                name = mRegisterNameView.getText().toString();
+            // Store values at the time of the login attempt.
+            email = mRegisterEmailView.getText().toString();
+            name = mRegisterNameView.getText().toString();
 
-                if (validateRegisterForm())
-                    registerNewUser();
-            }
+            if (validateRegisterForm())
+                registerNewUser();
         });
 
-        mSignInView.setOnClickListener(new View.OnClickListener() {
+        mSignInView.setOnClickListener(view -> {
+            mRegisterView.setAlpha(0.4f);
+            mSignInView.setAlpha(1f);
 
-            @Override
-            public void onClick(View view) {
-                mRegisterView.setAlpha(0.4f);
-                mSignInView.setAlpha(1f);
+            registerLayout.setVisibility(View.GONE);
+            signInLayout.setVisibility(View.VISIBLE);
 
-                registerLayout.setVisibility(View.GONE);
-                signInLayout.setVisibility(View.VISIBLE);
+            // Store values at the time of the login attempt.
+            email = mSignInEmailView.getText().toString();
 
-                // Store values at the time of the login attempt.
-                email = mSignInEmailView.getText().toString();
-                name = null;
+            //if there is a valid email address in the preference, update editText
+            if(prefs.readPrefs(REMEMBER_ME, "").contains("@")) {
+                mSignInEmailView.setText(prefs.readPrefs(REMEMBER_ME, ""));
+            }
+            if (validateSignInForm()) {
+                signInUser();
 
-                if (validateSignInForm()) {
-                    signInUser();
+                //save email if remember me is checked
+                if(mRememberMe.isChecked()) {
+                    prefs.savePrefs(REMEMBER_ME, email);
+                } else {
+                    prefs.savePrefs(REMEMBER_ME, "");
                 }
             }
         });
 
-        mTermsView.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                mTermsView.setError(null, null);
-            }
-        });
+        mTermsView.setOnCheckedChangeListener((compoundButton, b) -> mTermsView.setError(null, null));
+
     }
 
     private void setUpFadeOutAnimation(final View logoLayout) {

@@ -25,13 +25,27 @@ public class PreferenceUtils {
                 .getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor edit = prefs.edit();
         edit.putBoolean(valueKey, value);
-        edit.commit();
+        edit.apply();
     }
 
     public Boolean readPrefs(String valueKey, Boolean valueDefault) {
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(mContext);
         return prefs.getBoolean(valueKey, valueDefault);
+    }
+
+    public void savePrefs(String valueKey, String value) {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putString(valueKey, value);
+        edit.apply();
+    }
+
+    public String readPrefs(String valueKey, String valueDefault) {
+        SharedPreferences prefs = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+        return prefs.getString(valueKey, valueDefault);
     }
 
 
