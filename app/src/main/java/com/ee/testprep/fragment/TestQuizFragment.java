@@ -2,6 +2,7 @@ package com.ee.testprep.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +91,11 @@ public class TestQuizFragment extends Fragment {
 
         startButton = view.findViewById(R.id.quiz_q_start);
         startButton.setOnClickListener(v -> {
-            if (counter < 5) return;
+            if (startButton.getText().equals("SKIP")) {
+                startTimeRefresh();
+                return;
+            }
+            startButton.setText("SKIP");
             counter = 5;
             startCounter.setVisibility(View.VISIBLE);
             countDownTimer = new Timer();
@@ -99,10 +104,7 @@ public class TestQuizFragment extends Fragment {
                 public void run() {
                     if (getActivity() == null) return;
                     if (counter <= 0) {
-                        getActivity().runOnUiThread(() -> {
-                            startDisplay.setVisibility(View.GONE);
-                            startTimeRefresh();
-                        });
+                        startTimeRefresh();
                     } else {
                         startCounter.setText("" + counter);
                         counter--;
@@ -137,6 +139,21 @@ public class TestQuizFragment extends Fragment {
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                if (startDisplay.getVisibility() == View.VISIBLE) {
+                    getFragmentManager().popBackStack();
+                    return true;
+                } else {
+                    showExitQuizAlert();
+                }
+                return true;
+            }
+            return false;
+        });
     }
 
     private void startTimeRefresh() {
@@ -148,6 +165,7 @@ public class TestQuizFragment extends Fragment {
                 if (quiz != null && getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         if (!quizStarted) {
+                            startDisplay.setVisibility(View.GONE);
                             quizStarted = true;
                             quiz.startQuiz();
                         }
