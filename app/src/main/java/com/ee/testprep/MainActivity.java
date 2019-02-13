@@ -176,12 +176,20 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         dbHelper = DataBaseHelper.getInstance(this);
         dbHelper.dummyDBCall();
 
-        new Thread(() -> {
+        startDB();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startDB();
+    }
+
+    private void startDB() {
+        new Thread(() -> {
             while (!dbHelper.isDataBaseReady()) {}
             cancelCustomDialog();
         }).start();
-
     }
 
     private void hideStatusBar() {
