@@ -69,8 +69,8 @@
                     android:layout_centerVertical="true" />
             </RelativeLayout>
 
-            <GridView
-                android:id="@+id/expanded_exam_grid"
+            <ListView
+                android:id="@+id/exam_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/exam_layout"
@@ -80,11 +80,11 @@
                 android:horizontalSpacing="@dimen/padding_8sp"
                 android:verticalSpacing="@dimen/padding_8sp"
                 android:numColumns="auto_fit"
-                android:padding="@dimen/padding_8sp"
+                android:padding="@dimen/padding_2sp"
                 android:stretchMode="spacingWidthUniform"
                 android:visibility="visible">
 
-            </GridView>
+            </ListView>
         </RelativeLayout>
 
         <RelativeLayout
@@ -127,8 +127,8 @@
                     android:layout_centerVertical="true" />
             </RelativeLayout>
 
-            <GridView
-                android:id="@+id/expanded_subject_grid"
+            <ListView
+                android:id="@+id/subject_list"
                 android:layout_below="@+id/subject_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                 android:padding="@dimen/padding_5sp"
                 android:stretchMode="spacingWidthUniform"
                 android:visibility="visible">
-            </GridView>
+            </ListView>
         </RelativeLayout>
 
         <RelativeLayout
@@ -169,7 +169,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding_16sp"
                 android:layout_below="@+id/year"
-                app:corner_radius="10"
+                app:corner_radius="5"
                 app:min_value="0"
                 app:max_value="100"
                 app:steps="1"

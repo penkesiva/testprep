@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +23,7 @@ import com.ee.testprep.db.DataBaseHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class PracticeFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private String[] mExamList = new String[0];
     private String[] mSubjectList = new String[0];
-    private GridView examGridView, subjectGridView;
+    private ListView examListView, subjectListView;
     private PracticeFragment.LocalAdapter examAdapter;
     private PracticeFragment.LocalAdapter subjectAdapter;
     private CheckBox cbEasy, cbMedium, cbHard;
@@ -94,15 +95,17 @@ public class PracticeFragment extends Fragment {
         setUpDifficultySection(view);
         setUpOtherSection(view);
         setUpStartButton(view);
+
+        updateAbreviations();
     }
 
     private void setUpExamSection(View view) {
         // EXAM expandable view - start
-        examGridView = view.findViewById(R.id.expanded_exam_grid);
+        examListView = view.findViewById(R.id.exam_list);
 
         Switch cbAllExams = view.findViewById(R.id.sw_exam);
         cbAllExams.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (examGridView == null) return;
+            if (examListView == null) return;
             examAdapter.isAll = isChecked;
             examAdapter.notifyDataSetChanged();
         });
@@ -113,16 +116,18 @@ public class PracticeFragment extends Fragment {
         mExamHash.addAll(Arrays.asList(mExamList));
 
         examAdapter = new PracticeFragment.LocalAdapter(getActivity(), mExamList);
-        examGridView.setAdapter(examAdapter);
+        examListView.setAdapter(examAdapter);
+
+        setDynamicHeight(examListView);
     }
 
     private void setUpSubjectSection(View view) {
         // SUBJECT - expandable view start
-        subjectGridView = view.findViewById(R.id.expanded_subject_grid);
+        subjectListView = view.findViewById(R.id.subject_list);
 
         Switch cbAllSubjects = view.findViewById(R.id.sw_subject);
         cbAllSubjects.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (subjectGridView == null) return;
+            if (subjectListView == null) return;
             subjectAdapter.isAll = isChecked;
             subjectAdapter.notifyDataSetChanged();
         });
@@ -133,10 +138,9 @@ public class PracticeFragment extends Fragment {
         mSubjectHash.addAll(Arrays.asList(mSubjectList));
 
         subjectAdapter = new PracticeFragment.LocalAdapter(getActivity(), mSubjectList);
-        subjectGridView.setAdapter(subjectAdapter);
+        subjectListView.setAdapter(subjectAdapter);
 
-        setDynamicHeight(subjectGridView, 3);
-        setDynamicHeight(examGridView, 3);
+        setDynamicHeight(subjectListView);
     }
 
     private void setUpYearSection(View view) {
@@ -145,13 +149,13 @@ public class PracticeFragment extends Fragment {
         ArrayList<String> yearList = MainActivity.getYears();
         final TextView tvMin = view.findViewById(R.id.textMin1);
         final TextView tvMax = view.findViewById(R.id.textMax1);
-        tvMin.setText("" + yearList.get(0));
-        tvMax.setText("" + yearList.get(yearList.size() - 1));
+        tvMin.setText(yearList.get(0));
+        tvMax.setText(yearList.get(yearList.size() - 1));
         rangeSeekbar.setBarColor(getResources().getColor(android.R.color.holo_orange_light));
 
         rangeSeekbar.setOnRangeSeekbarChangeListener((minValue, maxValue) -> {
-            tvMin.setText("" + minValue.intValue());
-            tvMax.setText("" + maxValue.intValue());
+            tvMin.setText(tvMin.getText());
+            tvMax.setText(tvMax.getText());
         });
     }
 
@@ -359,38 +363,38 @@ public class PracticeFragment extends Fragment {
         }
     }
 
-    private void setDynamicHeight(GridView gridView, int columns) {
+    private void setDynamicHeight(ListView view) {
 
-        if (gridView == null) {
+        if (view == null) {
             return;
         }
 
         int totalHeight, rows;
-        ListAdapter gridViewAdapter = gridView.getAdapter();
-        int items = gridViewAdapter.getCount();
+        ListAdapter listViewAdapter = view.getAdapter();
+        int items = listViewAdapter.getCount();
 
         if (items <= 0) {
             // looks like database is not ready, just return
             return;
         }
 
-        View listItem = gridViewAdapter.getView(0, null, gridView);
+        View listItem = listViewAdapter.getView(0, null, view);
         listItem.measure(0, 0);
-        totalHeight = listItem.getMeasuredHeight();
+        totalHeight = (int)(listItem.getMeasuredHeight() * items * 1.1f);
 
-        float x = 1;
+/*        float x = 1;
         if (items > columns) {
             x = items / columns;
             rows = (int) (x + 2);
             totalHeight *= rows;
         } else if (items < columns && items > 0) {
             totalHeight *= 2;
-        }
+        }*/
 
-        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        ViewGroup.LayoutParams params = view.getLayoutParams();
         params.height = totalHeight;
         params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-        gridView.setLayoutParams(params);
+        view.setLayoutParams(params);
     }
 
     public void onButtonPressed(int status, String query) {
@@ -416,6 +420,21 @@ public class PracticeFragment extends Fragment {
         mListener = null;
     }
 
+    public HashMap<String, String> abbreviations = new HashMap<>();
+
+    public void updateAbreviations() {
+        abbreviations.put("IYBA", "BioTechnology - IYBA");
+        abbreviations.put("ECON", "Economics - ECON");
+        abbreviations.put("INTA", "TBD - INTA");
+        abbreviations.put("GEOG", "Geography - GEOG");
+        abbreviations.put("POLI", "Politics - POLI");
+        abbreviations.put("ENVI", "Environment - ENVI");
+        abbreviations.put("HIST", "History - HIST");
+        abbreviations.put("CURR", "Current Affairs - CURR");
+        abbreviations.put("SNTC", "TBD - SNTC");
+        abbreviations.put("CSP", "TBD - CSP");
+    }
+
     public class LocalAdapter extends BaseAdapter {
 
         private final Context mContext;
@@ -423,10 +442,12 @@ public class PracticeFragment extends Fragment {
         public boolean isAll;
 
         private class ViewHolder {
-            private final CheckBox item;
+            private final TextView itemText;
+            private final CheckBox itemBox;
 
-            public ViewHolder(CheckBox box) {
-                this.item = box;
+            public ViewHolder(TextView text, CheckBox box) {
+                this.itemText = text;
+                this.itemBox = box;
             }
         }
 
@@ -457,10 +478,11 @@ public class PracticeFragment extends Fragment {
 
             if (convertView == null) {
                 final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-                convertView = layoutInflater.inflate(R.layout.gridview_item, null);
+                convertView = layoutInflater.inflate(R.layout.practice_view_item, null);
 
-                final CheckBox cb = convertView.findViewById(R.id.btn_item);
-                cb.setText(titleName);
+                final CheckBox cb = convertView.findViewById(R.id.list_item_box);
+                final TextView tv = convertView.findViewById(R.id.list_item_text);
+                tv.setText(abbreviations.get(titleName));
                 cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         mCheckedList.add(titleName);
@@ -469,12 +491,12 @@ public class PracticeFragment extends Fragment {
                     }
                 });
 
-                final PracticeFragment.LocalAdapter.ViewHolder viewHolder = new PracticeFragment.LocalAdapter.ViewHolder(cb);
+                final PracticeFragment.LocalAdapter.ViewHolder viewHolder = new PracticeFragment.LocalAdapter.ViewHolder(tv, cb);
                 convertView.setTag(viewHolder);
             }
 
             PracticeFragment.LocalAdapter.ViewHolder viewHolder = (PracticeFragment.LocalAdapter.ViewHolder) convertView.getTag();
-            viewHolder.item.setChecked(isAll);
+            viewHolder.itemBox.setChecked(isAll);
 
             return convertView;
         }
