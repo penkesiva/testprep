@@ -43,11 +43,8 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     private Context mContext;
     private static DataBaseHelper dbHelperInstance = null;
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS " + TABLE_QBANK;
-
-    private String dbCreatedPerf = "dbCreatedPerf";
-    private PreferenceUtils prefs;
-
-    ArrayList<String> tableList = new ArrayList<>();
+    private static String CREATE_DB = "CREATE_DB";
+    private ArrayList<String> tableList = new ArrayList<>();
 
     private DataBaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -85,8 +82,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
             }
 
             //update init is done
-            prefs = PreferenceUtils.getInstance(mContext);
-            prefs.savePrefs(dbCreatedPerf, true);
+            PreferenceUtils.savePrefs(mContext, CREATE_DB, true);
 
         }).start();
     }
@@ -101,10 +97,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
     }
 
     public boolean isDataBaseReady() {
-        if(prefs != null)
-            return prefs.readPrefs(dbCreatedPerf, false);
-
-        return false;
+        return PreferenceUtils.readPrefs(mContext, CREATE_DB, false);
     }
 
     private String createMetaTable(String tableName) {

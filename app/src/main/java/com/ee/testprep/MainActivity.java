@@ -172,24 +172,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             loadHomeFragment();
         }
 
-        showCustomDialog();
+        showLoadingDialog();
         dbHelper = DataBaseHelper.getInstance(this);
         dbHelper.dummyDBCall();
-
-        startDB();
+        cancelLoadingDialog();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startDB();
-    }
-
-    private void startDB() {
-        new Thread(() -> {
-            while (!dbHelper.isDataBaseReady()) {}
-            cancelCustomDialog();
-        }).start();
+        cancelLoadingDialog();
     }
 
     private void hideStatusBar() {
@@ -312,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         actionBarDrawerToggle.syncState();
     }
 
-    protected void showCustomDialog() {
+    protected void showLoadingDialog() {
         statusDialog = new Dialog(mContext, android.R.style.Theme_Translucent);
         statusDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         statusDialog.setCancelable(true);
@@ -324,9 +316,16 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         statusDialog.show();
     }
 
-    protected void cancelCustomDialog() {
-        if (statusDialog != null || statusDialog.isShowing())
+    protected void cancelDialog() {
+        if (statusDialog != null && statusDialog.isShowing())
             statusDialog.cancel();
+    }
+
+    private void cancelLoadingDialog() {
+        new Thread(() -> {
+            while (!dbHelper.isDataBaseReady()) {}
+            cancelDialog();
+        }).start();
     }
 
     /***

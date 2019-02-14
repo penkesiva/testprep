@@ -46,11 +46,7 @@ import androidx.loader.content.Loader;
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
-
+    private Context mContext;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -59,7 +55,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     /**
      * shared preference for login activity;
      */
-    private PreferenceUtils prefs;
     private static final String LOGIN_KEY = "LOGIN_KEY";
     private static final String REMEMBER_ME = "REMEMBER_ME";
 
@@ -85,16 +80,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        prefs = PreferenceUtils.getInstance(getApplicationContext());
+        mContext = getApplicationContext();
 
         String action = getIntent().getStringExtra("ACTION");
 
         if (action != null && action.compareTo("SignOut") == 0) {
-            prefs.savePrefs(LOGIN_KEY, false);
+            PreferenceUtils.savePrefs(getApplicationContext(), LOGIN_KEY, false);
             signOutUser();
         }
 
-        Boolean isUserLoggedin = prefs.readPrefs(LOGIN_KEY, false);
+        Boolean isUserLoggedin = PreferenceUtils.readPrefs(mContext, LOGIN_KEY, false);
 
         if (isUserLoggedin) {
             // User loggedin already, start with MainActivity
@@ -108,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void launchMainActivity() {
-        prefs.savePrefs(LOGIN_KEY, true);
+        PreferenceUtils.savePrefs(mContext, LOGIN_KEY, true);
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
@@ -161,17 +156,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             email = mSignInEmailView.getText().toString();
 
             //if there is a valid email address in the preference, update editText
-            if(prefs.readPrefs(REMEMBER_ME, "").contains("@")) {
-                mSignInEmailView.setText(prefs.readPrefs(REMEMBER_ME, ""));
+            if(PreferenceUtils.readPrefs(mContext, REMEMBER_ME, "").contains("@")) {
+                mSignInEmailView.setText(PreferenceUtils.readPrefs(mContext, REMEMBER_ME, ""));
             }
             if (validateSignInForm()) {
                 signInUser();
 
                 //save email if remember me is checked
                 if(mRememberMe.isChecked()) {
-                    prefs.savePrefs(REMEMBER_ME, email);
+                    PreferenceUtils.savePrefs(mContext, REMEMBER_ME, email);
                 } else {
-                    prefs.savePrefs(REMEMBER_ME, "");
+                    PreferenceUtils.savePrefs(mContext, REMEMBER_ME, "");
                 }
             }
         });
