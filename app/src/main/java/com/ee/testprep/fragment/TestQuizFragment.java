@@ -214,7 +214,7 @@ public class TestQuizFragment extends Fragment {
 
         builder.setPositiveButton("EXIT", (dialog, id) -> {
             if (saveQuizStatus == 0) {
-                saveUserData();
+                viewModel.saveUserData(quizName, quizList, quiz.getRemainingTimeInSec());
             }
             getFragmentManager().popBackStack();
         });
@@ -224,27 +224,6 @@ public class TestQuizFragment extends Fragment {
 
         alertDialog = builder.create();
         alertDialog.show();
-    }
-
-    private void saveUserData() {
-        int correct = 0;
-        int wrong = 0;
-
-        for (DBRow q : quizList) {
-            if (q.userstatus.isEmpty()) {
-                continue;
-            }
-
-            if (q.userstatus == q.answer) {
-                correct++;
-            } else {
-                wrong++;
-            }
-        }
-
-        int timeUsed = Constants.getQuizTime(quizList.size()) - quiz.getRemainingTimeInSec();
-        viewModel.updateUserData(new Test(quizName, numQuestions, (correct + wrong), correct, wrong,
-                timeUsed));
     }
 
     private class SlidePagerAdapter extends FragmentStatePagerAdapter {
