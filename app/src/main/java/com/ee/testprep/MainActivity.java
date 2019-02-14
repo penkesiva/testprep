@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.db.MetaData;
 import com.ee.testprep.db.PracticeViewModel;
+import com.ee.testprep.db.UserDataViewModel;
 import com.ee.testprep.fragment.DonateFragment;
 import com.ee.testprep.fragment.FeedbackFragment;
 import com.ee.testprep.fragment.HomeFragment;
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         super.onCreate(savedInstanceState);
 
         ViewModelProviders.of(this).get(PracticeViewModel.class);
+        ViewModelProviders.of(this).get(UserDataViewModel.class);
 
         View rootView = findViewById(android.R.id.content);
         //rootView.setBackgroundResource(R.drawable.cover);

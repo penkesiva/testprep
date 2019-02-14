@@ -820,7 +820,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 correctAnswers = runCountQuery(query + " AND " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
                 wrongAnswers = runCountQuery(query + " AND " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(subject, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(subject, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers, 0));
             }
         } else if (testType == TestType.QUIZ) {
             List<MetaData> quizzes = queryAllQuizzes();
@@ -832,7 +832,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 correctAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
                 wrongAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(quiz.mName, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(quiz.mName, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers, 0));
             }
         } else if (testType == TestType.MODELTEST) {
             List<MetaData> quizzes = queryAllModelTests();
@@ -844,7 +844,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 correctAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " = " + DBRow.KEY_ANSWER);
                 wrongAnswers = runCountQuery(query + " WHERE " + DBRow.KEY_USER_STATUS + " != " + DBRow.KEY_ANSWER);
 
-                tests.add(new Test(quiz.mName, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers));
+                tests.add(new Test(quiz.mName, maxQuestions, answeredQuestions, correctAnswers, wrongAnswers, 0));
             }
         } else if (testType == TestType.ALL) {
             tests.add(TestType.QBANK.getSummary(context));

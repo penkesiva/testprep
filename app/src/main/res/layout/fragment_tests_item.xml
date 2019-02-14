@@ -56,6 +56,15 @@
                 android:textSize="@dimen/medium2_font"/>
 
             <TextView
+                android:id="@+id/tests_item_exam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/medium2_font"
+                android:visibility="gone"/>
+
+            <TextView
                 android:id="@+id/tests_item_time_total"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

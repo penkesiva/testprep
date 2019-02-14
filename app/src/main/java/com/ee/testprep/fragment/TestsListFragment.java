@@ -12,14 +12,19 @@ import android.widget.TextView;
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.MetaData;
+import com.ee.testprep.db.Test;
+import com.ee.testprep.db.UserDataViewModel;
+import com.ee.testprep.util.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,8 +34,9 @@ public class TestsListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private List<MetaData> mTestsList;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private TestsListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private UserDataViewModel viewModel;
 
     private OnClickListener onListItemClickListener = new OnClickListener() {
         @Override
@@ -56,6 +62,7 @@ public class TestsListFragment extends Fragment {
         if (getArguments() != null) {
             mTestsList = (List<MetaData>) getArguments().getSerializable(TESTS_LIST);
         }
+        viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
     }
 
     @Override
@@ -76,6 +83,9 @@ public class TestsListFragment extends Fragment {
 
         adapter = new TestsListAdapter();
         recyclerView.setAdapter(adapter);
+        viewModel.getUserDataList().observe(getActivity(), data -> {
+            adapter.setUserData(data);
+        });
     }
 
     @Override
@@ -96,6 +106,14 @@ public class TestsListFragment extends Fragment {
     }
 
     public class TestsListAdapter extends RecyclerView.Adapter<TestsListAdapter.TestsListItemViewHolder> {
+        private HashMap<String, Test> userTestData = new HashMap<>();
+
+        public void setUserData(List<Test> userData) {
+            for (Test t : userData) {
+                userTestData.put(t.testName, t);
+            }
+        }
+
         @NonNull
         @Override
         public TestsListItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -107,14 +125,33 @@ public class TestsListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TestsListItemViewHolder holder, int position) {
-            holder.titleView.setText(mTestsList.get(position).mName.toUpperCase());
-            holder.subjectView.setText(mTestsList.get(position).mSubject);
-            //holder.totalTimeView.setText(mTestsList.get(position).mTime);
-            holder.totalTimeView.setText("Time: " + "2h 10m 30s");
-            holder.countView.setText("( " + mTestsList.get(position).mTotalQ + " questions )");
+            MetaData testData = mTestsList.get(position);
+            holder.titleView.setText(testData.mName.toUpperCase());
+            if (testData.mSubject != null && !testData.mSubject.isEmpty()) {
+                holder.subjectView.setText(testData.mSubject);
+            }
+            if (testData.mExam != null && !testData.mExam.isEmpty()) {
+                holder.examView.setText(testData.mExam);
+            }
+            //holder.totalTimeView.setText(testData.mTime);
+            int numQuestions = Integer.valueOf(testData.mTotalQ);
+            int quizTime = Constants.getQuizTime(numQuestions);
+            holder.totalTimeView.setText("Total Time: " + Constants.getQuizTime(quizTime));
+            holder.countView.setText("( " + testData.mTotalQ + " questions )");
+
+            Test userData = userTestData.get(testData.mName);
+            if (userData != null) {
+                if (userData.timeUsed > 0) {
+                    holder.leftOverTimeView.setVisibility(View.VISIBLE);
+                    holder.leftOverTimeView.setText("Leftover Time: " + Constants.getTime(quizTime - userData.timeUsed));
+                }
+                if (userData.answeredCount == numQuestions) {
+                    holder.completedMarkView.setVisibility(View.VISIBLE);
+                }
+            }
 
             //set view's tag with quizname; it is used to query with quizname later
-            holder.cardView.setTag(mTestsList.get(position).mName);
+            holder.cardView.setTag(testData.mName);
             holder.cardView.setOnClickListener(onListItemClickListener);
         }
 
@@ -127,6 +164,7 @@ public class TestsListFragment extends Fragment {
             private CardView cardView;
             private TextView titleView;
             private TextView subjectView;
+            private TextView examView;
             private TextView totalTimeView;
             private TextView leftOverTimeView;
             private TextView countView;
@@ -137,6 +175,7 @@ public class TestsListFragment extends Fragment {
                 cardView = root.findViewById(R.id.tests_card_view);
                 titleView = root.findViewById(R.id.tests_item_title);
                 subjectView = root.findViewById(R.id.tests_item_subject);
+                examView = root.findViewById(R.id.tests_item_exam);
                 totalTimeView = root.findViewById(R.id.tests_item_time_total);
                 leftOverTimeView = root.findViewById(R.id.tests_item_time_left);
                 countView = root.findViewById(R.id.tests_item_count);

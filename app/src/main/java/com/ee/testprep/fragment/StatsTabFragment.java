@@ -72,11 +72,11 @@ public class StatsTabFragment extends Fragment {
         @Override
         public void onBindViewHolder(StatsViewHolder holder, int position) {
             Test test = modelTestData.get(position);
-            holder.titleView.setText(test.name);
-            holder.summaryView.setText(test.correctAnswers + "/" + test.maxQuestions);
-            if (test.maxQuestions != 0) {
+            holder.titleView.setText(test.testName);
+            holder.summaryView.setText(test.correctCount + "/" + test.totalCount);
+            if (test.totalCount != 0) {
                 holder.progressBar.setProgress(
-                        holder.progressBar.getMax() * test.correctAnswers / test.maxQuestions);
+                        holder.progressBar.getMax() * test.correctCount / test.totalCount);
             }
         }
 
