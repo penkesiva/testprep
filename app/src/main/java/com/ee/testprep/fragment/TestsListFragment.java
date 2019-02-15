@@ -136,7 +136,7 @@ public class TestsListFragment extends Fragment {
             //holder.totalTimeView.setText(testData.mTime);
             int numQuestions = Integer.valueOf(testData.mTotalQ);
             int quizTime = Constants.getQuizTime(numQuestions);
-            holder.totalTimeView.setText("Total Time: " + Constants.getQuizTime(quizTime));
+            holder.totalTimeView.setText("Total Time: " + Constants.getTime(quizTime));
             holder.countView.setText("( " + testData.mTotalQ + " questions )");
 
             Test userData = userTestData.get(testData.mName);

@@ -417,7 +417,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         // if user select the current navigation menu again, don't do anything
         // just close the navigation drawer
-        if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+        if (CURRENT_TAG != TAG_HOME && getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
             drawer.closeDrawers();
             return;
         }
@@ -428,15 +428,21 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             fm.popBackStack();
         }
 
+        if (CURRENT_TAG == TAG_HOME && getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+            drawer.closeDrawers();
+            return;
+        }
+
         // update the main content by replacing fragments
         Fragment fragment = getHomeFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
-        if (CURRENT_TAG == TAG_HOME)
+        if (CURRENT_TAG == TAG_HOME) {
             fragmentTransaction.add(R.id.frame, fragment, TAG_HOME);
-        else
+        } else {
             fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG).addToBackStack(null);
+        }
         fragmentTransaction.commitAllowingStateLoss();
 
         //Closing drawer on item click
