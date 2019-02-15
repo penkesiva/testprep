@@ -574,6 +574,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private void showQuizResult(String quizName) {
         if (dbHelper == null) return;
 
+        getSupportFragmentManager().popBackStack();
         Fragment fragment = ResultsFragment.newInstance(quizName);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
