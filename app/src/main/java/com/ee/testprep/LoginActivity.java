@@ -328,7 +328,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            loadingProgressBar.setIndeterminate(true);
             return checkUser();
         }
 
@@ -380,6 +379,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (validRegisterFormHelper()) {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingProgressBar.setIndeterminate(true);
                 mAuthTask = new UserLoginTask(email, name);
                 mAuthTask.execute((Void) null);
                 return true;
@@ -394,6 +395,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (validSignInHelper()) {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
+                loadingProgressBar.setVisibility(View.VISIBLE);
+                loadingProgressBar.setIndeterminate(true);
                 mAuthTask = new UserLoginTask(email, "");
                 mAuthTask.execute((Void) null);
                 return true;

@@ -126,7 +126,7 @@ public class TestQuizFragment extends Fragment {
                     if (counter <= 0) {
                         startTimeRefresh();
                     } else {
-                        startCounter.setText("" + counter);
+                        getActivity().runOnUiThread(() -> startCounter.setText("" + counter));
                         counter--;
                     }
                 }
