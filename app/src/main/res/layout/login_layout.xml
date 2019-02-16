@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground2"
+    android:orientation="vertical"
     tools:context=".LoginActivity">
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:indeterminate="false"
+        android:theme="@style/ProgressBarStyle" />
 
     <RelativeLayout
         android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginEnd="20dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50sp"
-        android:orientation="vertical" >
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/eeImageView"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:contentDescription="@null"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
+            android:contentDescription="@null"
             android:gravity="center_vertical"
             android:src="@drawable/ee_icon" />
 
@@ -31,160 +41,83 @@
             android:id="@+id/appNameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/eeImageView"
             android:layout_marginTop="5dp"
-            android:text="AppName"
+            android:layout_below="@+id/eeImageView"
             android:gravity="center"
+            android:text="@string/app_name"
             android:textColor="@color/colorOrange"
-            android:typeface="monospace"
-            android:textSize="28sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/eeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appNameTextView"
             android:layout_marginTop="5dp"
+            android:layout_below="@+id/appNameTextView"
             android:gravity="center"
-            android:text="Equality Empowerment"
-            android:typeface="monospace"
+            android:text="@string/organization"
             android:textColor="@color/colorGreen"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/afterAnimationView"
+    <FrameLayout
+        android:id="@+id/frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:orientation="vertical"
-        android:focusableInTouchMode="true"
-        android:visibility="gone">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20sp"
+        android:layout_marginStart="30sp"
+        android:layout_marginEnd="30sp">
 
         <LinearLayout
-            android:id="@+id/registerLayout"
+            android:id="@+id/signInLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/loginLayout"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="visible">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/yourNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorOrange"
-                android:textColorHint="@color/colorOrange"
-                android:hint="@string/your_name"
-                android:gravity="center"
-                android:maxLines="1"
-                android:inputType="textCapSentences"
-                android:textSize="18sp" />
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorOrange"
-                android:textColorHint="@color/colorOrange"
-                android:layout_marginTop="20sp"
-                android:hint="@string/email"
-                android:gravity="center"
-                android:inputType="text"
-                android:maxLines="1"
-                android:textSize="18sp" />
-
-            <CheckBox
-                android:id="@+id/terms_conditions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/padding_5sp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="25dp"
-                android:layout_gravity="center"
-                android:text="@string/terms_conditions"
-                android:textColor="@color/colorTextView"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:selectAllOnFocus="false"
-                android:linksClickable="false"
-                android:autoLink="all"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/signinLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/loginLayout"
-            android:layout_marginBottom="50sp"
+            android:focusableInTouchMode="true"
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="gone">
+
+            <Button
+                android:id="@+id/newRegisterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:background="@android:color/transparent"
+                android:text="@string/register"
+                android:layout_gravity="right"
+                android:textAllCaps="false"
+                android:textColor="@color/colorTextView"
+                android:textSize="16sp" />
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/emailSignInEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25sp"
+                android:gravity="center"
                 android:hint="@string/email"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
                 android:textColor="@color/colorOrange"
                 android:textColorHint="@color/colorOrange"
-                android:gravity="center"
-                android:inputType="text"
-                android:singleLine="true"
-                android:maxLines="1"
                 android:textSize="18sp" />
 
             <CheckBox
                 android:id="@+id/remember_me"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15sp"
-                android:textSize="14sp"
+                android:gravity="center"
                 android:text="Remember Me"
                 android:textColor="@color/colorTextView"
-                android:textStyle="bold"
-                android:gravity="center"/>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:id="@+id/loginLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_alignParentBottom="true">
+                android:textSize="14sp"
+                android:textStyle="bold" />
 
             <Button
-                android:id="@+id/registerButton"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp"
-                android:text="@string/register"
-                android:background="@drawable/button_drawable"
-                android:layout_alignParentStart="true"
-                android:textAllCaps="false"
-                android:textColor="@color/colorOrange"
-                android:layout_toStartOf="@+id/view"
-                android:textSize="16sp"/>
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="2dp"
-                android:layout_height="1dp"
-                android:layout_centerHorizontal="true" />
-
-            <Button
-                android:id="@+id/signinButton"
-                android:layout_width="wrap_content"
-                android:layout_toEndOf="@+id/view"
-                android:layout_alignParentEnd="true"
-                android:layout_height="55dp"
+                android:id="@+id/signInButton"
+                android:layout_width="100sp"
+                android:layout_height="40dp"
+                android:layout_marginTop="25sp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/button_drawable"
                 android:text="@string/sign_in"
@@ -192,35 +125,84 @@
                 android:textColor="@color/colorOrange"
                 android:textSize="16sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <!--TextView
-            android:id="@+id/skipTextView"
+        <LinearLayout
+            android:id="@+id/registerLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:gravity="center"
-            android:padding="12dp"
-            android:text="SKIP"
-            android:textColor="@color/colorTextView"
-            android:textSize="15sp" /-->
+            android:orientation="vertical"
+            android:visibility="gone">
 
-        <ProgressBar
-            android:id="@+id/loadingProgressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="-4dp"
-            android:foregroundGravity="bottom"
-            android:indeterminate="false"
-            android:padding="0dp"
-            android:theme="@style/ProgressBarStyle" />
+            <Button
+                android:id="@+id/newSignInButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15sp"
+                android:background="@android:color/transparent"
+                android:text="@string/sign_in"
+                android:layout_gravity="right"
+                android:textAllCaps="false"
+                android:textColor="@color/colorTextView"
+                android:textSize="16sp" />
 
-    </RelativeLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameRegisterEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30sp"
+                android:layout_marginEnd="30sp"
+                android:gravity="center"
+                android:hint="@string/your_name"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:textColor="@color/colorOrange"
+                android:textColorHint="@color/colorOrange"
+                android:textSize="18sp" />
 
-</RelativeLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailRegisterEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/email"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/colorOrange"
+                android:textColorHint="@color/colorOrange"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/terms_conditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:autoLink="all"
+                android:linksClickable="false"
+                android:padding="@dimen/padding_5sp"
+                android:selectAllOnFocus="false"
+                android:text="@string/terms_conditions"
+                android:textColor="@color/colorTextView"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="100sp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/button_drawable"
+                android:text="@string/register"
+                android:textAllCaps="false"
+                android:textColor="@color/colorOrange"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

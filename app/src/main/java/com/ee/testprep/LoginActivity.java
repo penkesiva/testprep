@@ -10,11 +10,14 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -63,12 +66,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Button mSignInView;
     private Button mRegisterView;
     private ProgressBar loadingProgressBar;
-    private RelativeLayout rootView, afterAnimationView, logoLayout;
-    private LinearLayout signInLayout, registerLayout;
+    private FrameLayout mFrameLayout;
+    private LinearLayout rootView;
+    private RelativeLayout logoLayout;
+    private LinearLayout mSignInLayout, mRegisterLayout;
     private TextView eeTextView;
     private ImageView eeImageView;
     private CheckBox mTermsView;
     private CheckBox mRememberMe;
+    private Button mNewRegisterButton;
+    private Button mNewSignInButton;
 
     private String email;
     private String name;
@@ -80,6 +87,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
 
         mContext = getApplicationContext();
+
+        //hideStatusBar();
 
         String action = getIntent().getStringExtra("ACTION");
 
@@ -108,34 +117,37 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void initViews() {
-        mRegisterNameView = findViewById(R.id.yourNameEditText);
-        mRegisterEmailView = findViewById(R.id.emailEditText);
-        mRegisterView = findViewById(R.id.registerButton);
-        mSignInView = findViewById(R.id.signinButton);
+        rootView = findViewById(R.id.rootView);
+
+        logoLayout = findViewById(R.id.logo);
         eeTextView = findViewById(R.id.eeTextView);
         eeImageView = findViewById(R.id.eeImageView);
-        loadingProgressBar = findViewById(R.id.loadingProgressBar);
-        rootView = findViewById(R.id.rootView);
-        logoLayout = findViewById(R.id.logo);
-        afterAnimationView = findViewById(R.id.afterAnimationView);
-        mSignInEmailView = findViewById(R.id.emailSignInEditText);
-        signInLayout = findViewById(R.id.signinLayout);
-        registerLayout = findViewById(R.id.registerLayout);
+
+        mFrameLayout = findViewById(R.id.frame_layout);
+
+        mRegisterNameView = findViewById(R.id.nameRegisterEditText);
+        mRegisterEmailView = findViewById(R.id.emailRegisterEditText);
+        mRegisterView = findViewById(R.id.registerButton);
+        mNewRegisterButton = findViewById(R.id.newRegisterButton);
+        mRegisterLayout = findViewById(R.id.registerLayout);
         mTermsView = findViewById(R.id.terms_conditions);
+
+        mSignInEmailView = findViewById(R.id.emailSignInEditText);
+        mSignInLayout = findViewById(R.id.signInLayout);
+        mSignInView = findViewById(R.id.signInButton);
+        mNewSignInButton = findViewById(R.id.newSignInButton);
+        loadingProgressBar = findViewById(R.id.loadingProgressBar);
         mRememberMe = findViewById(R.id.remember_me);
+
+        //if there is a valid email address in the preference, update editText
+        if(PreferenceUtils.readPrefs(mContext, REMEMBER_ME, "").contains("@")) {
+            mSignInEmailView.setText(PreferenceUtils.readPrefs(mContext, REMEMBER_ME, ""));
+        }
 
         setUpFadeInAnimation(logoLayout);
 
-        mSignInView.setAlpha(0.4f);
-
         // configure register/signin buttons
         mRegisterView.setOnClickListener(view -> {
-            mSignInView.setAlpha(0.4f);
-            mRegisterView.setAlpha(1f);
-
-            signInLayout.setVisibility(View.GONE);
-            registerLayout.setVisibility(View.VISIBLE);
-
             // Store values at the time of the login attempt.
             email = mRegisterEmailView.getText().toString();
             name = mRegisterNameView.getText().toString();
@@ -145,19 +157,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
 
         mSignInView.setOnClickListener(view -> {
-            mRegisterView.setAlpha(0.4f);
-            mSignInView.setAlpha(1f);
-
-            registerLayout.setVisibility(View.GONE);
-            signInLayout.setVisibility(View.VISIBLE);
-
             // Store values at the time of the login attempt.
             email = mSignInEmailView.getText().toString();
 
-            //if there is a valid email address in the preference, update editText
-            if(PreferenceUtils.readPrefs(mContext, REMEMBER_ME, "").contains("@")) {
-                mSignInEmailView.setText(PreferenceUtils.readPrefs(mContext, REMEMBER_ME, ""));
-            }
             if (validateSignInForm()) {
                 signInUser();
 
@@ -170,8 +172,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        mNewRegisterButton.setOnClickListener(v -> {
+            mSignInLayout.setVisibility(View.GONE);
+            mRegisterLayout.setVisibility(View.VISIBLE);
+        });
+
+        mNewSignInButton.setOnClickListener(v -> {
+            mSignInLayout.setVisibility(View.VISIBLE);
+            mRegisterLayout.setVisibility(View.GONE);
+        });
+
         mTermsView.setOnCheckedChangeListener((compoundButton, b) -> mTermsView.setError(null, null));
 
+    }
+
+    private void hideStatusBar() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private void setUpFadeOutAnimation(final View logoLayout) {
@@ -182,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         fadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-                afterAnimationView.setVisibility(View.VISIBLE);
+                mFrameLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -200,13 +217,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void setUpFadeInAnimation(final View logoLayout) {
         final Animation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-        fadeIn.setDuration(3000);
+        fadeIn.setDuration(2000);
         fadeIn.setStartOffset(100);
 
         fadeIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationEnd(Animation arg0) {
-                afterAnimationView.setVisibility(View.VISIBLE);
+                mSignInLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
