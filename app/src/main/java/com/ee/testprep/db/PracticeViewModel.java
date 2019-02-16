@@ -4,7 +4,6 @@ import android.app.Application;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -14,8 +13,8 @@ import androidx.lifecycle.MutableLiveData;
 
 public class PracticeViewModel extends AndroidViewModel {
     private static int QUESTION_COUNT = 25;
-    private static String USER_STATUS = "z";
-    private List<DBRow> allQuestions;
+    //private static String USER_STATUS = "z";
+    //private List<DBRow> allQuestions;
     private MutableLiveData<List<DBRow>> questions = new MutableLiveData<>();
 
     public PracticeViewModel(@NonNull Application application) {
@@ -31,15 +30,21 @@ public class PracticeViewModel extends AndroidViewModel {
         questions.setValue(new ArrayList<>());
     }
 
-    public synchronized void practiceQuery(String query) {
+    public synchronized boolean practiceQuery(String query) {
         List<DBRow> filteredQuestions;
+        int numQuestions = 0;
         filteredQuestions = DataBaseHelper.getInstance(getApplication()).queryPracticeQuestions(query);
 
         Log.d("PracticeViewModel", "practice questions size = " + filteredQuestions.size());
 
-        if(filteredQuestions.size() > 0) {
+        numQuestions = filteredQuestions.size();
+        if (numQuestions > 0) {
+            if (numQuestions > QUESTION_COUNT) {
+                filteredQuestions.subList(QUESTION_COUNT, numQuestions).clear();
+            }
             questions.setValue(filteredQuestions);
         }
+        return numQuestions > QUESTION_COUNT;
     }
 
     /*public synchronized void setPracticeType(PracticeType practiceType, String value) {

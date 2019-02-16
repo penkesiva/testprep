@@ -26,6 +26,7 @@ public class TestPracticeFragment extends Fragment {
     private ViewPager pager;
     private PracticePagerAdapter pagerAdapter;
     private String mQuery;
+    private boolean moreToPractice;
 
     public static TestPracticeFragment newInstance(String query) {
         TestPracticeFragment fragment = new TestPracticeFragment();
@@ -46,7 +47,7 @@ public class TestPracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Bundle args = getArguments();
         mQuery = args.getString(PRACTICE_QUERY);
 
@@ -68,7 +69,7 @@ public class TestPracticeFragment extends Fragment {
         model.getQuestions().observe(mainActivity, data -> {
             if (mainActivity != null) pagerAdapter.addQuestions(data);
         });
-        view.post(() -> model.practiceQuery(mQuery));
+        view.post(() -> moreToPractice = model.practiceQuery(mQuery));
     }
 
     private class PracticePagerAdapter extends FragmentStatePagerAdapter {
@@ -86,7 +87,7 @@ public class TestPracticeFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = QuestionPracticeFragment.newInstance(questions.get(position),
-                    (position == questions.size() - 1));
+                    (moreToPractice && position == questions.size() - 1));
             return fragment;
         }
 

@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private Toolbar toolbar;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
+    private String savedPracticeQuery;
 
     public static ArrayList<String> getYears() {
         DataBaseHelper helper = DataBaseHelper.getInstance();
@@ -325,7 +326,8 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void cancelLoadingDialog() {
         new Thread(() -> {
-            while (!dbHelper.isDataBaseReady()) {}
+            while (!dbHelper.isDataBaseReady()) {
+            }
             cancelDialog();
         }).start();
     }
@@ -535,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[],
-            int[] grantResults) {
+                                           int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -593,6 +595,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void showPracticeQuestions(String query) {
         if (dbHelper == null) return;
+
+        boolean parcticeMore = query == null;
+        if (parcticeMore) {
+            query = savedPracticeQuery;
+            getSupportFragmentManager().popBackStack();
+        } else {
+            savedPracticeQuery = query;
+        }
 
         Fragment fragment = TestPracticeFragment.newInstance(query);
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
