@@ -3,6 +3,8 @@ package com.ee.testprep.db;
 import android.app.Application;
 import android.os.AsyncTask;
 
+import com.ee.testprep.util.Constants;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +74,27 @@ public class UserDataViewModel extends AndroidViewModel {
                 userData.setValue(data);
             }
         }.execute(quizName);
+    }
+
+    public void saveUserData(String quizName, List<DBRow> quizList, int remainingTimeInSec) {
+        int correct = 0;
+        int wrong = 0;
+        int size = quizList.size();
+
+        for (DBRow q : quizList) {
+            if (q.userstatus.isEmpty()) {
+                continue;
+            }
+
+            if (q.userstatus == q.answer) {
+                correct++;
+            } else {
+                wrong++;
+            }
+        }
+
+        int timeUsed = Constants.getQuizTime(size) - remainingTimeInSec;
+        updateUserData(new Test(quizName, size, (correct + wrong), correct, wrong, timeUsed));
     }
 
     public void updateUserData(Test test) {

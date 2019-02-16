@@ -13,11 +13,13 @@ import android.widget.TextView;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
+import com.ee.testprep.db.UserDataViewModel;
 
 import java.util.ArrayList;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 public class ResultsFragment extends Fragment {
 
@@ -27,6 +29,7 @@ public class ResultsFragment extends Fragment {
     private String unAttempted = "You didn't attempt this question!";
     private TextView tvScore;
     private int mUserScore = 0;
+    private UserDataViewModel viewModel;
 
     public ResultsFragment() {
     }
@@ -46,6 +49,8 @@ public class ResultsFragment extends Fragment {
             String quizName = getArguments().getString(ARG_QUIZ_NAME);
             DataBaseHelper dbHelper = DataBaseHelper.getInstance(getContext());
             mAnswerKey = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
+            viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
+            viewModel.saveUserData(quizName, mAnswerKey, 0);
         }
     }
 

@@ -141,12 +141,11 @@ public class TestsListFragment extends Fragment {
 
             Test userData = userTestData.get(testData.mName);
             if (userData != null) {
-                if (userData.timeUsed > 0) {
-                    holder.leftOverTimeView.setVisibility(View.VISIBLE);
-                    holder.leftOverTimeView.setText("Leftover Time: " + Constants.getTime(quizTime - userData.timeUsed));
-                }
                 if (userData.answeredCount == numQuestions) {
                     holder.completedMarkView.setVisibility(View.VISIBLE);
+                } else if (userData.timeUsed > 0) {
+                    holder.leftOverTimeView.setVisibility(View.VISIBLE);
+                    holder.leftOverTimeView.setText("Leftover Time: " + Constants.getTime(quizTime - userData.timeUsed));
                 }
             }
 
