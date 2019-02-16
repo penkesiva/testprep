@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorGreen</item>
         <item name="android:buttonStyle">@style/button2</item>
+
+        <item name="android:fontFamily">@font/worksans_light</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
