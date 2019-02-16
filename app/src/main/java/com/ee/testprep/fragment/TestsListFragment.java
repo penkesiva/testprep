@@ -1,6 +1,7 @@
 package com.ee.testprep.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -152,6 +153,12 @@ public class TestsListFragment extends Fragment {
             //set view's tag with quizname; it is used to query with quizname later
             holder.cardView.setTag(testData.mName);
             holder.cardView.setOnClickListener(onListItemClickListener);
+
+            if(position % 2 == 0)
+                holder.cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreenLight));
+            else
+                holder.cardView.setCardBackgroundColor(getResources().getColor(R.color.colorOrangeLight));
+
         }
 
         @Override
