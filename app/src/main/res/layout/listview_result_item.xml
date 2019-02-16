@@ -45,7 +45,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="sans-serif-light"
                     android:text="Correct Answer:"
                     android:textColor="@color/colorBlack"/>
 
@@ -54,7 +53,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="sans-serif-light"
                     android:paddingStart="@dimen/padding_8sp"
                     android:paddingEnd="@dimen/padding_8sp"
                     android:text="Answer"
@@ -90,7 +88,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="sans-serif-light"
                     android:text="@string/your_answer"
                     android:textColor="@color/colorBlack"/>
 
@@ -99,7 +96,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:fontFamily="sans-serif-light"
                     android:paddingLeft="@dimen/padding_8sp"
                     android:paddingRight="@dimen/padding_8sp"
                     android:text="Answer "

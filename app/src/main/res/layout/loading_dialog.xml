@@ -14,7 +14,6 @@
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
        android:textStyle="bold"
-       android:fontFamily="sans-serif"
        android:layout_gravity="center_vertical"
        android:textColor="@android:color/black"
        android:text="Loading data.. Please wait for a while" />
@@ -23,7 +22,6 @@
        android:id="@+id/dialog_text"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:fontFamily="sans-serif-light"
        android:layout_gravity="center_vertical"
        android:textColor="@android:color/black"
        android:text="Loading the quizzes"
