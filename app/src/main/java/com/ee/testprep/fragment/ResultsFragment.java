@@ -50,7 +50,7 @@ public class ResultsFragment extends Fragment {
             DataBaseHelper dbHelper = DataBaseHelper.getInstance(getContext());
             mAnswerKey = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
             viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
-            viewModel.saveUserData(quizName, mAnswerKey, 0);
+            viewModel.saveUserData(quizName, mAnswerKey, 0, true);
         }
     }
 

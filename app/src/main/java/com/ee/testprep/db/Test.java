@@ -13,28 +13,18 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tests_data")
 public class Test {
-    @Override
-    public String toString() {
-        return testName + ": total - " +  totalCount + ", answered - " + answeredCount+ ", correct - " + correctCount+ ", wrong - " + wrongCount+ ", time used = " + timeUsed;
-    }
-
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "test_name")
     public String testName;
-
     @ColumnInfo(name = "total_count")
     public int totalCount;
-
     @ColumnInfo(name = "answered_count")
     public int answeredCount;
-
     @ColumnInfo(name = "correct_count")
     public int correctCount;
-
     @ColumnInfo(name = "wrong_count")
     public int wrongCount;
-
     @ColumnInfo(name = "time_used")
     public int timeUsed;
 
@@ -48,53 +38,11 @@ public class Test {
         this.timeUsed = timeUsed;
     }
 
-//    public String getTestName() {
-//        return testName;
-//    }
-//
-//    public void setTestName(String testName) {
-//        this.testName = testName;
-//    }
-//
-//    public int getTotalCount() {
-//        return totalCount;
-//    }
-//
-//    public void setTotalCount(int totalCount) {
-//        this.totalCount = totalCount;
-//    }
-//
-//    public int getAnsweredCount() {
-//        return answeredCount;
-//    }
-//
-//    public void setAnsweredCount(int answeredCount) {
-//        this.answeredCount = answeredCount;
-//    }
-//
-//    public int getCorrectCount() {
-//        return correctCount;
-//    }
-//
-//    public void setCorrectCount(int correctCount) {
-//        this.correctCount = correctCount;
-//    }
-//
-//    public int getWrongCount() {
-//        return wrongCount;
-//    }
-//
-//    public void setWrongCount(int wrongCount) {
-//        this.wrongCount = wrongCount;
-//    }
-//
-//    public int getTimeUsed() {
-//        return timeUsed;
-//    }
-//
-//    public void setTimeUsed(int timeUsed) {
-//        this.timeUsed = timeUsed;
-//    }
+    @Override
+    public String toString() {
+        return testName + ": total - " + totalCount + ", answered - " + answeredCount + ", " +
+                "correct - " + correctCount + ", wrong - " + wrongCount + ", time used = " + timeUsed;
+    }
 
     public enum TestType {
         ALL, QBANK, QUIZ, MODELTEST;
