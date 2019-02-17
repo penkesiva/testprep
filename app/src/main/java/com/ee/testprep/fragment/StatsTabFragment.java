@@ -13,6 +13,7 @@ import com.ee.testprep.R;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.db.Test;
 import com.ee.testprep.db.Test.TestType;
+import com.ee.testprep.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +73,7 @@ public class StatsTabFragment extends Fragment {
         @Override
         public void onBindViewHolder(StatsViewHolder holder, int position) {
             Test test = modelTestData.get(position);
-            holder.titleView.setText(test.testName);
+            holder.titleView.setText(Constants.getAbbreviation(test.testName));
             holder.summaryView.setText(test.correctCount + "/" + test.totalCount);
             if (test.totalCount != 0) {
                 holder.progressBar.setProgress(

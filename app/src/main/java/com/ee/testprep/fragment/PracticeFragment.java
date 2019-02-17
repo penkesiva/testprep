@@ -20,6 +20,7 @@ import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DataBaseHelper;
+import com.ee.testprep.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,8 +96,6 @@ public class PracticeFragment extends Fragment {
         setUpDifficultySection(view);
         setUpOtherSection(view);
         setUpStartButton(view);
-
-        updateAbreviations();
     }
 
     private void setUpExamSection(View view) {
@@ -420,21 +419,6 @@ public class PracticeFragment extends Fragment {
         mListener = null;
     }
 
-    public HashMap<String, String> abbreviations = new HashMap<>();
-
-    public void updateAbreviations() {
-        abbreviations.put("IYBA", "BioTechnology - IYBA");
-        abbreviations.put("ECON", "Economics - ECON");
-        abbreviations.put("INTA", "TBD - INTA");
-        abbreviations.put("GEOG", "Geography - GEOG");
-        abbreviations.put("POLI", "Politics - POLI");
-        abbreviations.put("ENVI", "Environment - ENVI");
-        abbreviations.put("HIST", "History - HIST");
-        abbreviations.put("CURR", "Current Affairs - CURR");
-        abbreviations.put("SNTC", "TBD - SNTC");
-        abbreviations.put("CSP", "TBD - CSP");
-    }
-
     public class LocalAdapter extends BaseAdapter {
 
         private final Context mContext;
@@ -482,7 +466,7 @@ public class PracticeFragment extends Fragment {
 
                 final CheckBox cb = convertView.findViewById(R.id.list_item_box);
                 final TextView tv = convertView.findViewById(R.id.list_item_text);
-                tv.setText(abbreviations.get(titleName));
+                tv.setText(Constants.getAbbreviation(titleName));
                 cb.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         mCheckedList.add(titleName);

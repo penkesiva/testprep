@@ -13,6 +13,10 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tests_data")
 public class Test {
+    @Override
+    public String toString() {
+        return testName + ": total - " +  totalCount + ", answered - " + answeredCount+ ", correct - " + correctCount+ ", wrong - " + wrongCount+ ", time used = " + timeUsed;
+    }
 
     @NonNull
     @PrimaryKey

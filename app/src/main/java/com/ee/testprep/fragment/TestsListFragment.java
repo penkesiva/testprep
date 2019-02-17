@@ -1,8 +1,8 @@
 package com.ee.testprep.fragment;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -113,6 +113,7 @@ public class TestsListFragment extends Fragment {
             for (Test t : userData) {
                 userTestData.put(t.testName, t);
             }
+            notifyDataSetChanged();
         }
 
         @NonNull
@@ -129,24 +130,34 @@ public class TestsListFragment extends Fragment {
             MetaData testData = mTestsList.get(position);
             holder.titleView.setText(testData.mName.toUpperCase());
             if (testData.mSubject != null && !testData.mSubject.isEmpty()) {
-                holder.subjectView.setText(testData.mSubject);
+                holder.subjectView.setText(Constants.getAbbreviation(testData.mSubject));
+                holder.subjectView.setVisibility(View.VISIBLE);
+            } else {
+                holder.subjectView.setVisibility(View.GONE);
             }
             if (testData.mExam != null && !testData.mExam.isEmpty()) {
                 holder.examView.setText(testData.mExam);
+                holder.examView.setVisibility(View.VISIBLE);
+            } else {
+                holder.examView.setVisibility(View.GONE);
             }
             //holder.totalTimeView.setText(testData.mTime);
             int numQuestions = Integer.valueOf(testData.mTotalQ);
             int quizTime = Constants.getQuizTime(numQuestions);
             holder.totalTimeView.setText("Total Time: " + Constants.getTime(quizTime));
             holder.countView.setText("( " + testData.mTotalQ + " questions )");
+            Log.e("TestList","TestList: ("+testData.mName+") testData = "+testData.toString());
 
             Test userData = userTestData.get(testData.mName);
             if (userData != null) {
+                Log.e("TestList","TestList: ("+testData.mName+") userData = "+userData.toString());
                 if (userData.answeredCount == numQuestions) {
                     holder.completedMarkView.setVisibility(View.VISIBLE);
-                } else if (userData.timeUsed > 0) {
-                    holder.leftOverTimeView.setVisibility(View.VISIBLE);
-                    holder.leftOverTimeView.setText("Leftover Time: " + Constants.getTime(quizTime - userData.timeUsed));
+                } else {
+                    if (userData.timeUsed > 0) {
+                        holder.leftOverTimeView.setVisibility(View.VISIBLE);
+                        holder.leftOverTimeView.setText("Leftover Time: " + Constants.getTime(quizTime - userData.timeUsed));
+                    }
                 }
             }
 
@@ -154,7 +165,7 @@ public class TestsListFragment extends Fragment {
             holder.cardView.setTag(testData.mName);
             holder.cardView.setOnClickListener(onListItemClickListener);
 
-            if(position % 2 == 0)
+            if (position % 2 == 0)
                 holder.cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreenLight));
             else
                 holder.cardView.setCardBackgroundColor(getResources().getColor(R.color.colorOrangeLight));
