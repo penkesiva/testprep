@@ -10,7 +10,6 @@ import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -79,6 +78,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private String email;
     private String name;
+    private boolean signInStarted;
 
     private static final String PASSWORD = "Equality123";
 
@@ -358,13 +358,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
-    private void signInUser() {
+    private synchronized void signInUser() {
+        signInStarted = true;
         FirebaseAuth.getInstance().signInWithEmailAndPassword(
                 email.trim(), PASSWORD)
                 .addOnCompleteListener(this, onCompleteListener);
     }
 
-    private void registerNewUser() {
+    private synchronized void registerNewUser() {
+        signInStarted = true;
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                 email.trim(), PASSWORD)
                 .addOnCompleteListener(this, onCompleteListener);
@@ -374,8 +376,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         FirebaseAuth.getInstance().signOut();
     }
 
-    private boolean validateRegisterForm() {
-        if (email != null && name != null) {
+    private synchronized boolean validateRegisterForm() {
+        if (!signInStarted && email != null && name != null) {
             if (validRegisterFormHelper()) {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
@@ -390,8 +392,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
-    private boolean validateSignInForm() {
-        if (email != null && !email.isEmpty()) {
+    private synchronized boolean validateSignInForm() {
+        if (!signInStarted && email != null && !email.isEmpty()) {
             if (validSignInHelper()) {
                 // Show a progress spinner, and kick off a background task to
                 // perform the user login attempt.
