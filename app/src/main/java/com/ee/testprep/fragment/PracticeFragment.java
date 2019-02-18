@@ -24,7 +24,6 @@ import com.ee.testprep.util.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -83,7 +82,7 @@ public class PracticeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_practice2, container, false);
+        return inflater.inflate(R.layout.fragment_practice, container, false);
     }
 
     @Override
