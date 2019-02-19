@@ -76,17 +76,18 @@ public class UserDataViewModel extends AndroidViewModel {
         }.execute(quizName);
     }
 
-    public void saveUserData(String quizName, List<DBRow> quizList, int remainingTimeInSec) {
+    public void saveUserData(String quizName, List<DBRow> quizList, int remainingTimeInSec,
+            boolean quizCompleted) {
         int correct = 0;
         int wrong = 0;
         int size = quizList.size();
 
         for (DBRow q : quizList) {
             if (q.userstatus.isEmpty()) {
-                continue;
-            }
-
-            if (q.userstatus == q.answer) {
+                if (quizCompleted) {
+                    wrong++;
+                }
+            } else if (q.userstatus == q.answer) {
                 correct++;
             } else {
                 wrong++;

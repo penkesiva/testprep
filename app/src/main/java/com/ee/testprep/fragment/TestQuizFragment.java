@@ -214,7 +214,7 @@ public class TestQuizFragment extends Fragment {
 
         builder.setPositiveButton("EXIT", (dialog, id) -> {
             if (saveQuizStatus == 0) {
-                viewModel.saveUserData(quizName, quizList, quiz.getRemainingTimeInSec());
+                viewModel.saveUserData(quizName, quizList, quiz.getRemainingTimeInSec(), false);
             }
             getFragmentManager().popBackStack();
         });
