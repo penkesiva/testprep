@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,22 +13,20 @@
             android:id="@+id/progress_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_8sp"
             android:layout_marginLeft="@dimen/padding_8sp"
+            android:layout_marginTop="@dimen/padding_8sp"
             android:layout_marginRight="@dimen/padding_8sp"
-            android:padding="@dimen/padding_5sp"
-            android:background="@drawable/rectangle_blue">
+            android:background="@drawable/rectangle_blue"
+            android:padding="@dimen/padding_5sp">
 
             <TextView
                 android:id="@+id/tv_progress"
+                style="@style/Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="@dimen/padding_8sp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/medium_font"
-                android:textStyle="bold"/>
+                android:padding="@dimen/padding_8sp"/>
 
             <View
                 android:layout_width="2dp"
@@ -38,14 +35,12 @@
 
             <TextView
                 android:id="@+id/timer"
+                style="@style/Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:padding="@dimen/padding_8sp"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/medium_font"
-                android:textStyle="bold"/>
+                android:padding="@dimen/padding_8sp"/>
         </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager
@@ -65,45 +60,41 @@
 
         <TextView
             android:id="@+id/quiz_q_title"
+            style="@style/Headline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_small"
             android:gravity="center_horizontal"
             android:padding="@dimen/padding_large"
-            android:textColor="@android:color/black"
-            android:textSize="32sp"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/quiz_q_subject"
+            style="@style/Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/padding_small"
             android:gravity="center_horizontal"
-            android:padding="@dimen/padding_large"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/big_font"
-            android:textStyle="bold"/>
+            android:padding="@dimen/padding_large"/>
 
         <TextView
             android:id="@+id/quiz_q_time"
+            style="@style/Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:padding="@dimen/padding_large"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/big_font"/>
+            android:padding="@dimen/padding_large"/>
 
         <Button
             android:id="@+id/quiz_q_start"
+            style="@style/Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/padding_large"
             android:background="@drawable/rectangle_green"
             android:padding="@dimen/padding_small"
-            android:text="START"
-            android:textSize="@dimen/medium2_font"/>
+            android:text="start"/>
 
         <TextView
             android:id="@+id/quiz_q_counter"

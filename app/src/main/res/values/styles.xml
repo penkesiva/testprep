@@ -43,9 +43,9 @@
         <item name="android:background">@drawable/flag_divider</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
     <style name="CustomProgressBar" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:indeterminateOnly">false</item>
@@ -71,4 +71,17 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="Large" parent="TextAppearance.AppCompat.Large"/>
+
+    <style name="Medium" parent="TextAppearance.AppCompat.Medium"/>
+
+    <style name="Small" parent="TextAppearance.AppCompat.Small"/>
+
+    <style name="Headline" parent="TextAppearance.AppCompat.Headline"/>
+
+    <style name="Title" parent="TextAppearance.AppCompat.Title"/>
+
+    <style name="Subtitle" parent="TextAppearance.AppCompat.Subhead"/>
+
+    <style name="Button" parent="TextAppearance.AppCompat.Button"/>
 </resources>
