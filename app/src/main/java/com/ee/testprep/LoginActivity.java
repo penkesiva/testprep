@@ -149,8 +149,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // configure register/signin buttons
         mRegisterView.setOnClickListener(view -> {
             // Store values at the time of the login attempt.
-            email = mRegisterEmailView.getText().toString();
-            name = mRegisterNameView.getText().toString();
+            email = mRegisterEmailView.getText().toString().trim();
+            name = mRegisterNameView.getText().toString().trim();
 
             if (validateRegisterForm())
                 registerNewUser();
@@ -263,11 +263,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * @return
      */
     private boolean isNameValid(String userName) {
-        return userName.length() > 2 && isAlpha(userName);
+        return isAlpha(userName);
+    }
+
+    private boolean isNameShort(String userName) {
+        return userName.length() <= 2;
     }
 
     private boolean isAlpha(String name) {
-        return name.matches("[a-zA-Z]+") || name.matches(" ");
+        return name.matches("[a-zA-Z\\s]+");
     }
 
     @Override
@@ -420,6 +424,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Check for a valid name, if the user entered one.
         if (name.compareTo("") == 0) {
             mRegisterNameView.setError(getString(R.string.error_field_required));
+            focusView = mRegisterNameView;
+            cancel = true;
+        } else if (isNameShort(name)) {
+            mRegisterNameView.setError(getString(R.string.error_short_name));
             focusView = mRegisterNameView;
             cancel = true;
         } else if (!isNameValid(name)) {

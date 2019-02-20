@@ -77,7 +77,8 @@
     <string name="sign_in">Sign In</string>
     <string name="register">Register</string>
     <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_name">This name is too short</string>
+    <string name="error_short_name">This name is too short</string>
+    <string name="error_invalid_name">This name is invalid</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
