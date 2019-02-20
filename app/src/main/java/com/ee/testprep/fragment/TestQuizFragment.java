@@ -51,7 +51,7 @@ public class TestQuizFragment extends Fragment {
     private TextView startTime;
     private TextView startCounter;
     private Button startButton;
-    private int counter = 5;
+    private int counter = 3;
     private Timer countDownTimer;
     private int quizTime;
     private boolean quizStarted;
@@ -111,12 +111,6 @@ public class TestQuizFragment extends Fragment {
 
         startButton = view.findViewById(R.id.quiz_q_start);
         startButton.setOnClickListener(v -> {
-            if (startButton.getText().equals("SKIP")) {
-                startTimeRefresh();
-                return;
-            }
-            startButton.setText("SKIP");
-            counter = 5;
             startCounter.setVisibility(View.VISIBLE);
             countDownTimer = new Timer();
             countDownTimer.scheduleAtFixedRate(new TimerTask() {
@@ -126,11 +120,10 @@ public class TestQuizFragment extends Fragment {
                     if (counter <= 0) {
                         startTimeRefresh();
                     } else {
-                        getActivity().runOnUiThread(() -> startCounter.setText("" + counter));
-                        counter--;
+                        getActivity().runOnUiThread(() -> startCounter.setText("" + counter--));
                     }
                 }
-            }, 0, 1000);
+            }, 0, 800);
         });
 
         tvTimer = view.findViewById(R.id.timer);
