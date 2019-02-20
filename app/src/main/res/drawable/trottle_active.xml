@@ -11,11 +11,11 @@
                 android:height="20dp"
                 android:width="20dp" />
 
-            <solid android:color="#46cf47" />
+            <solid android:color="#808080" />
 
             <stroke
-                android:width="2dp"
-                android:color="#ffeb58" />
+                android:width="1dp"
+                android:color="@color/colorWhite" />
         </shape>
     </item>
     <item
@@ -28,7 +28,7 @@
                 android:height="15dp"
                 android:width="15dp" />
 
-            <solid android:color="#46cf47" />
+            <solid android:color="#808080" />
         </shape>
     </item>
 

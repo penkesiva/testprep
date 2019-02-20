@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:text="@string/question_header"
-                android:textColor="@color/colorGreen"
+                android:textColor="@color/colorBlack"
                 android:textSize="@dimen/big_font"
                 android:textStyle="bold" />
 
@@ -128,12 +128,11 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
-                android:gravity="center"
                 android:text="@string/optionA"
-                android:textAlignment="center"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/big_font"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium2_font"
                 android:textStyle="bold" />
 
             <CheckBox
@@ -145,6 +144,7 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionA"
+                android:textSize="@dimen/medium_font"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
 
@@ -162,12 +162,12 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:gravity="center"
                 android:text="@string/optionB"
-                android:textAlignment="center"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/big_font"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium2_font"
                 android:textStyle="bold" />
 
             <CheckBox
@@ -179,10 +179,10 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionB"
+                android:textSize="@dimen/medium_font"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
         </RelativeLayout>
-
 
         <RelativeLayout
             android:id="@+id/rg_c"
@@ -196,12 +196,13 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:gravity="center"
                 android:text="@string/optionC"
                 android:textAlignment="center"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/big_font"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium2_font"
                 android:textStyle="bold" />
 
             <CheckBox
@@ -213,6 +214,7 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionC"
+                android:textSize="@dimen/medium_font"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
 
@@ -230,12 +232,13 @@
                 android:layout_alignParentStart="true"
                 android:layout_marginLeft="@dimen/padding_5sp"
                 android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:gravity="center"
                 android:text="@string/optionD"
                 android:textAlignment="center"
-                android:textColor="@color/colorGreen"
-                android:textSize="@dimen/big_font"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/medium2_font"
                 android:textStyle="bold" />
 
             <CheckBox
@@ -247,6 +250,7 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionD"
+                android:textSize="@dimen/medium_font"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
 
