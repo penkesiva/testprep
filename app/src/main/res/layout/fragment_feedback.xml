@@ -6,38 +6,36 @@
               android:padding="@dimen/activity_horizontal_margin">
 
     <TextView
-        style="@android:style/TextAppearance.Medium"
+        style="@style/Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your feedback is greatly appreciated. Tell us how we could improve."/>
 
     <TextView
-        style="@android:style/TextAppearance.Medium"
+        style="@style/Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
-        android:text="Title"
-        android:textStyle="bold"/>
+        android:text="Title"/>
 
     <EditText
         android:id="@+id/feedback_title"
-        style="@android:style/TextAppearance.Medium"
+        style="@style/Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:nextFocusDown="@+id/feedback_description"
         android:singleLine="true"/>
 
     <TextView
-        style="@android:style/TextAppearance.Medium"
+        style="@style/Subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16sp"
-        android:text="Description"
-        android:textStyle="bold"/>
+        android:text="Description"/>
 
     <EditText
         android:id="@+id/feedback_description"
-        style="@android:style/TextAppearance.Medium"
+        style="@style/Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
@@ -46,7 +44,7 @@
 
     <Button
         android:id="@+id/feedback_send"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="16sp"

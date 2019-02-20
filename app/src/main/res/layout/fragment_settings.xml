@@ -13,47 +13,44 @@
         android:orientation="vertical">
 
         <TextView
+            style="@style/Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="User Info"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/padding_24sp"
-            android:textStyle="bold"/>
+            android:text="User Info"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding_large">
 
             <TextView
+                style="@style/Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Display Name:"
-                android:textColor="@android:color/black"/>
+                android:text="Display Name:"/>
 
             <EditText
                 android:id="@+id/settings_display_name_edit"
+                style="@style/Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_small"
                 android:singleLine="true"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/small_font"
-                android:textStyle="bold"
                 android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/settings_display_name"
+                style="@style/Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:paddingLeft="@dimen/padding_small"
                 android:singleLine="true"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/small_font"
-                android:textStyle="bold"/>
+                android:textColor="@android:color/black"/>
 
             <Button
                 android:id="@+id/settings_display_name_edit_button"
@@ -68,24 +65,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingTop="@dimen/padding_large">
+            android:paddingTop="@dimen/padding_medium">
 
             <TextView
+                style="@style/Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Email:"
-                android:textColor="@android:color/black"/>
+                android:text="Email:"/>
 
             <TextView
                 android:id="@+id/settings_email"
+                style="@style/Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:paddingLeft="@dimen/padding_small"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"/>
+                android:textColor="@android:color/black"/>
 
             <Button
                 android:id="@+id/settings_signout"
