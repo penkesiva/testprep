@@ -11,9 +11,9 @@
     <string name="closeDrawer">close_drawer</string>
     <string name="question_header">Question:\n</string>
     <string name="practice">Practice</string>
-    <string name="quiz">Quiz</string>
+    <string name="quiz">Quick Quiz</string>
     <string name="model_tests">Model Tests</string>
-    <string name="all_tests">All Tests</string>
+    <string name="overview">Overview</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

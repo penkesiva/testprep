@@ -1,10 +1,13 @@
 package com.ee.testprep.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
@@ -39,6 +42,25 @@ public class StatsFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.stats_sliding_tabs);
         tabLayout.setupWithViewPager(pager);
+
+        int tabCount = tabLayout.getTabCount();
+        for (int i = 0; i < tabCount; i++) {
+            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            View root = getLayoutInflater().inflate(R.layout.tab_layout_title, tabLayout, false);
+            TextView title = root.findViewById(R.id.tab_title);
+            title.setText(tab.getText());
+            tab.setCustomView(root);
+        }
+
+        View root = tabLayout.getChildAt(0);
+        if (root instanceof LinearLayout) {
+            ((LinearLayout) root).setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+            GradientDrawable drawable = new GradientDrawable();
+            drawable.setColor(getResources().getColor(android.R.color.black));
+            drawable.setSize(2, 1);
+            ((LinearLayout) root).setDividerPadding(10);
+            ((LinearLayout) root).setDividerDrawable(drawable);
+        }
     }
 
     private class SlidePagerAdapter extends FragmentStatePagerAdapter {

@@ -86,7 +86,7 @@ public class Test implements Parcelable {
         ALL, QBANK, QUIZ, MODELTEST;
 
         public String getTitle(Context context) {
-            int id = R.string.all_tests;
+            int id = R.string.overview;
             if (this == QBANK) {
                 id = R.string.practice;
             } else if (this == QUIZ) {

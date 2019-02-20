@@ -9,13 +9,12 @@
 
     <TextView
         android:id="@+id/stats_item_title"
+        style="@style/Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textSize="@dimen/medium2_font"
-        android:textStyle="bold"/>
+        android:paddingRight="8dp"/>
 
     <ProgressBar
         android:id="@+id/stats_item_progress"
@@ -31,10 +30,9 @@
 
     <TextView
         android:id="@+id/stats_item_summary"
+        style="@style/Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
-        android:padding="@dimen/padding_small"
-        android:text="670/800 questions"
-        android:textSize="@dimen/small_font"/>
+        android:padding="@dimen/padding_small"/>
 </LinearLayout>
