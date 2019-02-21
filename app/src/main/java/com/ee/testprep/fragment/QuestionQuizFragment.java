@@ -1,16 +1,13 @@
 package com.ee.testprep.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
 import com.ee.testprep.db.DataBaseHelper;
@@ -20,14 +17,11 @@ import androidx.fragment.app.Fragment;
 
 public class QuestionQuizFragment extends Fragment {
 
-    private static String QUIZ_NAME = "quiz_name";
     private static final String QUIZ_QUESTION = "quiz_question";
-    private static final String QUIZ_LAST_QUESTION = "is_last_question";
+    private static String QUIZ_NAME = "quiz_name";
     private static String TAG = QuestionQuizFragment.class.getSimpleName();
-    private OnFragmentInteractionListener mListener;
     private DataBaseHelper dbHelper;
     private String mQuizName;
-    private boolean isLastQuestion;
     private DBRow mQuestion;
     private CheckBox cbA;
     private CheckBox cbB;
@@ -37,12 +31,11 @@ public class QuestionQuizFragment extends Fragment {
     public QuestionQuizFragment() {
     }
 
-    public static QuestionQuizFragment newInstance(String quizName, DBRow question, boolean isLastQuestion) {
+    public static QuestionQuizFragment newInstance(String quizName, DBRow question) {
         QuestionQuizFragment fragment = new QuestionQuizFragment();
         Bundle bundle = new Bundle();
         bundle.putString(QUIZ_NAME, quizName);
         bundle.putSerializable(QUIZ_QUESTION, question);
-        bundle.putBoolean(QUIZ_LAST_QUESTION, isLastQuestion);
         fragment.setArguments(bundle);
 
         return fragment;
@@ -55,7 +48,6 @@ public class QuestionQuizFragment extends Fragment {
         if (args != null) {
             mQuizName = args.getString(QUIZ_NAME);
             mQuestion = (DBRow) args.getSerializable(QUIZ_QUESTION);
-            isLastQuestion = args.getBoolean(QUIZ_LAST_QUESTION);
         }
     }
 
@@ -75,33 +67,6 @@ public class QuestionQuizFragment extends Fragment {
         tvQuestion.setMovementMethod(new ScrollingMovementMethod());
 
         configureCheckBox(view);
-
-        if (isLastQuestion) {
-            Button submit = view.findViewById(R.id.quiz_submit);
-            submit.setVisibility(View.VISIBLE);
-            submit.setOnClickListener(view1 -> {
-                if (mListener != null) {
-                    mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_END, mQuizName);
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     private void clearCheckBoxes() {

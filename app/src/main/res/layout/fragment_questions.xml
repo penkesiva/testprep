@@ -28,11 +28,6 @@
                 android:gravity="center"
                 android:padding="@dimen/padding_8sp"/>
 
-            <View
-                android:layout_width="2dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorPrimary3"/>
-
             <TextView
                 android:id="@+id/timer"
                 style="@style/Medium"
@@ -41,6 +36,13 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="@dimen/padding_8sp"/>
+
+            <Button
+                android:id="@+id/quiz_q_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="SUBMIT"/>
         </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager

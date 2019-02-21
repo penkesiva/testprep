@@ -201,12 +201,4 @@
                 android:textColor="#000000"/>
         </RelativeLayout>
     </RadioGroup>
-
-    <Button
-        android:id="@+id/quiz_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="SUBMIT"
-        android:visibility="gone"/>
 </LinearLayout>
