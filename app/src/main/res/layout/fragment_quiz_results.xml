@@ -17,7 +17,8 @@
             android:id="@+id/your_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16sp"
+            android:padding="@dimen/padding_8sp"
+            android:layout_marginStart="@dimen/padding_8sp"
             android:gravity="start"
             android:layout_weight="1"
             android:textSize="@dimen/big_font"
@@ -29,7 +30,7 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_16sp"
+            android:padding="@dimen/padding_8sp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
@@ -51,6 +52,5 @@
         android:numColumns="auto_fit"
         android:verticalSpacing="@dimen/padding_24sp"
         android:horizontalSpacing="10dp"
-        android:stretchMode="spacingWidthUniform"
-    />
+        android:stretchMode="spacingWidthUniform" />
 </RelativeLayout>

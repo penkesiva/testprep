@@ -75,6 +75,9 @@ public class QuestionPracticeFragment extends Fragment {
         correct = view.findViewById(R.id.practice_q_correct);
         wrong = view.findViewById(R.id.practice_q_wrong);
 
+        TextView tvQNo = view.findViewById(R.id.q_no);
+        tvQNo.setText("Question " + Integer.toString(mQuestion.qNo) + ":\n");
+
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question.trim());
         tvQuestion.setMovementMethod(new ScrollingMovementMethod());

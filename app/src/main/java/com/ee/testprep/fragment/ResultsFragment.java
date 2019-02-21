@@ -68,7 +68,7 @@ public class ResultsFragment extends Fragment {
         listView.setAdapter(filterAdapter);
 
         tvScore = view.findViewById(R.id.score);
-        tvScore.setText(Integer.toString(getUserScore()));
+        tvScore.setText(Integer.toString(getUserScore()) + " / " + mAnswerKey.size());
         viewModel.saveUserData(quizName, mAnswerKey, 0, true);
     }
 
@@ -132,7 +132,7 @@ public class ResultsFragment extends Fragment {
             }
 
             final ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-            viewHolder.question.setText(row.question);
+            viewHolder.question.setText("[" + row.qNo + "] " +row.question);
             viewHolder.correctAnswer.setText(row.answer);
             viewHolder.correctOption.setText(getCorrectOption(row));
             viewHolder.userAnswer.setText(row.userstatus);

@@ -53,10 +53,10 @@
             android:padding="@dimen/padding_5sp">
 
             <TextView
+                android:id="@+id/q_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:text="@string/question_header"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/big_font"
                 android:textStyle="bold" />
@@ -66,7 +66,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:background="@color/colorWhite"
                 android:contentDescription="@string/question_image"
                 android:src="@drawable/ic_toggle"
                 android:visibility="visible" />

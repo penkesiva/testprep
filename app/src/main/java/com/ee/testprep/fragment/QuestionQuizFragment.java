@@ -62,6 +62,9 @@ public class QuestionQuizFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         dbHelper = DataBaseHelper.getInstance(getActivity());
 
+        TextView tvQNo = view.findViewById(R.id.q_no);
+        tvQNo.setText("Question " + Integer.toString(mQuestion.qNo) + ":\n");
+
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question);
         tvQuestion.setMovementMethod(new ScrollingMovementMethod());
