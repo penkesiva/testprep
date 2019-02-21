@@ -30,6 +30,7 @@ public class ResultsFragment extends Fragment {
     private TextView tvScore;
     private int mUserScore = 0;
     private UserDataViewModel viewModel;
+    private String quizName;
 
     public ResultsFragment() {
     }
@@ -46,11 +47,10 @@ public class ResultsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String quizName = getArguments().getString(ARG_QUIZ_NAME);
+            quizName = getArguments().getString(ARG_QUIZ_NAME);
             DataBaseHelper dbHelper = DataBaseHelper.getInstance(getContext());
             mAnswerKey = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
             viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
-            viewModel.saveUserData(quizName, mAnswerKey, 0, true);
         }
     }
 
@@ -69,6 +69,7 @@ public class ResultsFragment extends Fragment {
 
         tvScore = view.findViewById(R.id.score);
         tvScore.setText(Integer.toString(getUserScore()));
+        viewModel.saveUserData(quizName, mAnswerKey, 0, true);
     }
 
     private int getUserScore() {

@@ -1,5 +1,6 @@
 package com.ee.testprep.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.ee.testprep.MainActivity;
 import com.ee.testprep.QuizMetrics;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DBRow;
@@ -31,6 +33,7 @@ import androidx.viewpager.widget.ViewPager;
 public class TestQuizFragment extends Fragment {
     private static String QUIZ_NAME = "quiz_name";
 
+    private OnFragmentInteractionListener mListener;
     private UserDataViewModel viewModel;
     private Test userdata;
     private AlertDialog alertDialog;
@@ -43,7 +46,7 @@ public class TestQuizFragment extends Fragment {
     private DataBaseHelper dbHelper;
     private TextView tvTimer;
     private TextView tvProgress;
-    //private ProgressBar progressBar;
+    private Button submitButton;
     private int numQuestions;
     private View startDisplay;
     private TextView startTitle;
@@ -130,8 +133,12 @@ public class TestQuizFragment extends Fragment {
 
         tvProgress = view.findViewById(R.id.tv_progress);
 
-        //progressBar = view.findViewById(R.id.progressBar);
-        //progressBar.setMax(numQuestions);
+        submitButton = view.findViewById(R.id.quiz_q_submit);
+        submitButton.setOnClickListener(view1 -> {
+            if (mListener != null) {
+                mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_END, quizName);
+            }
+        });
 
         pagerAdapter = new SlidePagerAdapter(getActivity());
         pager = view.findViewById(R.id.questions_sliding_pager);
@@ -169,6 +176,23 @@ public class TestQuizFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
     private void startTimeRefresh() {
         countDownTimer.cancel();
         Timer timer = new Timer();
@@ -194,7 +218,6 @@ public class TestQuizFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    //progressBar.setProgress(currentQuestion);
                     tvProgress.setText("( " + currentQuestion + " / " + numQuestions + " )");
                 }
             });
@@ -231,13 +254,10 @@ public class TestQuizFragment extends Fragment {
             int prevPosition = currentPosition;
             currentPosition = position;
             Fragment fragment;
-            boolean isLastQuestion = (position == numQuestions - 1);
             if (currentPosition < prevPosition) {
-                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion(),
-                        isLastQuestion);
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getPrevQuestion());
             } else {
-                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion(),
-                        isLastQuestion);
+                fragment = QuestionQuizFragment.newInstance(quizName, quiz.getNextQuestion());
             }
             return fragment;
         }
