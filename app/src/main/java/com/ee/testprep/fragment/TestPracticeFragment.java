@@ -59,7 +59,6 @@ public class TestPracticeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         view.findViewById(R.id.progress_header).setVisibility(View.GONE);
-        view.findViewById(R.id.quiz_q_root).setVisibility(View.GONE);
 
         pagerAdapter = new PracticePagerAdapter(mainActivity);
         pager = view.findViewById(R.id.questions_sliding_pager);

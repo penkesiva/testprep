@@ -48,16 +48,7 @@ public class TestQuizFragment extends Fragment {
     private TextView tvProgress;
     private Button submitButton;
     private int numQuestions;
-    private View startDisplay;
-    private TextView startTitle;
-    private TextView startSubject;
-    private TextView startTime;
-    private TextView startCounter;
-    private Button startButton;
-    private int counter = 3;
-    private Timer countDownTimer;
     private int quizTime;
-    private boolean quizStarted;
 
     public static TestQuizFragment newInstance(String quizName) {
         TestQuizFragment fragment = new TestQuizFragment();
@@ -81,7 +72,6 @@ public class TestQuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
-        //userdata = TestDatabase.getDatabase(getContext()).testDao().findByName(quizName);
         dbHelper = DataBaseHelper.getInstance(getContext());
         quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
         quizTime = Constants.getQuizTime(quizList.size());
@@ -102,32 +92,7 @@ public class TestQuizFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        startCounter = view.findViewById(R.id.quiz_q_counter);
-        startDisplay = view.findViewById(R.id.quiz_q_root);
-        startTitle = view.findViewById(R.id.quiz_q_title);
-        startSubject = view.findViewById(R.id.quiz_q_subject);
-        startTime = view.findViewById(R.id.quiz_q_time);
-
-        startTitle.setText("Starting quiz: " + quizName.toUpperCase());
-        startSubject.setText("Subject: " + quizList.get(0).subject.toUpperCase());
-        startTime.setText("Time limit: " + Constants.getTime(quizTime));
-
-        startButton = view.findViewById(R.id.quiz_q_start);
-        startButton.setOnClickListener(v -> {
-            startCounter.setVisibility(View.VISIBLE);
-            countDownTimer = new Timer();
-            countDownTimer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    if (getActivity() == null) return;
-                    if (counter <= 0) {
-                        startTimeRefresh();
-                    } else {
-                        getActivity().runOnUiThread(() -> startCounter.setText("" + counter--));
-                    }
-                }
-            }, 0, 800);
-        });
+        startTimeRefresh();
 
         tvTimer = view.findViewById(R.id.timer);
 
@@ -164,12 +129,7 @@ public class TestQuizFragment extends Fragment {
         view.requestFocus();
         view.setOnKeyListener((view1, keyCode, keyEvent) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                if (startDisplay.getVisibility() == View.VISIBLE) {
-                    getFragmentManager().popBackStack();
-                    return true;
-                } else {
-                    showExitQuizAlert();
-                }
+                showExitQuizAlert();
                 return true;
             }
             return false;
@@ -194,18 +154,13 @@ public class TestQuizFragment extends Fragment {
     }
 
     private void startTimeRefresh() {
-        countDownTimer.cancel();
+        quiz.startQuiz();
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 if (quiz != null && getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
-                        if (!quizStarted) {
-                            startDisplay.setVisibility(View.GONE);
-                            quizStarted = true;
-                            quiz.startQuiz();
-                        }
                         tvTimer.setText(Constants.getTime(quiz.getRemainingTimeInSec() + 1));
                     });
                 }

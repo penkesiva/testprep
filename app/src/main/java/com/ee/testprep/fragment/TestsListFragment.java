@@ -2,6 +2,7 @@ package com.ee.testprep.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +39,15 @@ public class TestsListFragment extends Fragment {
     private TestsListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private UserDataViewModel viewModel;
+    private TextView countDownTimerView;
+    private String selectedQuiz;
 
     private OnClickListener onListItemClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            String test = (String) v.getTag();
-            if (mListener != null && test != null && !test.trim().isEmpty()) {
-                mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_START, test);
+            selectedQuiz = (String) v.getTag();
+            if (mListener != null && selectedQuiz != null && !selectedQuiz.trim().isEmpty()) {
+                startCountDownTimer();
             }
         }
     };
@@ -76,6 +79,7 @@ public class TestsListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        countDownTimerView = view.findViewById(R.id.tests_list_counter);
         recyclerView = view.findViewById(R.id.tests_list);
         recyclerView.setHasFixedSize(true);
 
@@ -104,6 +108,21 @@ public class TestsListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void startCountDownTimer() {
+        new CountDownTimer(2400, 800) {
+            public void onTick(long millisUntilFinished) {
+                countDownTimerView.setVisibility(View.VISIBLE);
+                countDownTimerView.setText("" + millisUntilFinished / 800);
+            }
+
+            public void onFinish() {
+                countDownTimerView.setVisibility(View.GONE);
+                mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_START,
+                        selectedQuiz);
+            }
+        }.start();
     }
 
     public class TestsListAdapter extends RecyclerView.Adapter<TestsListAdapter.TestsListItemViewHolder> {
@@ -146,11 +165,13 @@ public class TestsListFragment extends Fragment {
             int quizTime = Constants.getQuizTime(numQuestions);
             holder.totalTimeView.setText("Total Time: " + Constants.getTime(quizTime));
             holder.countView.setText("( " + testData.mTotalQ + " questions )");
-            Log.e("TestList","TestList: ("+testData.mName+") testData = "+testData.toString());
+            Log.e("TestList",
+                    "TestList: (" + testData.mName + ") testData = " + testData.toString());
 
             Test userData = userTestData.get(testData.mName);
             if (userData != null) {
-                Log.e("TestList","TestList: ("+testData.mName+") userData = "+userData.toString());
+                Log.e("TestList",
+                        "TestList: (" + testData.mName + ") userData = " + userData.toString());
                 if (userData.answeredCount == numQuestions) {
                     holder.completedMarkView.setVisibility(View.VISIBLE);
                 } else {
