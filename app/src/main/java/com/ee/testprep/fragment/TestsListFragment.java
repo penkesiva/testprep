@@ -1,9 +1,9 @@
 package com.ee.testprep.fragment;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,6 +40,7 @@ public class TestsListFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private UserDataViewModel viewModel;
     private TextView countDownTimerView;
+    private TextView countDownTimerViewShadow;
     private String selectedQuiz;
 
     private OnClickListener onListItemClickListener = new OnClickListener() {
@@ -80,6 +81,10 @@ public class TestsListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         countDownTimerView = view.findViewById(R.id.tests_list_counter);
+        countDownTimerViewShadow = view.findViewById(R.id.tests_list_counter_shadow);
+        countDownTimerViewShadow.getPaint().setStrokeWidth(10);
+        countDownTimerViewShadow.getPaint().setStyle(Paint.Style.STROKE);
+
         recyclerView = view.findViewById(R.id.tests_list);
         recyclerView.setHasFixedSize(true);
 
@@ -111,14 +116,18 @@ public class TestsListFragment extends Fragment {
     }
 
     private void startCountDownTimer() {
-        new CountDownTimer(2400, 800) {
+        new CountDownTimer(2399, 800) {
             public void onTick(long millisUntilFinished) {
+                int count = 1 + (int) (millisUntilFinished / 800);
                 countDownTimerView.setVisibility(View.VISIBLE);
-                countDownTimerView.setText("" + millisUntilFinished / 800);
+                countDownTimerView.setText("" + count);
+                countDownTimerViewShadow.setVisibility(View.VISIBLE);
+                countDownTimerViewShadow.setText("" + count);
             }
 
             public void onFinish() {
                 countDownTimerView.setVisibility(View.GONE);
+                countDownTimerViewShadow.setVisibility(View.GONE);
                 mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_START,
                         selectedQuiz);
             }
@@ -148,39 +157,33 @@ public class TestsListFragment extends Fragment {
         public void onBindViewHolder(@NonNull TestsListItemViewHolder holder, int position) {
             MetaData testData = mTestsList.get(position);
             holder.titleView.setText(testData.mName.toUpperCase());
-            if (testData.mSubject != null && !testData.mSubject.isEmpty()) {
-                holder.subjectView.setText(Constants.getAbbreviation(testData.mSubject));
-                holder.subjectView.setVisibility(View.VISIBLE);
-            } else {
-                holder.subjectView.setVisibility(View.GONE);
-            }
+            String text = "";
             if (testData.mExam != null && !testData.mExam.isEmpty()) {
-                holder.examView.setText(testData.mExam);
-                holder.examView.setVisibility(View.VISIBLE);
-            } else {
-                holder.examView.setVisibility(View.GONE);
+                text = testData.mExam + " : ";
             }
-            //holder.totalTimeView.setText(testData.mTime);
+            if (testData.mSubject != null && !testData.mSubject.isEmpty()) {
+                text += Constants.getAbbreviation(testData.mSubject);
+            }
+            if (text.trim().isEmpty()) {
+                holder.subjectView.setVisibility(View.GONE);
+            } else {
+                holder.subjectView.setText(text);
+            }
+
+            //Log.e("TLF", "TLF: (" + testData.mName + ") testData = " + testData.toString());
             int numQuestions = Integer.valueOf(testData.mTotalQ);
             int quizTime = Constants.getQuizTime(numQuestions);
-            holder.totalTimeView.setText("Total Time: " + Constants.getTime(quizTime));
-            holder.countView.setText("( " + testData.mTotalQ + " questions )");
-            Log.e("TestList",
-                    "TestList: (" + testData.mName + ") testData = " + testData.toString());
-
             Test userData = userTestData.get(testData.mName);
             if (userData != null) {
-                Log.e("TestList",
-                        "TestList: (" + testData.mName + ") userData = " + userData.toString());
+                //Log.e("TLF", "TLF: (" + testData.mName + ") userData = " + userData.toString());
                 if (userData.answeredCount == numQuestions) {
-                    holder.completedMarkView.setVisibility(View.VISIBLE);
-                } else {
-                    if (userData.timeUsed > 0) {
-                        holder.leftOverTimeView.setVisibility(View.VISIBLE);
-                        holder.leftOverTimeView.setText("Leftover Time: " + Constants.getTime(quizTime - userData.timeUsed));
-                    }
+                    holder.markView.setVisibility(View.VISIBLE);
+                } else if (userData.timeUsed > 0) {
+                    quizTime -= userData.timeUsed;
                 }
             }
+
+            holder.timeView.setText(Constants.getTime(quizTime));
 
             //set view's tag with quizname; it is used to query with quizname later
             holder.cardView.setTag(testData.mName);
@@ -202,22 +205,16 @@ public class TestsListFragment extends Fragment {
             private CardView cardView;
             private TextView titleView;
             private TextView subjectView;
-            private TextView examView;
-            private TextView totalTimeView;
-            private TextView leftOverTimeView;
-            private TextView countView;
-            private ImageView completedMarkView;
+            private TextView timeView;
+            private ImageView markView;
 
             public TestsListItemViewHolder(View root) {
                 super(root);
                 cardView = root.findViewById(R.id.tests_card_view);
                 titleView = root.findViewById(R.id.tests_item_title);
                 subjectView = root.findViewById(R.id.tests_item_subject);
-                examView = root.findViewById(R.id.tests_item_exam);
-                totalTimeView = root.findViewById(R.id.tests_item_time_total);
-                leftOverTimeView = root.findViewById(R.id.tests_item_time_left);
-                countView = root.findViewById(R.id.tests_item_count);
-                completedMarkView = root.findViewById(R.id.tests_item_mark);
+                timeView = root.findViewById(R.id.tests_item_time);
+                markView = root.findViewById(R.id.tests_item_mark);
             }
         }
     }

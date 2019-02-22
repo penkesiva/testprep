@@ -32,12 +32,12 @@ public class Constants {
             timeString += p3 + "h";
         }
 
-        if (p2 != 0) {
+        if (p2 != 0 || p3 != 0) {
             if (!timeString.isEmpty()) timeString += " : ";
             timeString += p2 + "m";
         }
 
-        if (p1 != 0) {
+        if (p1 != 0 || p2 != 0) {
             if (!timeString.isEmpty()) timeString += " : ";
             timeString += p1 + "s";
         }
