@@ -43,8 +43,6 @@ public class TestsListFragment extends Fragment {
     private TestsListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private UserDataViewModel viewModel;
-    private TextView countDownTimerView;
-    private TextView countDownTimerViewShadow;
     private String selectedQuiz;
     private Spinner subjectSelector;
     private int subjectSelection;
@@ -54,7 +52,9 @@ public class TestsListFragment extends Fragment {
         public void onClick(View v) {
             selectedQuiz = (String) v.getTag();
             if (mListener != null && selectedQuiz != null && !selectedQuiz.trim().isEmpty()) {
-                startCountDownTimer();
+                v.findViewById(R.id.quiz_content).setAlpha(0.2f);
+                v.setClickable(false); //dont make the view clickable again
+                startCountDownTimer(v);
             }
         }
     };
@@ -74,6 +74,8 @@ public class TestsListFragment extends Fragment {
             mTestsList = (List<MetaData>) getArguments().getSerializable(TESTS_LIST);
         }
         viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
+
+        mSubjectList.addAll(Constants.getSubjects());
     }
 
     @Override
@@ -86,7 +88,6 @@ public class TestsListFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSubjectList.addAll(Constants.getSubjects());
         subjectSelector = view.findViewById(R.id.tests_list_header);
         ArrayAdapter<String> subjectSelectorAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.fragment_tests_list_header, mSubjectList);
@@ -104,11 +105,6 @@ public class TestsListFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        countDownTimerView = view.findViewById(R.id.tests_list_counter);
-        countDownTimerViewShadow = view.findViewById(R.id.tests_list_counter_shadow);
-        countDownTimerViewShadow.getPaint().setStrokeWidth(10);
-        countDownTimerViewShadow.getPaint().setStyle(Paint.Style.STROKE);
 
         recyclerView = view.findViewById(R.id.tests_list);
         recyclerView.setHasFixedSize(true);
@@ -140,22 +136,35 @@ public class TestsListFragment extends Fragment {
         mListener = null;
     }
 
-    private void startCountDownTimer() {
+    private void startCountDownTimer(View v) {
         new CountDownTimer(2399, 800) {
             public void onTick(long millisUntilFinished) {
                 int count = 1 + (int) (millisUntilFinished / 800);
-                countDownTimerView.setVisibility(View.VISIBLE);
-                countDownTimerView.setText("" + count);
-                countDownTimerViewShadow.setVisibility(View.VISIBLE);
-                countDownTimerViewShadow.setText("" + count);
+
+                TextView timerView = v.findViewById(R.id.tests_list_counter);
+                TextView timerViewShadow = v.findViewById(R.id.tests_list_counter_shadow);
+
+                timerView.setVisibility(View.VISIBLE);
+                timerView.setText("" + count);
+                timerViewShadow.setVisibility(View.VISIBLE);
+                timerViewShadow.setText("" + count);
             }
 
             public void onFinish() {
-                countDownTimerView.setVisibility(View.GONE);
-                countDownTimerViewShadow.setVisibility(View.GONE);
-                mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_START,
-                        selectedQuiz);
+                TextView timerView = v.findViewById(R.id.tests_list_counter);
+                TextView timerViewShadow = v.findViewById(R.id.tests_list_counter_shadow);
+
+                timerView.setVisibility(View.GONE);
+                timerViewShadow.setVisibility(View.GONE);
+
+                if(mListener != null) {
+                    mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_START,
+                            selectedQuiz);
+                }
+
+                v.setClickable(true);
             }
+
         }.start();
     }
 
@@ -244,6 +253,8 @@ public class TestsListFragment extends Fragment {
             private TextView subjectView;
             private TextView timeView;
             private ImageView markView;
+            private TextView countDownTimerView;
+            private TextView countDownTimerViewShadow;
 
             public TestsListItemViewHolder(View root) {
                 super(root);
@@ -252,6 +263,10 @@ public class TestsListFragment extends Fragment {
                 subjectView = root.findViewById(R.id.tests_item_subject);
                 timeView = root.findViewById(R.id.tests_item_time);
                 markView = root.findViewById(R.id.tests_item_mark);
+                countDownTimerView = root.findViewById(R.id.tests_list_counter);
+                countDownTimerViewShadow = root.findViewById(R.id.tests_list_counter_shadow);
+                countDownTimerViewShadow.getPaint().setStrokeWidth(8);
+                countDownTimerViewShadow.getPaint().setStyle(Paint.Style.STROKE);
             }
         }
     }

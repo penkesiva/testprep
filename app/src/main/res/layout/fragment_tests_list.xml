@@ -32,23 +32,4 @@
             android:scrollbars="vertical"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tests_list_counter_shadow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="100sp"
-        android:textStyle="bold"
-        android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/tests_list_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="@android:color/black"
-        android:textSize="100sp"
-        android:textStyle="bold"
-        android:visibility="gone"/>
 </FrameLayout>
