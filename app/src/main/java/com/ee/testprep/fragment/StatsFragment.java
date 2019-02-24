@@ -1,6 +1,7 @@
 package com.ee.testprep.fragment;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,6 +43,31 @@ public class StatsFragment extends Fragment {
 
         tabLayout = view.findViewById(R.id.stats_sliding_tabs);
         tabLayout.setupWithViewPager(pager);
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                    int positionOffsetPixels) {
+                int tabCount = tabLayout.getTabCount();
+                for (int i = 0; i < tabCount; i++) {
+                    TabLayout.Tab tab = tabLayout.getTabAt(i);
+                    View root = tab.getCustomView();
+                    TextView title = root.findViewById(R.id.tab_title);
+                    if (i == position) {
+                        title.setTypeface(null, Typeface.BOLD);
+                    } else {
+                        title.setTypeface(null, Typeface.NORMAL);
+                    }
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
         int tabCount = tabLayout.getTabCount();
         for (int i = 0; i < tabCount; i++) {
