@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
@@ -35,6 +38,7 @@ public class TestsListFragment extends Fragment {
     private static final String TESTS_LIST = "tests_list";
     private OnFragmentInteractionListener mListener;
     private List<MetaData> mTestsList;
+    private List<String> mSubjectList = new ArrayList<>();
     private RecyclerView recyclerView;
     private TestsListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -42,6 +46,8 @@ public class TestsListFragment extends Fragment {
     private TextView countDownTimerView;
     private TextView countDownTimerViewShadow;
     private String selectedQuiz;
+    private Spinner subjectSelector;
+    private int subjectSelection;
 
     private OnClickListener onListItemClickListener = new OnClickListener() {
         @Override
@@ -79,6 +85,25 @@ public class TestsListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        mSubjectList.addAll(Constants.getSubjects());
+        subjectSelector = view.findViewById(R.id.tests_list_header);
+        ArrayAdapter<String> subjectSelectorAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.fragment_tests_list_header, mSubjectList);
+        subjectSelectorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        subjectSelector.setAdapter(subjectSelectorAdapter);
+        subjectSelector.setSelection(0);
+        subjectSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                subjectSelection = position;
+                adapter.onSubjectSelected();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         countDownTimerView = view.findViewById(R.id.tests_list_counter);
         countDownTimerViewShadow = view.findViewById(R.id.tests_list_counter_shadow);
@@ -136,12 +161,13 @@ public class TestsListFragment extends Fragment {
 
     public class TestsListAdapter extends RecyclerView.Adapter<TestsListAdapter.TestsListItemViewHolder> {
         private HashMap<String, Test> userTestData = new HashMap<>();
+        private List<Integer> tests = new ArrayList<>();
 
         public void setUserData(List<Test> userData) {
             for (Test t : userData) {
                 userTestData.put(t.testName, t);
             }
-            notifyDataSetChanged();
+            onSubjectSelected();
         }
 
         @NonNull
@@ -155,7 +181,7 @@ public class TestsListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TestsListItemViewHolder holder, int position) {
-            MetaData testData = mTestsList.get(position);
+            MetaData testData = mTestsList.get(tests.get(position));
             holder.titleView.setText(testData.mName.toUpperCase());
             String text = "";
             if (testData.mExam != null && !testData.mExam.isEmpty()) {
@@ -198,7 +224,18 @@ public class TestsListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mTestsList.size();
+            return tests.size();
+        }
+
+        private void onSubjectSelected() {
+            String subject = mSubjectList.get(subjectSelection);
+            tests.clear();
+            for (MetaData test : mTestsList) {
+                if (Constants.getAbbreviation(test.mSubject).equals(subject)) {
+                    tests.add(mTestsList.indexOf(test));
+                }
+            }
+            notifyDataSetChanged();
         }
 
         private class TestsListItemViewHolder extends RecyclerView.ViewHolder {

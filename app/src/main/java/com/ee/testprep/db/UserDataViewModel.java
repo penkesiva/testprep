@@ -78,6 +78,8 @@ public class UserDataViewModel extends AndroidViewModel {
 
     public void saveUserData(String quizName, List<DBRow> quizList, int remainingTimeInSec,
             boolean quizCompleted) {
+        if (quizList == null || quizList.isEmpty()) return;
+
         int correct = 0;
         int wrong = 0;
         int size = quizList.size();
@@ -95,10 +97,11 @@ public class UserDataViewModel extends AndroidViewModel {
         }
 
         int timeUsed = Constants.getQuizTime(size) - remainingTimeInSec;
-        updateUserData(new Test(quizName, size, (correct + wrong), correct, wrong, timeUsed));
+        updateUserData(new Test(quizName, quizList.get(0).subject, size, (correct + wrong),
+                correct, wrong, timeUsed));
     }
 
-    public void updateUserData(Test test) {
+    private void updateUserData(Test test) {
         new AsyncTask<Test, Void, Test>() {
             @Override
             protected Test doInBackground(Test... updatedTest) {

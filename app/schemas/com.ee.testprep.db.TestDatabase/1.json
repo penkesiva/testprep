@@ -2,17 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7e7a63c981bacde775e2654fe4994011",
+    "identityHash": "2743fb7c557dfc3d1af3002ffcc8977a",
     "entities": [
       {
         "tableName": "tests_data",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_name` TEXT NOT NULL, `total_count` INTEGER NOT NULL, `answered_count` INTEGER NOT NULL, `correct_count` INTEGER NOT NULL, `wrong_count` INTEGER NOT NULL, `time_used` INTEGER NOT NULL, PRIMARY KEY(`test_name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`test_name` TEXT NOT NULL, `subject` TEXT, `total_count` INTEGER NOT NULL, `answered_count` INTEGER NOT NULL, `correct_count` INTEGER NOT NULL, `wrong_count` INTEGER NOT NULL, `time_used` INTEGER NOT NULL, PRIMARY KEY(`test_name`))",
         "fields": [
           {
             "fieldPath": "testName",
             "columnName": "test_name",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "subject",
+            "columnName": "subject",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "totalCount",
@@ -57,7 +63,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7e7a63c981bacde775e2654fe4994011\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2743fb7c557dfc3d1af3002ffcc8977a\")"
     ]
   }
 }

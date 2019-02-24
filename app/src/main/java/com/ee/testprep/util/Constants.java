@@ -2,6 +2,7 @@ package com.ee.testprep.util;
 
 import android.util.Log;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Constants {
@@ -57,6 +58,11 @@ public class Constants {
         abbreviations.put("CURR", "Current Affairs - CURR");
         abbreviations.put("SNTC", "TBD - SNTC");
         abbreviations.put("CSP", "TBD - CSP");
+    }
+
+    public static Collection<String> getSubjects() {
+        updateAbbreviations();
+        return abbreviations.values();
     }
 
     public static String getAbbreviation(String abbreviation) {

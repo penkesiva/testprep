@@ -15,10 +15,24 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tests_data")
 public class Test implements Parcelable {
+    public static final Creator<Test> CREATOR = new Creator<Test>() {
+        @Override
+        public Test createFromParcel(Parcel in) {
+            return new Test(in);
+        }
+
+        @Override
+        public Test[] newArray(int size) {
+            return new Test[size];
+        }
+    };
+
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "test_name")
     public String testName;
+    @ColumnInfo(name = "subject")
+    public String subject;
     @ColumnInfo(name = "total_count")
     public int totalCount;
     @ColumnInfo(name = "answered_count")
@@ -32,6 +46,7 @@ public class Test implements Parcelable {
 
     public Test(Parcel parcel) {
         testName = parcel.readString();
+        subject = parcel.readString();
         totalCount = parcel.readInt();
         answeredCount = parcel.readInt();
         correctCount = parcel.readInt();
@@ -39,9 +54,11 @@ public class Test implements Parcelable {
         timeUsed = parcel.readInt();
     }
 
-    public Test(String testName, int totalCount, int answeredCount, int correctCount,
+    public Test(String testName, String subject, int totalCount, int answeredCount,
+            int correctCount,
             int wrongCount, int timeUsed) {
         this.testName = testName;
+        this.subject = subject;
         this.totalCount = totalCount;
         this.answeredCount = answeredCount;
         this.correctCount = correctCount;
@@ -49,22 +66,11 @@ public class Test implements Parcelable {
         this.timeUsed = timeUsed;
     }
 
-    public static final Creator<Test> CREATOR = new Creator<Test>() {
-        @Override
-        public Test createFromParcel(Parcel in) {
-            return new Test(in);
-        }
-
-        @Override
-        public Test[] newArray(int size) {
-            return new Test[size];
-        }
-    };
-
     @Override
     public String toString() {
-        return testName + ": total - " + totalCount + ", answered - " + answeredCount + ", " +
-                "correct - " + correctCount + ", wrong - " + wrongCount + ", time used = " + timeUsed;
+        return testName + ": subject - " + subject + ", total - " + totalCount + ", answered - "
+                + answeredCount + ", correct - " + correctCount + ", wrong - " + wrongCount
+                + ", time used = " + timeUsed;
     }
 
     @Override
@@ -75,6 +81,7 @@ public class Test implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(testName);
+        dest.writeString(subject);
         dest.writeInt(totalCount);
         dest.writeInt(answeredCount);
         dest.writeInt(correctCount);
@@ -113,7 +120,7 @@ public class Test implements Parcelable {
                     wrong += test.wrongCount;
                 }
 
-                return new Test(getTitle(context), total, answered, correct, wrong, 0);
+                return new Test(getTitle(context), null, total, answered, correct, wrong, 0);
             }
             return null;
         }
