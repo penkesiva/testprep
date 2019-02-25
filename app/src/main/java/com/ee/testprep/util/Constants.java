@@ -58,6 +58,7 @@ public class Constants {
         abbreviations.put("CURR", "Current Affairs - CURR");
         abbreviations.put("SNTC", "TBD - SNTC");
         abbreviations.put("CSP", "TBD - CSP");
+        abbreviations.put("Multi", "Multi");
     }
 
     public static Collection<String> getSubjects() {

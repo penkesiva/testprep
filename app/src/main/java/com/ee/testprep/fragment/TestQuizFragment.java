@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
@@ -35,7 +36,6 @@ public class TestQuizFragment extends Fragment {
     private UserDataViewModel viewModel;
     private Test userdata;
     private AlertDialog alertDialog;
-    private int saveQuizStatus;
     private ViewPager pager;
     private SlidePagerAdapter pagerAdapter;
     private ArrayList<DBRow> quizList;
@@ -44,9 +44,10 @@ public class TestQuizFragment extends Fragment {
     private TextView tvTimer;
     private TextView tvProgress;
     private Button submitButton;
+    private ImageView pauseButton;
     private int numQuestions;
-    private int quizTime;
-    private long remainingTimeInSec;
+    private long quizTime;
+    private CountDownTimer countDownTimer;
 
     public static TestQuizFragment newInstance(String quizName) {
         TestQuizFragment fragment = new TestQuizFragment();
@@ -64,24 +65,15 @@ public class TestQuizFragment extends Fragment {
             quizName = getArguments().getString(QUIZ_NAME);
         }
         viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
+        dbHelper = DataBaseHelper.getInstance(getContext());
+        quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
+        numQuestions = quizList.size();
+        quizTime = Constants.getQuizTime(numQuestions);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
-        dbHelper = DataBaseHelper.getInstance(getContext());
-        quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
-        quizTime = Constants.getQuizTime(quizList.size());
-        numQuestions = quizList.size();
-
-        viewModel.getUserData().observe(getActivity(), data -> {
-            userdata = data;
-            if (userdata != null) {
-                quizTime = Constants.getQuizTime(quizList.size()) - userdata.timeUsed;
-            }
-            startTimeRefresh();
-        });
         return inflater.inflate(R.layout.fragment_questions, container, false);
     }
 
@@ -97,6 +89,18 @@ public class TestQuizFragment extends Fragment {
         submitButton.setOnClickListener(view1 -> {
             if (mListener != null) {
                 mListener.onFragmentInteraction(MainActivity.STATUS_QUIZ_MODELTEST_END, quizName);
+            }
+        });
+
+        pauseButton = view.findViewById(R.id.quiz_q_pause);
+        pauseButton.setOnClickListener(view1 -> {
+            if (countDownTimer != null) {
+                countDownTimer.cancel();
+                countDownTimer = null;
+                pauseButton.setImageResource(android.R.drawable.ic_media_play);
+            } else {
+                pauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                startTimeRefresh();
             }
         });
 
@@ -124,10 +128,21 @@ public class TestQuizFragment extends Fragment {
         view.requestFocus();
         view.setOnKeyListener((view1, keyCode, keyEvent) -> {
             if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                showExitQuizAlert();
+                viewModel.saveUserData(quizName, quizList, (int) quizTime, false);
+                getFragmentManager().popBackStack();
                 return true;
             }
             return false;
+        });
+
+        viewModel.getUserData().observe(getActivity(), data -> {
+            userdata = data;
+            if (userdata != null) {
+                if (quizTime != userdata.timeUsed) {
+                    quizTime -= userdata.timeUsed;
+                }
+            }
+            startTimeRefresh();
         });
     }
 
@@ -149,10 +164,11 @@ public class TestQuizFragment extends Fragment {
     }
 
     private void startTimeRefresh() {
-        new CountDownTimer(quizTime * 1000 + 1, 1000) {
+        long remainingTimeInSec = quizTime * 1000;
+        countDownTimer = new CountDownTimer(remainingTimeInSec, 1000) {
             public void onTick(long millisUntilFinished) {
-                remainingTimeInSec = millisUntilFinished;
-                tvTimer.setText(Constants.getTime((int) (millisUntilFinished / 1000)));
+                quizTime = millisUntilFinished / 1000;
+                tvTimer.setText(Constants.getTime((int) quizTime));
             }
 
             public void onFinish() {
@@ -167,24 +183,24 @@ public class TestQuizFragment extends Fragment {
         }
     }
 
-    private void showExitQuizAlert() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Exiting quiz " + quizName.toUpperCase());
-
-        builder.setPositiveButton("EXIT", (dialog, id) -> {
-            if (saveQuizStatus == 0) {
-                viewModel.saveUserData(quizName, quizList, (int) (remainingTimeInSec / 1000),
-                        false);
-            }
-            getFragmentManager().popBackStack();
-        });
-
-        builder.setSingleChoiceItems(R.array.quiz_exit, 0,
-                (dialog, which) -> saveQuizStatus = which);
-
-        alertDialog = builder.create();
-        alertDialog.show();
-    }
+//    private void showExitQuizAlert() {
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+//        builder.setTitle("Exiting quiz " + quizName.toUpperCase());
+//
+//        builder.setPositiveButton("EXIT", (dialog, id) -> {
+//            if (saveQuizStatus == 0) {
+//                viewModel.saveUserData(quizName, quizList, (int) (remainingTimeInSec / 1000),
+//                        false);
+//            }
+//            getFragmentManager().popBackStack();
+//        });
+//
+//        builder.setSingleChoiceItems(R.array.quiz_exit, 0,
+//                (dialog, which) -> saveQuizStatus = which);
+//
+//        alertDialog = builder.create();
+//        alertDialog.show();
+//    }
 
     private class SlidePagerAdapter extends FragmentStatePagerAdapter {
         public SlidePagerAdapter(FragmentActivity activity) {

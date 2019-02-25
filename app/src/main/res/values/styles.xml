@@ -82,6 +82,4 @@
     <style name="Title" parent="TextAppearance.AppCompat.Title"/>
 
     <style name="Subtitle" parent="TextAppearance.AppCompat.Subhead"/>
-
-    <style name="Button" parent="TextAppearance.AppCompat.Button"/>
 </resources>
