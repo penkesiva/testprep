@@ -61,7 +61,7 @@
     <string name="quick_quiz">Take a Quiz</string>
 
     <!-- results -->
-    <string name="your_score">Your Score</string>
+    <string name="your_score">You Scored:</string>
     <string name="sample_score">0/25</string>
     <string name="your_answer">Your Answer:</string>
 

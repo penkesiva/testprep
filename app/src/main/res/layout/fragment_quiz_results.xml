@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
+    android:padding="@dimen/padding_8sp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -36,7 +36,6 @@
             android:layout_weight="1"
             android:text="@string/sample_score"
             android:textSize="@dimen/big_font"
-            android:textColor="@color/colorGreen"
             android:textStyle="bold"/>
 
     </LinearLayout>
@@ -46,6 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/score_layout"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:paddingTop="@dimen/padding_8sp"
         android:gravity="center"
         android:columnWidth="100dp"

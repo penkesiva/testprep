@@ -5,7 +5,7 @@
         android:id="@android:id/background">
         <shape>
             <corners
-                android:radius="3sp" />
+                android:radius="3dp" />
             <gradient
                 android:startColor="#B0B0B0"
                 android:endColor="#B0B0B0"
@@ -17,7 +17,7 @@
         <clip>
             <shape>
                 <corners
-                    android:radius="5dip" />
+                    android:radius="5dp" />
                 <gradient
                     android:startColor="#770e75af"
                     android:endColor="#771997e1"
@@ -30,7 +30,7 @@
         <clip>
             <shape>
                 <corners
-                    android:radius="3sp" />
+                    android:radius="3dp" />
                 <gradient
                     android:startColor="#000000"
                     android:centerColor="#344955"
