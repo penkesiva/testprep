@@ -3,7 +3,6 @@ package com.ee.testprep.fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,17 +123,6 @@ public class TestQuizFragment extends Fragment {
             }
         });
 
-        view.setFocusableInTouchMode(true);
-        view.requestFocus();
-        view.setOnKeyListener((view1, keyCode, keyEvent) -> {
-            if (keyCode == KeyEvent.KEYCODE_BACK && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                viewModel.saveUserData(quizName, quizList, (int) quizTime, false);
-                getFragmentManager().popBackStack();
-                return true;
-            }
-            return false;
-        });
-
         viewModel.getUserData().observe(getActivity(), data -> {
             userdata = data;
             if (userdata != null) {
@@ -144,6 +132,12 @@ public class TestQuizFragment extends Fragment {
             }
             startTimeRefresh();
         });
+    }
+
+    @Override
+    public void onPause() {
+        viewModel.saveUserData(quizName, quizList, (int) quizTime, false);
+        super.onPause();
     }
 
     @Override

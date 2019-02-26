@@ -581,7 +581,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.animator.fade_in,
                 android.R.animator.fade_out);
-        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(TAG_QUIZ);
+        fragmentTransaction.replace(R.id.frame, fragment, TAG_QUIZ_QUESTION).addToBackStack(null);
         fragmentTransaction.commitAllowingStateLoss();
     }
 
