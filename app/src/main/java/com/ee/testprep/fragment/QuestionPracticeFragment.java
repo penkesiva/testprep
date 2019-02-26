@@ -4,11 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -35,7 +38,6 @@ public class QuestionPracticeFragment extends Fragment {
     private String recordedAnswer;
     private ImageView ivFav;
     private DataBaseHelper dbHelper;
-    private Dialog statusDialog;
     private boolean isLastQuestion;
     private Button more;
     private Button wrong;
@@ -81,6 +83,19 @@ public class QuestionPracticeFragment extends Fragment {
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question.trim());
         tvQuestion.setMovementMethod(new ScrollingMovementMethod());
+
+        ImageView ivExplanation = view.findViewById(R.id.explanation);
+        ivExplanation.setOnClickListener(v -> {
+            Dialog statusDialog = new Dialog(getContext(), android.R.style.Theme_Translucent);
+            statusDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            statusDialog.setCancelable(true);
+            statusDialog.setCanceledOnTouchOutside(true);
+            statusDialog.setContentView(R.layout.explanation_dialog);
+            TextView tvExplanation = statusDialog.findViewById(R.id.explain);
+            tvExplanation.setText("Explanation here -> TBD");
+            statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
+            statusDialog.show();
+        });
 
         dbHelper = DataBaseHelper.getInstance(getActivity());
 

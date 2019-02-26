@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="360sp"
+    android:layout_height="wrap_content"
+    android:maxHeight="440sp"
+    android:layout_margin="20dp"
+    android:layout_gravity="start|center"
+    android:id="@+id/dialog"
+    android:background="@drawable/rectangle_green"
+    android:padding="10dp"
+    android:orientation="vertical" >
+
+    <TextView
+       android:id="@+id/explain"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:textStyle="bold"
+       android:layout_gravity="center_vertical"
+       android:textColor="@color/colorBackground2"
+       android:textSize="@dimen/medium_font" />
+
+</ScrollView>
+
