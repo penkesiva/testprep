@@ -461,6 +461,12 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             drawer.closeDrawers();
             return;
         }
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() == 1) {
+            navItemIndex = INDEX_HOME;
+            selectNavMenu();
+            setToolbarTitle();
+        }
 
         super.onBackPressed();
     }
@@ -537,7 +543,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[],
-                                           int[] grantResults) {
+            int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
