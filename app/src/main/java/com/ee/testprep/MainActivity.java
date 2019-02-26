@@ -417,12 +417,14 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         // set toolbar title
         setToolbarTitle();
 
-        // if user select the current navigation menu again, don't do anything
-        // just close the navigation drawer
-        if (CURRENT_TAG != TAG_HOME && getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-            drawer.closeDrawers();
-            return;
-        }
+        //Closing drawer on item click
+        drawer.closeDrawers();
+
+//        // if user select the current navigation menu again, don't do anything
+//        // just close the navigation drawer
+//        if (CURRENT_TAG != TAG_HOME && getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
+//            return;
+//        }
 
         FragmentManager fm = getSupportFragmentManager();
         int backStackEntryCount = fm.getBackStackEntryCount();
@@ -431,7 +433,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         }
 
         if (CURRENT_TAG == TAG_HOME && getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
-            drawer.closeDrawers();
             return;
         }
 
@@ -446,9 +447,6 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
             fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG).addToBackStack(null);
         }
         fragmentTransaction.commitAllowingStateLoss();
-
-        //Closing drawer on item click
-        drawer.closeDrawers();
 
         // refresh toolbar menu
         invalidateOptionsMenu();
