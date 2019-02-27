@@ -47,7 +47,7 @@ public class TestPracticeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         Bundle args = getArguments();
         mQuery = args.getString(PRACTICE_QUERY);
 
@@ -58,10 +58,10 @@ public class TestPracticeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.progress_header).setVisibility(View.GONE);
+        view.findViewById(R.id.quiz_q_header).setVisibility(View.GONE);
 
         pagerAdapter = new PracticePagerAdapter(mainActivity);
-        pager = view.findViewById(R.id.questions_sliding_pager);
+        pager = view.findViewById(R.id.quiz_q_pager);
         pager.setSaveFromParentEnabled(false);
         pager.setAdapter(pagerAdapter);
 
