@@ -31,11 +31,13 @@
 
             <TextView
                 android:id="@+id/quiz_q_progress"
-                style="@style/Medium"
+                style="@style/Small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:padding="10dp"/>
+                android:gravity="center"
+                android:padding="10dp"
+                android:textStyle="bold"/>
 
             <View
                 android:layout_width="2px"
@@ -44,12 +46,13 @@
 
             <TextView
                 android:id="@+id/quiz_q_timer"
-                style="@style/Medium"
+                style="@style/Small"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:gravity="center"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/quiz_q_submit"
