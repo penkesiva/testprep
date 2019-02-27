@@ -21,6 +21,7 @@ import com.ee.testprep.MainActivity;
 import com.ee.testprep.R;
 import com.ee.testprep.db.DataBaseHelper;
 import com.ee.testprep.util.Constants;
+import com.ee.testprep.util.HelpInstructions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -95,6 +96,8 @@ public class PracticeFragment extends Fragment {
         setUpDifficultySection(view);
         setUpOtherSection(view);
         setUpStartButton(view);
+
+        new HelpInstructions(getContext()).showHelpDialog(0);
     }
 
     private void setUpExamSection(View view) {

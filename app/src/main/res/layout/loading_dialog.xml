@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:id="@+id/dialog"
-    android:background="@color/colorWhite"
+    android:background="@color/colorBackground2"
     android:padding="10dp"
     android:orientation="vertical" >
     
@@ -15,45 +15,16 @@
        android:layout_height="wrap_content"
        android:textStyle="bold"
        android:layout_gravity="center_vertical"
-       android:textColor="@android:color/black"
+       android:textColor="@color/colorWhite"
        android:text="Loading data.. Please wait for a while" />
-    
-    <TextView
-       android:id="@+id/dialog_text"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_gravity="center_vertical"
-       android:textColor="@android:color/black"
-       android:text="Loading the quizzes"
-       android:visibility="invisible"/>
-    
-    <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:gravity="center"
-       android:orientation="horizontal" >
     
     <ImageView
         android:id="@+id/loader"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginRight="10dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/padding_8sp"
         android:contentDescription="@string/image_description"
         android:src="@drawable/loader" />
-        
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btncancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp"
-        android:background="@null"
-        android:layout_gravity="right"
-        android:text="@string/cancel"
-        android:textColor="@color/colorBlack"
-        android:textStyle="bold" 
-        android:visibility="gone"/>
 
 </LinearLayout>

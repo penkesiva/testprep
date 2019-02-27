@@ -20,6 +20,7 @@ import com.ee.testprep.db.MetaData;
 import com.ee.testprep.db.Test;
 import com.ee.testprep.db.UserDataViewModel;
 import com.ee.testprep.util.Constants;
+import com.ee.testprep.util.HelpInstructions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +118,8 @@ public class TestsListFragment extends Fragment {
         viewModel.getUserDataList().observe(getActivity(), data -> {
             adapter.setUserData(data);
         });
+
+        new HelpInstructions(getContext()).showHelpDialog(1);
     }
 
     @Override

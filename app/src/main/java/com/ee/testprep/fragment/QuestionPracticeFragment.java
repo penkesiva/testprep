@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,14 +87,14 @@ public class QuestionPracticeFragment extends Fragment {
 
         ImageView ivExplanation = view.findViewById(R.id.explanation);
         ivExplanation.setOnClickListener(v -> {
-            Dialog statusDialog = new Dialog(getContext(), android.R.style.Theme_Translucent);
-            statusDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+            Dialog statusDialog = new Dialog(getContext());
             statusDialog.setCancelable(true);
             statusDialog.setCanceledOnTouchOutside(true);
             statusDialog.setContentView(R.layout.explanation_dialog);
-            TextView tvExplanation = statusDialog.findViewById(R.id.explain);
-            tvExplanation.setText("Explanation here -> TBD");
-            statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
+            TextView tvExplanation = statusDialog.findViewById(R.id.explanation);
+            tvExplanation.setText("There is no explanation to this Question");
+            statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             statusDialog.show();
         });
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -315,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
         final ImageView myImage = statusDialog.findViewById(R.id.loader);
         myImage.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.rotate));
-        statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0x7f000000));
+        statusDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         statusDialog.show();
     }
 
