@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/progress_header"
+            android:id="@+id/quiz_q_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/padding_8sp"
@@ -22,28 +22,34 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp">
 
-            <TextView
-                android:id="@+id/tv_progress"
-                style="@style/Medium"
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/quiz_q_pause"
+                android:layout_width="70dp"
                 android:layout_height="wrap_content"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:text="PAUSE"/>
 
             <TextView
-                android:id="@+id/timer"
+                android:id="@+id/quiz_q_progress"
                 style="@style/Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
+                android:layout_weight="3"
                 android:padding="10dp"/>
 
-            <ImageView
-                android:id="@+id/quiz_q_pause"
-                android:layout_width="wrap_content"
+            <View
+                android:layout_width="2px"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"/>
+
+            <TextView
+                android:id="@+id/quiz_q_timer"
+                style="@style/Medium"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:src="@android:drawable/ic_media_pause"/>
+                android:layout_weight="4"
+                android:gravity="center"
+                android:padding="10dp"/>
 
             <Button
                 android:id="@+id/quiz_q_submit"
@@ -54,7 +60,7 @@
         </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/questions_sliding_pager"
+            android:id="@+id/quiz_q_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"

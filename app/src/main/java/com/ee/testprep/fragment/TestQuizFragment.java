@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ee.testprep.MainActivity;
@@ -43,7 +42,7 @@ public class TestQuizFragment extends Fragment {
     private TextView tvTimer;
     private TextView tvProgress;
     private Button submitButton;
-    private ImageView pauseButton;
+    private Button pauseButton;
     private int numQuestions;
     private long quizTime;
     private CountDownTimer countDownTimer;
@@ -80,9 +79,9 @@ public class TestQuizFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvTimer = view.findViewById(R.id.timer);
+        tvTimer = view.findViewById(R.id.quiz_q_timer);
 
-        tvProgress = view.findViewById(R.id.tv_progress);
+        tvProgress = view.findViewById(R.id.quiz_q_progress);
 
         submitButton = view.findViewById(R.id.quiz_q_submit);
         submitButton.setOnClickListener(view1 -> {
@@ -96,15 +95,15 @@ public class TestQuizFragment extends Fragment {
             if (countDownTimer != null) {
                 countDownTimer.cancel();
                 countDownTimer = null;
-                pauseButton.setImageResource(android.R.drawable.ic_media_play);
+                pauseButton.setText("PLAY");
             } else {
-                pauseButton.setImageResource(android.R.drawable.ic_media_pause);
+                pauseButton.setText("PAUSE");
                 startTimeRefresh();
             }
         });
 
         pagerAdapter = new SlidePagerAdapter(getActivity());
-        pager = view.findViewById(R.id.questions_sliding_pager);
+        pager = view.findViewById(R.id.quiz_q_pager);
         pager.setSaveFromParentEnabled(false);
         pager.setAdapter(pagerAdapter);
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
