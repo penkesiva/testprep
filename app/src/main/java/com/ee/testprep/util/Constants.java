@@ -48,16 +48,10 @@ public class Constants {
     private static void updateAbbreviations() {
         if (abbreviations.size() > 0) return;
 
-        abbreviations.put("IYBA", "BioTechnology - IYBA");
-        abbreviations.put("ECON", "Economics - ECON");
-        abbreviations.put("INTA", "TBD - INTA");
         abbreviations.put("GEOG", "Geography - GEOG");
         abbreviations.put("POLI", "Politics - POLI");
         abbreviations.put("ENVI", "Environment - ENVI");
         abbreviations.put("HIST", "History - HIST");
-        abbreviations.put("CURR", "Current Affairs - CURR");
-        abbreviations.put("SNTC", "TBD - SNTC");
-        abbreviations.put("CSP", "TBD - CSP");
         abbreviations.put("Multi", "Multi");
     }
 
