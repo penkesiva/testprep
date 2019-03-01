@@ -46,6 +46,8 @@ public class TestQuizFragment extends Fragment {
     private int numQuestions;
     private long quizTime;
     private CountDownTimer countDownTimer;
+    private int currentQuestionPosition;
+    private int pausedQuestionPosition = -1;
 
     public static TestQuizFragment newInstance(String quizName) {
         TestQuizFragment fragment = new TestQuizFragment();
@@ -93,16 +95,9 @@ public class TestQuizFragment extends Fragment {
         pauseButton = view.findViewById(R.id.quiz_q_pause);
         pauseButton.setOnClickListener(view1 -> {
             if (countDownTimer != null) {
-                submitButton.setClickable(false);
-                submitButton.setAlpha(0.75f);
-                countDownTimer.cancel();
-                countDownTimer = null;
-                pauseButton.setText("PLAY");
+                pauseQuiz();
             } else {
-                submitButton.setClickable(true);
-                submitButton.setAlpha(1);
-                pauseButton.setText("PAUSE");
-                startTimeRefresh();
+                playQuiz();
             }
         });
 
@@ -114,6 +109,10 @@ public class TestQuizFragment extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                     int positionOffsetPixels) {
+                currentQuestionPosition = position;
+                if (pausedQuestionPosition != -1) {
+                    playQuiz();
+                }
                 uiRefreshCount(position + 1);
             }
 
@@ -135,6 +134,23 @@ public class TestQuizFragment extends Fragment {
             }
             startTimeRefresh();
         });
+    }
+
+    private void pauseQuiz() {
+        submitButton.setClickable(false);
+        submitButton.setAlpha(0.75f);
+        countDownTimer.cancel();
+        countDownTimer = null;
+        pauseButton.setText("PLAY");
+        pausedQuestionPosition = currentQuestionPosition;
+    }
+
+    private void playQuiz() {
+        submitButton.setClickable(true);
+        submitButton.setAlpha(1);
+        pauseButton.setText("PAUSE");
+        startTimeRefresh();
+        pausedQuestionPosition = -1;
     }
 
     @Override
