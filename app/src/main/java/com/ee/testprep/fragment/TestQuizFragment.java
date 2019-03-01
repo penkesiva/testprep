@@ -93,10 +93,14 @@ public class TestQuizFragment extends Fragment {
         pauseButton = view.findViewById(R.id.quiz_q_pause);
         pauseButton.setOnClickListener(view1 -> {
             if (countDownTimer != null) {
+                submitButton.setClickable(false);
+                submitButton.setAlpha(0.75f);
                 countDownTimer.cancel();
                 countDownTimer = null;
                 pauseButton.setText("PLAY");
             } else {
+                submitButton.setClickable(true);
+                submitButton.setAlpha(1);
                 pauseButton.setText("PAUSE");
                 startTimeRefresh();
             }
