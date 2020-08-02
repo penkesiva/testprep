@@ -39,6 +39,7 @@ import com.ee.testprep.fragment.TestQuizFragment;
 import com.ee.testprep.fragment.TestsListFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
     private View navHeader;
     private ImageView imgProfile;
     private TextView txtWebsite;
+    private TextView txtUserName;
     private Toolbar toolbar;
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -158,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
         navHeader = navigationView.getHeaderView(0);
         txtWebsite = navHeader.findViewById(R.id.website);
         imgProfile = navHeader.findViewById(R.id.img_profile);
+        txtUserName = navHeader.findViewById(R.id.user_name);
 
         // load toolbar titles from string resources
         activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
@@ -195,93 +198,83 @@ public class MainActivity extends AppCompatActivity implements OnFragmentInterac
 
     private void setUpNavigationView() {
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            Toast.makeText(getBaseContext(), "PLEASE REGISTER!", Toast.LENGTH_LONG).show();
+            return;
+        } else {
+            txtUserName.setText(String.format("Hello, %s", user.getDisplayName()));
+        }
+
         //remove the icon tint; this makes the icon look colored
         navigationView.setItemIconTintList(null);
 
         //Setting Navigation View Item Selected Listener to handle the item click of the
         // navigation menu
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+        // This method will trigger on item Click of navigation menu
+        navigationView.setNavigationItemSelectedListener(menuItem -> {
 
-            // This method will trigger on item Click of navigation menu
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
+            //Check to see which item was being clicked and perform appropriate action
+            switch (menuItem.getItemId()) {
 
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    Toast.makeText(getBaseContext(), "PLEASE REGISTER!", Toast.LENGTH_LONG).show();
+                case R.id.nav_practice:
+                    navItemIndex = INDEX_LEARN;
+                    CURRENT_TAG = TAG_PRACTICE;
+                    break;
+
+                case R.id.nav_quiz:
+                    navItemIndex = INDEX_QUIZ;
+                    CURRENT_TAG = TAG_QUIZ;
+                    break;
+
+                case R.id.nav_modeltest:
+                    navItemIndex = INDEX_MODELTEST;
+                    CURRENT_TAG = TAG_MODELTEST;
+                    break;
+
+                case R.id.nav_stats:
+                    navItemIndex = INDEX_STATS;
+                    CURRENT_TAG = TAG_STATS;
+                    break;
+
+                case R.id.nav_settings:
+                    navItemIndex = INDEX_SETTINGS;
+                    CURRENT_TAG = TAG_SETTINGS;
+                    break;
+
+                case R.id.nav_feedback:
+                    navItemIndex = INDEX_FEEDBACK;
+                    CURRENT_TAG = TAG_FEEDBACK;
+                    break;
+
+                case R.id.nav_rateus:
+                    // Uncomment after testing
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=" + getPackageName())));
                     return true;
-                }
-
-                //Check to see which item was being clicked and perform appropriate action
-                switch (menuItem.getItemId()) {
-
-                    //Replacing the main content with ContentFragment Which is our Inbox View;a
-                    case R.id.nav_home:
-                        navItemIndex = INDEX_HOME;
-                        CURRENT_TAG = TAG_HOME;
-                        break;
-
-                    case R.id.nav_practice:
-                        navItemIndex = INDEX_LEARN;
-                        CURRENT_TAG = TAG_PRACTICE;
-                        break;
-
-                    case R.id.nav_quiz:
-                        navItemIndex = INDEX_QUIZ;
-                        CURRENT_TAG = TAG_QUIZ;
-                        break;
-
-                    case R.id.nav_modeltest:
-                        navItemIndex = INDEX_MODELTEST;
-                        CURRENT_TAG = TAG_MODELTEST;
-                        break;
-
-                    case R.id.nav_stats:
-                        navItemIndex = INDEX_STATS;
-                        CURRENT_TAG = TAG_STATS;
-                        break;
-
-                    case R.id.nav_settings:
-                        navItemIndex = INDEX_SETTINGS;
-                        CURRENT_TAG = TAG_SETTINGS;
-                        break;
-
-                    case R.id.nav_feedback:
-                        navItemIndex = INDEX_FEEDBACK;
-                        CURRENT_TAG = TAG_FEEDBACK;
-                        break;
-
-                    case R.id.nav_rateus:
-                        // Uncomment after testing
-                        startActivity(new Intent(Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=" + getPackageName())));
-                        return true;
-                    //navItemIndex = INDEX_RATEUS;
-                    //CURRENT_TAG = TAG_RATEUS;
-                    //break;
 
 //                    case R.id.nav_donate:
 //                        navItemIndex = INDEX_DONATE;
 //                        CURRENT_TAG = TAG_DONATE;
 //                        break;
 
-                    default:
-                        navItemIndex = INDEX_HOME;
-                        CURRENT_TAG = TAG_HOME;
-                        break;
-                }
-
-                //Checking if the item is in checked state or not, if not make it in checked state
-                if (menuItem.isChecked()) {
-                    menuItem.setChecked(false);
-                } else {
-                    menuItem.setChecked(true);
-                }
-                menuItem.setChecked(true);
-
-                loadHomeFragment();
-
-                return true;
+                case R.id.nav_home:
+                default:
+                    navItemIndex = INDEX_HOME;
+                    CURRENT_TAG = TAG_HOME;
+                    break;
             }
+
+            //Checking if the item is in checked state or not, if not make it in checked state
+            if (menuItem.isChecked()) {
+                menuItem.setChecked(false);
+            } else {
+                menuItem.setChecked(true);
+            }
+
+            loadHomeFragment();
+
+            return true;
         });
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,

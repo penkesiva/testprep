@@ -13,6 +13,12 @@
     <string name="quiz">Quick Quiz</string>
     <string name="model_tests">Model Tests</string>
     <string name="overview">Overview</string>
+    <string name="home">Home</string>
+    <string name="stats">Stats</string>
+    <string name="settings">Settings</string>
+    <string name="feedback">Feedback</string>
+    <string name="rateus">Rate Us</string>
+    <string name="donate">Donate</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
@@ -20,11 +26,11 @@
         <item>@string/practice</item>
         <item>@string/quiz</item>
         <item>@string/model_tests</item>
-        <item>Stats</item>
-        <item>Settings</item>
-        <item>Feedback</item>
-        <item>Rate Us</item>
-        <item>Donate</item>
+        <item>@string/stats</item>
+        <item>@string/settings</item>
+        <item>@string/feedback</item>
+        <item>@string/rateus</item>
+        <item>@string/donate</item>
     </string-array>
 
     <string-array name="connecting_colors">
@@ -62,7 +68,7 @@
 
     <!-- results -->
     <string name="your_score">You Scored:</string>
-    <string name="sample_score">0/25</string>
+    <string name="sample_score"> </string>
     <string name="your_answer">Your Answer:</string>
 
     <string name="image_description">Image Description</string>

@@ -18,6 +18,7 @@ import com.ee.testprep.db.UserDataViewModel;
 import com.ee.testprep.util.Constants;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -64,7 +65,7 @@ public class TestQuizFragment extends Fragment {
         if (getArguments() != null) {
             quizName = getArguments().getString(QUIZ_NAME);
         }
-        viewModel = ViewModelProviders.of(getActivity()).get(UserDataViewModel.class);
+        viewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(UserDataViewModel.class);
         dbHelper = DataBaseHelper.getInstance(getContext());
         quizList = (ArrayList<DBRow>) dbHelper.queryQuestionsQuiz(quizName);
         numQuestions = quizList.size();
@@ -82,9 +83,7 @@ public class TestQuizFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         tvTimer = view.findViewById(R.id.quiz_q_timer);
-
         tvProgress = view.findViewById(R.id.quiz_q_progress);
-
         submitButton = view.findViewById(R.id.quiz_q_submit);
         submitButton.setOnClickListener(view1 -> {
             if (mListener != null) {
@@ -174,6 +173,10 @@ public class TestQuizFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
+        if(countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     private void startTimeRefresh() {

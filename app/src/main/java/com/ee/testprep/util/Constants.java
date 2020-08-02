@@ -48,11 +48,11 @@ public class Constants {
     private static void updateAbbreviations() {
         if (abbreviations.size() > 0) return;
 
-        abbreviations.put("GEOG", "Geography - GEOG");
-        abbreviations.put("POLI", "Politics - POLI");
-        abbreviations.put("ENVI", "Environment - ENVI");
-        abbreviations.put("HIST", "History - HIST");
-        abbreviations.put("Multi", "Multi");
+        abbreviations.put("GEOG", "Geography");
+        abbreviations.put("POLI", "Politics");
+        abbreviations.put("ENVI", "Environment");
+        abbreviations.put("HIST", "History");
+        abbreviations.put("All", "All");
     }
 
     public static Collection<String> getSubjects() {

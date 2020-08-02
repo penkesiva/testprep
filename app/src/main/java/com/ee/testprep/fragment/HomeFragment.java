@@ -22,7 +22,6 @@ public class HomeFragment extends Fragment {
     private static String className = HomeFragment.class.getSimpleName();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private TextView greeting;
 
     private static String author_kalam = "- APJ Kalam";
     private static String author_gandhi = "- MK Gandhi";
@@ -103,7 +102,7 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        greeting = view.findViewById(R.id.tv_home_wish);
+        TextView greeting = view.findViewById(R.id.tv_home_wish);
         greeting.setText(getGreeting(user.getDisplayName()));
 
         TextView quote = view.findViewById(R.id.tv_home_quote);

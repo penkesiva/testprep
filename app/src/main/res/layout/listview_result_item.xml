@@ -5,11 +5,12 @@
     android:descendantFocusability="blocksDescendants" >
 
     <LinearLayout
+        android:id="@+id/result_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:orientation="vertical"
-        android:background="@drawable/rectangle_blue"
+        android:background="@drawable/rectangle_orange"
         android:layout_margin="@dimen/padding_2sp"
         android:padding="@dimen/padding_8sp">
 
@@ -43,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Correct Answer:"
+                    android:text="Answer:"
                     android:textColor="@color/colorBlack"/>
 
                 <TextView
@@ -56,24 +57,23 @@
                     android:text="Answer"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <TextView
                 android:id="@+id/option_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/padding_16sp"
                 android:text="correct option content here"
                 android:textStyle="italic"
-                android:textColor="@color/colorGreen"/>
+                android:textColor="@color/colorBlack"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"

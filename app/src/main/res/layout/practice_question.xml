@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/question_layout"
@@ -14,7 +13,7 @@
         android:layout_above="@id/radioGroup1"
         android:layout_alignParentTop="true"
         android:layout_weight="1"
-        android:background="@drawable/rectangle_blue"
+        android:background="@drawable/rectangle_white"
         android:padding="@dimen/padding_5sp">
 
         <Button
@@ -24,11 +23,12 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="20dp"
-            android:background="@drawable/rectangle_green"
+            android:background="@drawable/rectangle"
             android:padding="10dp"
-            android:text="CORRECT"
-            android:textColor="@android:color/holo_green_dark"
+            android:text="Good Job!"
+            android:textColor="@color/colorGreen"
             android:textSize="@dimen/big_font"
+            android:textStyle="bold"
             android:visibility="invisible" />
 
         <Button
@@ -38,11 +38,12 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_margin="20dp"
-            android:background="@drawable/rectangle_red"
             android:padding="10dp"
-            android:text="WRONG"
-            android:textColor="@android:color/holo_red_dark"
+            android:text="Incorrect"
+            android:textColor="@color/colorRed"
+            android:background="@drawable/rectangle_red"
             android:textSize="@dimen/big_font"
+            android:textStyle="bold"
             android:visibility="invisible" />
 
         <RelativeLayout
@@ -90,7 +91,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/q_header"
             android:layout_margin="@dimen/padding_5sp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/holo_orange_dark"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -109,7 +110,7 @@
                 android:scrollbars="vertical"
                 android:text=""
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/medium_font"
+                android:textSize="@dimen/medium2_font"
                 android:textStyle="bold" />
 
             <ImageView
@@ -131,8 +132,8 @@
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_5sp"
-        android:background="@drawable/rectangle_blue"
+        android:layout_marginTop="@dimen/padding_2sp"
+        android:background="@drawable/rectangle_white"
         android:padding="8dp">
 
         <RelativeLayout
@@ -163,7 +164,8 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionA"
-                android:textSize="@dimen/medium_font"
+                android:textSize="@dimen/medium2_font"
+                android:textStyle="bold"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
 
@@ -198,7 +200,8 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionB"
-                android:textSize="@dimen/medium_font"
+                android:textSize="@dimen/medium2_font"
+                android:textStyle="bold"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
         </RelativeLayout>
@@ -233,7 +236,8 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionC"
-                android:textSize="@dimen/medium_font"
+                android:textSize="@dimen/medium2_font"
+                android:textStyle="bold"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
 
@@ -269,7 +273,8 @@
                 android:button="@null"
                 android:drawableStart="@drawable/checkbox"
                 android:text="@string/optionD"
-                android:textSize="@dimen/medium_font"
+                android:textSize="@dimen/medium2_font"
+                android:textStyle="bold"
                 android:textAlignment="viewStart"
                 android:textColor="@color/colorBlack" />
 
@@ -283,7 +288,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_margin="5dp"
-        android:background="@drawable/rectangle_blue"
+        android:background="@drawable/rectangle_orange"
         android:padding="5dp"
         android:text="Practice More"
         android:visibility="gone" />

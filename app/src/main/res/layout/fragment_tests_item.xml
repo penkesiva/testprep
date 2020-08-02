@@ -94,13 +94,13 @@
                 android:id="@+id/tests_item_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="50sp"
-                android:maxHeight="50sp"
+                android:maxWidth="30sp"
+                android:maxHeight="30sp"
                 android:adjustViewBounds="true"
                 android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
-                android:scaleType="centerInside"
-                android:src="@drawable/trophy"
+                android:scaleType="fitXY"
+                android:src="@drawable/lock"
                 android:visibility="visible"/>
 
         </RelativeLayout>

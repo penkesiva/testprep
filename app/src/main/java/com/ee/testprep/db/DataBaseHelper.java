@@ -28,6 +28,7 @@ import com.ee.testprep.util.PreferenceUtils;
 
 public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
+    private static final String TAG = "EETest: DataBaseHelper";
     private static final String className = DataBaseHelper.class.getName();
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "eeTestPrep2.db";
@@ -67,8 +68,11 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
         new Thread(() -> {
 
+            Log.d(TAG, "Updating Question Bank");
             updateTableList(db, R.raw.qbank_v1);
+            Log.d(TAG, "Updating Quizzes");
             updateTableList(db, R.raw.quiz_v1);
+            Log.d(TAG, "Updating ModelTest");
             updateTableList(db, R.raw.modeltest_v1);
 
             for (int i = 0; i < tableList.size(); i++) {
@@ -105,9 +109,11 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 + tableName + "(" +
                 BaseColumns._ID + " INTEGER PRIMARY KEY, "
                 + MetaData.KEY_NAME + " TEXT, "
+                + MetaData.KEY_TITLE + " TEXT, "
                 + MetaData.KEY_EXAM + " TEXT, "
                 + MetaData.KEY_SUBJECT + " TEXT, "
                 + MetaData.KEY_LANGUAGE + " TEXT, "
+                + MetaData.KEY_NUM_QUIZZES + " TEXT, "
                 + MetaData.KEY_TOTALQ + " TEXT, "
                 + MetaData.KEY_TIME + " TEXT)";
     }
@@ -117,6 +123,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 + tableName + "(" +
                 BaseColumns._ID + " INTEGER PRIMARY KEY, "
                 + DBRow.KEY_EXAM + " TEXT, "
+                + DBRow.KEY_SUBJECT + " TEXT, "
                 + DBRow.KEY_YEAR + " TEXT, "
                 + DBRow.KEY_QNO + " INTEGER, "
                 + DBRow.KEY_QUESTION + " TEXT, "
@@ -125,9 +132,6 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                 + DBRow.KEY_OPTC + " TEXT, "
                 + DBRow.KEY_OPTD + " TEXT, "
                 + DBRow.KEY_ANSWER + " TEXT, "
-                + DBRow.KEY_IPC + " TEXT, "
-                + DBRow.KEY_SUBJECT + " TEXT, "
-                + DBRow.KEY_CHAPTER + " INTEGER, "
                 + DBRow.KEY_DIFFICULTY + " INTEGER, "
                 + DBRow.KEY_USER_STATUS + " TEXT)";
     }
@@ -208,18 +212,24 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                                 metaData.mName = cell.getDisplayStringValue();
                                 break;
                             case 1:
-                                metaData.mExam = cell.getDisplayStringValue();
+                                metaData.mTitle = cell.getDisplayStringValue();
                                 break;
                             case 2:
-                                metaData.mSubject = cell.getDisplayStringValue();
+                                metaData.mExam = cell.getDisplayStringValue();
                                 break;
                             case 3:
-                                metaData.mLanguage = cell.getDisplayStringValue();
+                                metaData.mSubject = cell.getDisplayStringValue();
                                 break;
                             case 4:
-                                metaData.mTotalQ = cell.getDisplayStringValue();
+                                metaData.mLanguage = cell.getDisplayStringValue();
+                                break;
+                            case 5:
+                                metaData.mNumQuizzes = cell.getDisplayStringValue();
                                 break;
                             case 6:
+                                metaData.mTotalQ = cell.getDisplayStringValue();
+                                break;
+                            case 7:
                                 metaData.mTime = cell.getDisplayStringValue();
                                 break;
 
@@ -246,42 +256,36 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
                                 dbRow.exam = cell.getDisplayStringValue();
                                 break;
                             case 1:
-                                dbRow.year = cell.getDisplayStringValue();
-                                break;
-                            case 2:
-                                dbRow.qNo = Integer.valueOf(cell.getDisplayStringValue());
-                                break;
-                            case 3:
-                                dbRow.question = cell.getDisplayStringValue();
-                                break;
-                            case 4:
-                                dbRow.optionA = cell.getDisplayStringValue();
-                                break;
-                            case 5:
-                                dbRow.optionB = cell.getDisplayStringValue();
-                                break;
-                            case 6:
-                                dbRow.optionC = cell.getDisplayStringValue();
-                                break;
-                            case 7:
-                                dbRow.optionD = cell.getDisplayStringValue();
-                                break;
-                            case 8:
-                                dbRow.answer = cell.getDisplayStringValue();
-                                break;
-                            case 9:
-                                dbRow.ipc = cell.getDisplayStringValue();
-                                break;
-                            case 10:
                                 dbRow.subject = cell.getDisplayStringValue();
                                 break;
-                            case 11:
-                                dbRow.chapter = Integer.valueOf(cell.getDisplayStringValue());
+                            case 2:
+                                dbRow.year = cell.getDisplayStringValue();
                                 break;
-                            case 12:
+                            case 3:
+                                dbRow.qNo = Integer.valueOf(cell.getDisplayStringValue());
+                                break;
+                            case 4:
+                                dbRow.question = cell.getDisplayStringValue();
+                                break;
+                            case 5:
+                                dbRow.optionA = cell.getDisplayStringValue();
+                                break;
+                            case 6:
+                                dbRow.optionB = cell.getDisplayStringValue();
+                                break;
+                            case 7:
+                                dbRow.optionC = cell.getDisplayStringValue();
+                                break;
+                            case 8:
+                                dbRow.optionD = cell.getDisplayStringValue();
+                                break;
+                            case 9:
+                                dbRow.answer = cell.getDisplayStringValue();
+                                break;
+                            case 10:
                                 dbRow.difficulty = Integer.valueOf(cell.getDisplayStringValue());
                                 break;
-                            case 13:
+                            case 11:
                                 dbRow.userstatus = "";
                                 break;
 
@@ -312,6 +316,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
         ContentValues values = new ContentValues();
         values.put(DBRow.KEY_EXAM, row.exam);
+        values.put(DBRow.KEY_SUBJECT, row.subject);
         values.put(DBRow.KEY_YEAR, row.year);
         values.put(DBRow.KEY_QNO, row.qNo);
         values.put(DBRow.KEY_QUESTION, row.question);
@@ -320,9 +325,6 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         values.put(DBRow.KEY_OPTC, row.optionC);
         values.put(DBRow.KEY_OPTD, row.optionD);
         values.put(DBRow.KEY_ANSWER, row.answer);
-        values.put(DBRow.KEY_IPC, row.ipc);
-        values.put(DBRow.KEY_SUBJECT, row.subject);
-        values.put(DBRow.KEY_CHAPTER, row.chapter);
         values.put(DBRow.KEY_DIFFICULTY, row.difficulty);
         values.put(DBRow.KEY_USER_STATUS, row.userstatus);
 
@@ -338,9 +340,11 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
         ContentValues values = new ContentValues();
         values.put(MetaData.KEY_NAME, row.mName);
+        values.put(MetaData.KEY_TITLE, row.mTitle);
         values.put(MetaData.KEY_EXAM, row.mExam);
         values.put(MetaData.KEY_SUBJECT, row.mSubject);
         values.put(MetaData.KEY_LANGUAGE, row.mLanguage);
+        values.put(MetaData.KEY_NUM_QUIZZES, row.mNumQuizzes);
         values.put(MetaData.KEY_TOTALQ, row.mTotalQ);
         values.put(MetaData.KEY_TIME, row.mTime);
 
@@ -678,9 +682,11 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
         MetaData row = new MetaData();
         row.mName = c.getString(c.getColumnIndex(MetaData.KEY_NAME));
+        row.mTitle = c.getString(c.getColumnIndex(MetaData.KEY_TITLE));
         row.mExam = c.getString(c.getColumnIndex(MetaData.KEY_EXAM));
         row.mSubject = c.getString(c.getColumnIndex(MetaData.KEY_SUBJECT));
         row.mLanguage = c.getString(c.getColumnIndex(MetaData.KEY_LANGUAGE));
+        row.mNumQuizzes = c.getString(c.getColumnIndex(MetaData.KEY_NUM_QUIZZES));
         row.mTotalQ = c.getString(c.getColumnIndex(MetaData.KEY_TOTALQ));
         row.mTime = c.getString(c.getColumnIndex(MetaData.KEY_TIME));
 
@@ -691,6 +697,7 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
 
         DBRow row = new DBRow();
         row.exam = c.getString(c.getColumnIndex(DBRow.KEY_EXAM));
+        row.subject = c.getString(c.getColumnIndex(DBRow.KEY_SUBJECT));
         row.year = c.getString(c.getColumnIndex(DBRow.KEY_YEAR));
         row.qNo = c.getInt(c.getColumnIndex(DBRow.KEY_QNO));
         row.question = c.getString(c.getColumnIndex(DBRow.KEY_QUESTION));
@@ -699,9 +706,6 @@ public class DataBaseHelper extends SQLiteOpenHelper implements Serializable {
         row.optionC = c.getString(c.getColumnIndex(DBRow.KEY_OPTC));
         row.optionD = c.getString(c.getColumnIndex(DBRow.KEY_OPTD));
         row.answer = c.getString(c.getColumnIndex(DBRow.KEY_ANSWER));
-        row.ipc = c.getString(c.getColumnIndex(DBRow.KEY_IPC));
-        row.subject = c.getString(c.getColumnIndex(DBRow.KEY_SUBJECT));
-        row.chapter = c.getInt(c.getColumnIndex(DBRow.KEY_CHAPTER));
         row.difficulty = c.getInt(c.getColumnIndex(DBRow.KEY_DIFFICULTY));
         row.userstatus = c.getString(c.getColumnIndex(DBRow.KEY_USER_STATUS));
 

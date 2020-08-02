@@ -11,27 +11,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/padding_8sp">
+            android:padding="@dimen/padding_2sp">
 
             <TextView
                 android:id="@+id/make_a_selection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/padding_5sp"
                 android:text="Make a Selection"
-                android:layout_alignParentStart="true"
+                android:padding="@dimen/padding_5sp"
+                android:background="@drawable/rectangle_orange"
                 android:gravity="center"
                 android:textSize="@dimen/big_font"
-                android:textStyle="bold"
+                android:fontFamily="@font/roboto_bold"
                 android:textColor="@color/colorBlack"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_8sp"
-                android:background="@drawable/rectangle_blue"
+                android:layout_marginTop="@dimen/padding_2sp"
+                android:background="@drawable/rectangle_orange"
                 android:padding="@dimen/padding_5sp">
 
                 <RelativeLayout
@@ -39,7 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:padding="@dimen/padding_5sp">
+                    android:padding="@dimen/padding_5sp"
+                    android:layout_marginBottom="@dimen/padding_5sp">
 
                     <TextView
                         android:id="@+id/tv_exam"
@@ -50,7 +51,7 @@
                         android:text="Exams"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/medium2_font"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/roboto_bold"/>
 
                     <!--ImageButton
                         android:id="@+id/ib_exam"
@@ -83,23 +84,25 @@
                     android:padding="@dimen/padding_2sp"
                     android:stretchMode="spacingWidthUniform"
                     android:verticalSpacing="@dimen/padding_8sp"
+                    android:fontFamily="@font/roboto_medium"
                     android:visibility="visible">
-
                 </ListView>
+
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_8sp"
-                android:background="@drawable/rectangle_blue"
+                android:layout_marginTop="@dimen/padding_2sp"
+                android:background="@drawable/rectangle_orange"
                 android:padding="@dimen/padding_5sp">
 
                 <RelativeLayout
                     android:id="@+id/subject_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_5sp">
+                    android:padding="@dimen/padding_5sp"
+                    android:layout_marginBottom="@dimen/padding_5sp">
 
                     <TextView
                         android:id="@+id/tv_subject"
@@ -110,7 +113,7 @@
                         android:text="Subjects"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/medium2_font"
-                        android:textStyle="bold" />
+                        android:fontFamily="@font/roboto_bold" />
 
                     <!--ImageButton
                         android:id="@+id/ib_subject"
@@ -149,8 +152,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_8sp"
-                android:background="@drawable/rectangle_blue"
+                android:layout_marginTop="@dimen/padding_2sp"
+                android:background="@drawable/rectangle_orange"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_8sp">
 
@@ -163,7 +166,8 @@
                     android:text="Year"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/medium2_font"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="@dimen/padding_5sp"
+                    android:fontFamily="@font/roboto_bold" />
 
                 <RelativeLayout
                     android:id="@+id/year_text"
@@ -178,17 +182,17 @@
                         android:layout_marginStart="10dp"
                         android:text="0"
                         android:textColor="#000"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/textMax1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginEnd="10dp"
                         android:text="0"
                         android:textColor="#000"
-                        android:textSize="16dp" />
+                        android:textSize="16sp" />
 
                 </RelativeLayout>
 
@@ -203,6 +207,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/padding_5sp"
+                        android:padding="@dimen/padding_5sp"
                         app:bar_color="@color/colorBackground"
                         app:bar_highlight_color="@color/colorBackground"
                         app:corner_radius="5"
@@ -221,8 +226,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/padding_8sp"
-                android:background="@drawable/rectangle_blue"
+                android:layout_marginTop="@dimen/padding_2sp"
+                android:background="@drawable/rectangle_orange"
                 android:padding="@dimen/padding_8sp">
 
                 <RelativeLayout
@@ -230,6 +235,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
+                    android:layout_marginBottom="@dimen/padding_5sp"
                     android:padding="@dimen/padding_5sp">
 
                     <TextView
@@ -239,7 +245,8 @@
                         android:text="Difficulty"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/medium2_font"
-                        android:textStyle="bold" />
+                        android:layout_marginBottom="@dimen/padding_5sp"
+                        android:fontFamily="@font/roboto_bold" />
 
                     <Switch
                         android:id="@+id/sw_difficulty"
@@ -296,8 +303,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_8sp"
-                android:background="@drawable/rectangle_blue"
+                android:layout_marginTop="@dimen/padding_2sp"
+                android:background="@drawable/rectangle_orange"
                 android:orientation="vertical"
                 android:padding="@dimen/padding_8sp">
 
@@ -308,7 +315,8 @@
                     android:text="Other"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/medium2_font"
-                    android:textStyle="bold" />
+                    android:layout_marginBottom="@dimen/padding_5sp"
+                    android:fontFamily="@font/roboto_bold" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -376,22 +384,21 @@
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="50sp"/>
+                android:layout_height="82sp"/>
 
         </LinearLayout>
-        
-
 
     </ScrollView>
 
     <Button
         android:id="@+id/btn_start"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
+        android:layout_height="80sp"
         android:background="@color/colorBackground2"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/padding_12sp"
         android:text="Start"
+        android:fontFamily="@font/roboto_bold"
         android:textSize="@dimen/medium2_font" />
 
 </RelativeLayout>
