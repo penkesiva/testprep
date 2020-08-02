@@ -19,10 +19,11 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorOrange">#FE9A2E</color>
-    <color name="colorOrangeLight">#ffcc80</color>
+    <color name="colorOrangeLight">#FCE8CA</color>
     <color name="colorGreen">#5FB404</color>
     <color name="colorGreenLight">#aed581</color>
     <color name="colorRed">#FF0000</color>
+    <color name="colorRed2">#F96565</color>
     <color name="colorPurplePink">#A9A9F5</color>
     <color name="colorBackground">#333C46</color>
     <color name="colorSplashText">#F0F0F0</color>

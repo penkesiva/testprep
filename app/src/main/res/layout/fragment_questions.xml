@@ -15,7 +15,7 @@
             android:layout_marginLeft="@dimen/padding_8sp"
             android:layout_marginRight="@dimen/padding_8sp"
             android:layout_marginTop="@dimen/padding_8sp"
-            android:background="@drawable/rectangle_blue"
+            android:background="@drawable/rectangle_orange"
             android:gravity="center_vertical"
             android:padding="@dimen/padding_5sp"
             android:paddingLeft="10dp"

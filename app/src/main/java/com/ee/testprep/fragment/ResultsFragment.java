@@ -1,6 +1,7 @@
 package com.ee.testprep.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -139,10 +140,11 @@ public class ResultsFragment extends Fragment {
             viewHolder.userOption.setText(getUserOption(row));
             viewHolder.explanation.setText(""); //TODO
 
+            View resultView = convertView.findViewById(R.id.result_view);
             if (mAnswerKey.get(position).answer.trim().equals(mAnswerKey.get(position).userstatus.trim())) {
-                viewHolder.validateImage.setImageResource(R.drawable.right);
+                resultView.setBackgroundResource(R.color.colorGreenLight);
             } else {
-                viewHolder.validateImage.setImageResource(R.drawable.wrong);
+                resultView.setBackgroundResource(R.color.colorRed2);
             }
 
             return convertView;

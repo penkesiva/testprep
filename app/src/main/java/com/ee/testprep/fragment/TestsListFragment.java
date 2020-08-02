@@ -194,7 +194,7 @@ public class TestsListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull TestsListItemViewHolder holder, int position) {
             MetaData testData = mTestsList.get(tests.get(position));
-            holder.titleView.setText(testData.mName.toUpperCase());
+            holder.titleView.setText(testData.mTitle);
             String text = "";
             if (testData.mExam != null && !testData.mExam.isEmpty()) {
                 text = testData.mExam + " : ";
@@ -208,7 +208,6 @@ public class TestsListFragment extends Fragment {
                 holder.subjectView.setText(text);
             }
 
-            //Log.e("TLF", "TLF: (" + testData.mName + ") testData = " + testData.toString());
             int numQuestions = Integer.valueOf(testData.mTotalQ);
             int quizTime = Constants.getQuizTime(numQuestions);
             Test userData = userTestData.get(testData.mName);
@@ -227,11 +226,12 @@ public class TestsListFragment extends Fragment {
             holder.cardView.setTag(testData.mName);
             holder.cardView.setOnClickListener(onListItemClickListener);
 
-            if (position % 2 == 0)
+            if(testData.mTitle.contains("Sample")) {
                 holder.cardView.setCardBackgroundColor(getResources().getColor(R.color.colorGreenLight));
-            else
+                holder.markView.setVisibility(View.GONE);
+            } else {
                 holder.cardView.setCardBackgroundColor(getResources().getColor(R.color.colorOrangeLight));
-
+            }
         }
 
         @Override
@@ -243,7 +243,7 @@ public class TestsListFragment extends Fragment {
             String subject = mSubjectList.get(subjectSelection);
             tests.clear();
             for (MetaData test : mTestsList) {
-                if (Constants.getAbbreviation(test.mSubject).equals(subject)) {
+                if (Constants.getAbbreviation(test.mSubject).equals(subject) || subject.equals("All")) {
                     tests.add(mTestsList.indexOf(test));
                 }
             }

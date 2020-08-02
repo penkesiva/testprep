@@ -14,7 +14,7 @@
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_weight="1"
-        android:background="@drawable/rectangle_blue"
+        android:background="@drawable/rectangle_white"
         android:padding="@dimen/padding_8sp">
 
         <TextView
@@ -57,7 +57,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding_5sp"
-        android:background="@drawable/rectangle_blue"
+        android:background="@drawable/rectangle_white"
         android:padding="@dimen/padding_8sp">
 
         <RelativeLayout

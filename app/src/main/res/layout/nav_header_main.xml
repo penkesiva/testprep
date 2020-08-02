@@ -16,7 +16,8 @@
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:gravity="center"
-        android:padding="16sp">
+        android:paddingLeft="16sp"
+        android:paddingRight="16sp">
 
         <ImageView
             android:id="@+id/img_profile"
@@ -29,12 +30,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_8sp"
-            android:text="Equality Empowerment"
+            android:text="@string/organization"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="16dp"
+            android:textSize="@dimen/padding_20sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_24sp"
+            android:text="username"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textColor="@android:color/holo_orange_dark"
+            android:textStyle="bold"
+            android:textSize="@dimen/padding_16sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </LinearLayout>
 

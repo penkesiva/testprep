@@ -36,11 +36,10 @@ public class HelpInstructions {
     private static StringBuilder practiceInstructions() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\u25CF Make a selection from the list of available filters\n");
-        sb.append("\u25CF Click Start Button to practice questions\n");
-        sb.append("\u25CF Click on star icon on top-right to review it later\n");
-        sb.append("\u25CF Press back button to go home\n");
-        sb.append("\n   Good Luck!");
+        sb.append("- Make a selection from the list of available filters\n");
+        sb.append("- Click Start Button to practice questions\n");
+        sb.append("- Click on star icon on top-right to review it later\n");
+        sb.append("- Press back button to go home\n");
 
         return sb;
     }
@@ -48,15 +47,13 @@ public class HelpInstructions {
     private static StringBuilder quizInstructions() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("\u25CF Choose your favorite subject/exam from the drop-down box\n");
-        sb.append("\u25CF Every Quiz has 25 questions\n");
-        sb.append("\u25CF Time to complete each quiz is about 15 min\n");
-        sb.append("\u25CF Every Model Test has varied questions depends on the exam\n");
-        sb.append("\u25CF You can check your results at the end of the exam\n");
-        sb.append("\u25CF If you retake the exam, the previous exam results will be erased\n");
-        sb.append("\u25CF You can submit the exam at any time\n");
-        sb.append("\u25CF Make use of Pause/Play button for a quick break\n");
-        sb.append("\n   Good Luck!");
+        sb.append("- Choose your favorite subject/exam from the drop-down box\n");
+        sb.append("- Every Quiz has 10 questions\n");
+        sb.append("- You can check your results at the end of the exam\n\n");
+
+        sb.append("- If you retake the exam, the previous exam results will be erased\n");
+        sb.append("- You can submit the exam at any time\n");
+        sb.append("- Make use of Pause/Play button for a quick break\n");
 
         return sb;
     }
