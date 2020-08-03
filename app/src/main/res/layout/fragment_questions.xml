@@ -12,51 +12,51 @@
             android:id="@+id/quiz_q_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/padding_8sp"
-            android:layout_marginRight="@dimen/padding_8sp"
-            android:layout_marginTop="@dimen/padding_8sp"
-            android:background="@drawable/rectangle_orange"
+            android:background="@color/colorOrange"
             android:gravity="center_vertical"
-            android:padding="@dimen/padding_5sp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
-
-            <Button
-                android:id="@+id/quiz_q_pause"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="PAUSE" />
+            android:padding="@dimen/size_5sp">
 
             <TextView
                 android:id="@+id/quiz_q_progress"
-                style="@style/Small"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:gravity="center"
-                android:textStyle="bold" />
-
-            <View
-                android:layout_width="2px"
-                android:layout_height="match_parent"
-                android:background="@android:color/black" />
+                android:textSize="@dimen/size_24sp"
+                android:text="0/0"
+                android:layout_weight="1"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold"/>
 
             <TextView
                 android:id="@+id/quiz_q_timer"
-                style="@style/Small"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:gravity="center"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/quiz_q_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="SUBMIT" />
+                android:gravity="center"
+                android:text="0:0"
+                android:layout_weight="1"
+                android:textSize="@dimen/size_24sp"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/roboto_bold" />
+
+            <ImageView
+                android:id="@+id/quiz_q_pause"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:src="@drawable/pause"/>
+
+            <ImageView
+                android:id="@+id/quiz_q_submit"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_weight="1"
+                android:background="?android:selectableItemBackground"
+                android:src="@drawable/submit"/>
         </LinearLayout>
 
         <androidx.viewpager.widget.ViewPager

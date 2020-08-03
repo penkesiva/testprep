@@ -79,7 +79,7 @@ public class QuestionPracticeFragment extends Fragment {
         wrong = view.findViewById(R.id.practice_q_wrong);
 
         TextView tvQNo = view.findViewById(R.id.q_no);
-        tvQNo.setText("Question " + Integer.toString(mQuestion.qNo) + ":\n");
+        tvQNo.setText(String.format("Question %d\n", mQuestion.qNo));
 
         TextView tvQuestion = view.findViewById(R.id.question);
         tvQuestion.append(mQuestion.question.trim());
@@ -125,7 +125,9 @@ public class QuestionPracticeFragment extends Fragment {
         int red = getResources().getColor(R.color.colorRed);
 
         cb[0] = view.findViewById(R.id.rb_optA);
-        cb[0].setText(mQuestion.optionA.trim());
+        String optionA = mQuestion.optionA.trim();
+        optionA = optionA.substring(0, 1).toUpperCase() + optionA.substring(1);
+        cb[0].setText(optionA);
 
         cb[0].setOnClickListener(v -> {
 
@@ -150,7 +152,9 @@ public class QuestionPracticeFragment extends Fragment {
         });
 
         cb[1] = view.findViewById(R.id.rb_optB);
-        cb[1].setText(mQuestion.optionB.trim());
+        String optionB = mQuestion.optionB.trim();
+        optionB = optionB.substring(0, 1).toUpperCase() + optionB.substring(1);
+        cb[1].setText(optionB);
         cb[1].setOnClickListener(v -> {
 
             clearCheckBoxes();
@@ -174,7 +178,9 @@ public class QuestionPracticeFragment extends Fragment {
         });
 
         cb[2] = view.findViewById(R.id.rb_optC);
-        cb[2].setText(mQuestion.optionC.trim());
+        String optionC = mQuestion.optionC.trim();
+        optionC = optionC.substring(0, 1).toUpperCase() + optionC.substring(1);
+        cb[2].setText(optionC);
         cb[2].setOnClickListener(v -> {
 
             clearCheckBoxes();
@@ -198,7 +204,9 @@ public class QuestionPracticeFragment extends Fragment {
         });
 
         cb[3] = view.findViewById(R.id.rb_optD);
-        cb[3].setText(mQuestion.optionD.trim());
+        String optionD = mQuestion.optionD.trim();
+        optionD = optionD.substring(0, 1).toUpperCase() + optionD.substring(1);
+        cb[3].setText(optionD);
         cb[3].setOnClickListener(v -> {
 
             clearCheckBoxes();

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:background="@color/colorBackground2">
+    android:background="@color/colorOrangeLight">
 
     <FrameLayout
         android:id="@+id/help_header_layout"
@@ -16,13 +16,13 @@
             android:id="@+id/help_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorBackground3"
+            android:background="@color/colorOrange"
             android:gravity="center|bottom"
             android:padding="20sp"
-            android:text="Instructions"
-            android:textColor="@color/colorOrange"
+            android:text="@string/instructions"
+            android:textColor="@color/colorBlack"
             android:textSize="@dimen/big_font"
-            android:textStyle="bold" />
+            android:fontFamily="@font/roboto_bold" />
 
         <ImageView
             android:id="@+id/help_close"
@@ -36,18 +36,19 @@
         android:id="@+id/help_instructions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_5sp"
+        android:layout_marginTop="@dimen/size_5sp"
         android:gravity="center|start"
         android:lineSpacingMultiplier="1.6"
         android:lineSpacingExtra="3sp"
-        android:padding="@dimen/padding_16sp"
-        android:textColor="@color/colorOrangeLight"
+        android:padding="@dimen/size_16sp"
+        android:textColor="@color/colorBlack"
         android:textSize="@dimen/medium_font"
-        android:textStyle="bold" />
+        android:fontFamily="@font/roboto_medium"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/size_5sp"
         android:gravity="center">
 
         <CheckBox
@@ -61,8 +62,8 @@
             android:id="@+id/tv_help_dont_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Don't show this again"
-            android:textColor="@color/colorWhite" />
+            android:text="@string/dontshow"
+            android:textColor="@color/colorBlack" />
 
     </LinearLayout>
 </LinearLayout>

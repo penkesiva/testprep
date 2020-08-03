@@ -10,13 +10,15 @@
     <dimen name="medium_font">16sp</dimen>
     <dimen name="small_font">14sp</dimen>
 
-    <dimen name="padding_2sp">2sp</dimen>
-    <dimen name="padding_5sp">5sp</dimen>
-    <dimen name="padding_8sp">8sp</dimen>
-    <dimen name="padding_12sp">12sp</dimen>
-    <dimen name="padding_16sp">16sp</dimen>
-    <dimen name="padding_20sp">20sp</dimen>
-    <dimen name="padding_24sp">24sp</dimen>
+    <dimen name="size_2sp">2sp</dimen>
+    <dimen name="size_5sp">5sp</dimen>
+    <dimen name="size_8sp">8sp</dimen>
+    <dimen name="size_12sp">12sp</dimen>
+    <dimen name="size_16sp">16sp</dimen>
+    <dimen name="size_20sp">20sp</dimen>
+    <dimen name="size_24sp">24sp</dimen>
+    <dimen name="size_32sp">32sp</dimen>
+    <dimen name="size_48sp">48sp</dimen>
 
     <dimen name="padding_small">5dp</dimen>
     <dimen name="padding_medium">10dp</dimen>

@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true"
         android:layout_weight="1"
         android:background="@drawable/rectangle_white"
-        android:padding="@dimen/padding_5sp">
+        android:padding="@dimen/size_5sp">
 
         <Button
             android:id="@+id/practice_q_correct"
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="40sp"
             android:layout_alignParentTop="true"
-            android:padding="@dimen/padding_5sp">
+            android:padding="@dimen/size_5sp">
 
             <TextView
                 android:id="@+id/q_no"
@@ -67,7 +67,7 @@
                 android:layout_width="35sp"
                 android:layout_height="35sp"
                 android:layout_toStartOf="@+id/fav"
-                android:layout_marginEnd="@dimen/padding_16sp"
+                android:layout_marginEnd="@dimen/size_16sp"
                 android:src="@drawable/explanation"
                 android:tint="@color/colorOrange"
                 android:adjustViewBounds="true"
@@ -90,14 +90,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/q_header"
-            android:layout_margin="@dimen/padding_5sp"
+            android:layout_margin="@dimen/size_5sp"
             android:background="@android:color/holo_orange_dark"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider"
-            android:padding="@dimen/padding_5sp">
+            android:padding="@dimen/size_5sp">
 
             <TextView
                 android:id="@+id/question"
@@ -132,7 +132,7 @@
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/padding_2sp"
+        android:layout_marginTop="@dimen/size_2sp"
         android:background="@drawable/rectangle_white"
         android:padding="8dp">
 
@@ -146,8 +146,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/padding_5sp"
-                android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_marginLeft="@dimen/size_5sp"
+                android:layout_marginRight="@dimen/size_5sp"
                 android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:text="@string/optionA"
@@ -181,8 +181,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/padding_5sp"
-                android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_marginLeft="@dimen/size_5sp"
+                android:layout_marginRight="@dimen/size_5sp"
                 android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:gravity="center"
@@ -216,8 +216,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/padding_5sp"
-                android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_marginLeft="@dimen/size_5sp"
+                android:layout_marginRight="@dimen/size_5sp"
                 android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:gravity="center"
@@ -253,8 +253,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/padding_5sp"
-                android:layout_marginRight="@dimen/padding_5sp"
+                android:layout_marginLeft="@dimen/size_5sp"
+                android:layout_marginRight="@dimen/size_5sp"
                 android:layout_centerVertical="true"
                 android:lineSpacingMultiplier="1.4"
                 android:gravity="center"

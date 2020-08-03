@@ -25,6 +25,7 @@ import com.ee.testprep.util.HelpInstructions;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,7 @@ public class TestsListFragment extends Fragment {
     private String selectedQuiz;
     private Spinner subjectSelector;
     private int subjectSelection;
+    private static boolean firstTimeInst = true;
 
     private OnClickListener onListItemClickListener = new OnClickListener() {
         @Override
@@ -119,7 +121,11 @@ public class TestsListFragment extends Fragment {
             adapter.setUserData(data);
         });
 
-        new HelpInstructions(getContext()).showHelpDialog(1);
+        int showRandom = new Random().nextInt(3);
+        if(showRandom == 2 || firstTimeInst) {
+            firstTimeInst = false;
+            new HelpInstructions(getContext()).showHelpDialog(1);
+        }
     }
 
     @Override

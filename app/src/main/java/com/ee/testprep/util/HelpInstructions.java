@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,10 +37,10 @@ public class HelpInstructions {
     private static StringBuilder practiceInstructions() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("- Make a selection from the list of available filters\n");
-        sb.append("- Click Start Button to practice questions\n");
-        sb.append("- Click on star icon on top-right to review it later\n");
-        sb.append("- Press back button to go home\n");
+        sb.append("\u2022 Make a selection from the list of available filters\n");
+        sb.append("\u2022 Click Start Button to practice questions\n");
+        sb.append("\u2022 Click on star icon on top-right to review it later\n");
+        sb.append("\u2022 Press back button to go home\n");
 
         return sb;
     }
@@ -47,13 +48,10 @@ public class HelpInstructions {
     private static StringBuilder quizInstructions() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("- Choose your favorite subject/exam from the drop-down box\n");
-        sb.append("- Every Quiz has 10 questions\n");
-        sb.append("- You can check your results at the end of the exam\n\n");
-
-        sb.append("- If you retake the exam, the previous exam results will be erased\n");
-        sb.append("- You can submit the exam at any time\n");
-        sb.append("- Make use of Pause/Play button for a quick break\n");
+        sb.append("\u2022 Swipe left for next and right for previous questions\n");
+        sb.append("\u2022 Every question in the quiz has the same weightage\n");
+        sb.append("\u2022 Negative marking is applicable for incorrect answers\n");
+        sb.append("\u2022 Make use of Pause/Play button for a quick break\n");
 
         return sb;
     }
@@ -70,6 +68,9 @@ public class HelpInstructions {
             helpDialog = new Dialog(mContext);
             helpDialog.setCancelable(true);
             helpDialog.setContentView(R.layout.help_dialog);
+
+            WindowManager.LayoutParams params = helpDialog.getWindow().getAttributes();
+            params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
             TextView tvInstructions = helpDialog.findViewById(R.id.help_instructions);
             ImageView ivClose = helpDialog.findViewById(R.id.help_close);
@@ -103,7 +104,7 @@ public class HelpInstructions {
                     break;
             }
 
-            helpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //helpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             helpDialog.show();
 
         }, 500);

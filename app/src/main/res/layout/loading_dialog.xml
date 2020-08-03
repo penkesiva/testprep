@@ -23,7 +23,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/padding_8sp"
+        android:layout_marginTop="@dimen/size_8sp"
         android:contentDescription="@string/image_description"
         android:src="@drawable/loader" />
 

@@ -10,10 +10,10 @@
         android:id="@+id/tv_stats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_16sp"
+        android:padding="@dimen/size_16sp"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/medium2_font"
-        android:paddingTop="@dimen/padding_16sp"
+        android:paddingTop="@dimen/size_16sp"
         android:gravity="center"
         android:text="@string/nothing_to_show"/>
 

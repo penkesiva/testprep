@@ -13,7 +13,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="12dp"
-        android:paddingBottom="@dimen/padding_5sp"
+        android:paddingBottom="@dimen/size_5sp"
         android:indeterminate="false"
         android:theme="@style/ProgressBarStyle"
         android:visibility="visible"/>
@@ -185,7 +185,7 @@
                 android:layout_gravity="center"
                 android:autoLink="all"
                 android:linksClickable="false"
-                android:padding="@dimen/padding_5sp"
+                android:padding="@dimen/size_5sp"
                 android:selectAllOnFocus="false"
                 android:text="@string/terms_conditions"
                 android:textColor="@color/colorTextView"

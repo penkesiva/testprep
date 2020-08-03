@@ -13,14 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/padding_2sp">
+            android:padding="@dimen/size_2sp">
 
             <TextView
                 android:id="@+id/make_a_selection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Make a Selection"
-                android:padding="@dimen/padding_5sp"
+                android:padding="@dimen/size_5sp"
                 android:background="@drawable/rectangle_orange"
                 android:gravity="center"
                 android:textSize="@dimen/big_font"
@@ -30,17 +30,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_2sp"
+                android:layout_marginTop="@dimen/size_2sp"
                 android:background="@drawable/rectangle_orange"
-                android:padding="@dimen/padding_5sp">
+                android:padding="@dimen/size_5sp">
 
                 <RelativeLayout
                     android:id="@+id/exam_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:padding="@dimen/padding_5sp"
-                    android:layout_marginBottom="@dimen/padding_5sp">
+                    android:padding="@dimen/size_5sp"
+                    android:layout_marginBottom="@dimen/size_5sp">
 
                     <TextView
                         android:id="@+id/tv_exam"
@@ -79,11 +79,11 @@
                     android:divider="@null"
                     android:dividerHeight="0dp"
                     android:gravity="center"
-                    android:horizontalSpacing="@dimen/padding_8sp"
+                    android:horizontalSpacing="@dimen/size_8sp"
                     android:numColumns="auto_fit"
-                    android:padding="@dimen/padding_2sp"
+                    android:padding="@dimen/size_2sp"
                     android:stretchMode="spacingWidthUniform"
-                    android:verticalSpacing="@dimen/padding_8sp"
+                    android:verticalSpacing="@dimen/size_8sp"
                     android:fontFamily="@font/roboto_medium"
                     android:visibility="visible">
                 </ListView>
@@ -93,16 +93,16 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_2sp"
+                android:layout_marginTop="@dimen/size_2sp"
                 android:background="@drawable/rectangle_orange"
-                android:padding="@dimen/padding_5sp">
+                android:padding="@dimen/size_5sp">
 
                 <RelativeLayout
                     android:id="@+id/subject_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/padding_5sp"
-                    android:layout_marginBottom="@dimen/padding_5sp">
+                    android:padding="@dimen/size_5sp"
+                    android:layout_marginBottom="@dimen/size_5sp">
 
                     <TextView
                         android:id="@+id/tv_subject"
@@ -137,25 +137,25 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/subject_layout"
                     android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/padding_5sp"
+                    android:layout_marginTop="@dimen/size_5sp"
                     android:columnWidth="100dp"
                     android:divider="@null"
                     android:dividerHeight="0dp"
-                    android:horizontalSpacing="@dimen/padding_8sp"
+                    android:horizontalSpacing="@dimen/size_8sp"
                     android:numColumns="auto_fit"
-                    android:padding="@dimen/padding_5sp"
+                    android:padding="@dimen/size_5sp"
                     android:stretchMode="spacingWidthUniform"
-                    android:verticalSpacing="@dimen/padding_8sp"
+                    android:verticalSpacing="@dimen/size_8sp"
                     android:visibility="visible"></ListView>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_2sp"
+                android:layout_marginTop="@dimen/size_2sp"
                 android:background="@drawable/rectangle_orange"
                 android:orientation="vertical"
-                android:padding="@dimen/padding_8sp">
+                android:padding="@dimen/size_8sp">
 
                 <TextView
                     android:id="@+id/year"
@@ -166,7 +166,7 @@
                     android:text="Year"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/medium2_font"
-                    android:layout_marginBottom="@dimen/padding_5sp"
+                    android:layout_marginBottom="@dimen/size_5sp"
                     android:fontFamily="@font/roboto_bold" />
 
                 <RelativeLayout
@@ -200,14 +200,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/year_text"
-                    android:padding="@dimen/padding_8sp">
+                    android:padding="@dimen/size_8sp">
 
                     <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
                         android:id="@+id/range_seekbar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/padding_5sp"
-                        android:padding="@dimen/padding_5sp"
+                        android:layout_margin="@dimen/size_5sp"
+                        android:padding="@dimen/size_5sp"
                         app:bar_color="@color/colorBackground"
                         app:bar_highlight_color="@color/colorBackground"
                         app:corner_radius="5"
@@ -226,17 +226,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/padding_2sp"
+                android:layout_marginTop="@dimen/size_2sp"
                 android:background="@drawable/rectangle_orange"
-                android:padding="@dimen/padding_8sp">
+                android:padding="@dimen/size_8sp">
 
                 <RelativeLayout
                     android:id="@+id/difficulty_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginBottom="@dimen/padding_5sp"
-                    android:padding="@dimen/padding_5sp">
+                    android:layout_marginBottom="@dimen/size_5sp"
+                    android:padding="@dimen/size_5sp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -245,7 +245,7 @@
                         android:text="Difficulty"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/medium2_font"
-                        android:layout_marginBottom="@dimen/padding_5sp"
+                        android:layout_marginBottom="@dimen/size_5sp"
                         android:fontFamily="@font/roboto_bold" />
 
                     <Switch
@@ -261,7 +261,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/difficulty_layout"
-                    android:layout_marginTop="@dimen/padding_8sp"
+                    android:layout_marginTop="@dimen/size_8sp"
                     android:gravity="center_horizontal">
 
                     <CheckBox
@@ -269,8 +269,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/padding_2sp"
-                        android:layout_marginEnd="@dimen/padding_2sp"
+                        android:layout_marginStart="@dimen/size_2sp"
+                        android:layout_marginEnd="@dimen/size_2sp"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:text="EASY" />
@@ -280,8 +280,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/padding_2sp"
-                        android:layout_marginEnd="@dimen/padding_2sp"
+                        android:layout_marginStart="@dimen/size_2sp"
+                        android:layout_marginEnd="@dimen/size_2sp"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:text="MEDIUM" />
@@ -291,8 +291,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="@dimen/padding_2sp"
-                        android:layout_marginEnd="@dimen/padding_2sp"
+                        android:layout_marginStart="@dimen/size_2sp"
+                        android:layout_marginEnd="@dimen/size_2sp"
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:text="HARD" />
@@ -303,10 +303,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/padding_2sp"
+                android:layout_marginTop="@dimen/size_2sp"
                 android:background="@drawable/rectangle_orange"
                 android:orientation="vertical"
-                android:padding="@dimen/padding_8sp">
+                android:padding="@dimen/size_8sp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -315,13 +315,13 @@
                     android:text="Other"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/medium2_font"
-                    android:layout_marginBottom="@dimen/padding_5sp"
+                    android:layout_marginBottom="@dimen/size_5sp"
                     android:fontFamily="@font/roboto_bold" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_5sp">
+                    android:layout_marginTop="@dimen/size_5sp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -342,7 +342,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_5sp">
+                    android:layout_marginTop="@dimen/size_5sp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -363,7 +363,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_5sp">
+                    android:layout_marginTop="@dimen/size_5sp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -396,7 +396,7 @@
         android:layout_height="80sp"
         android:background="@color/colorBackground2"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/padding_12sp"
+        android:layout_marginTop="@dimen/size_12sp"
         android:text="Start"
         android:fontFamily="@font/roboto_bold"
         android:textSize="@dimen/medium2_font" />

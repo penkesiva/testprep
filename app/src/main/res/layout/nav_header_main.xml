@@ -29,26 +29,26 @@
             android:id="@+id/website"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_8sp"
+            android:layout_marginTop="@dimen/size_8sp"
             android:text="@string/organization"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            android:textSize="@dimen/padding_20sp"
+            android:textSize="@dimen/size_20sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_24sp"
+            android:layout_marginTop="@dimen/size_24sp"
             android:text="username"
             android:textAlignment="center"
             android:gravity="center"
             android:textColor="@android:color/holo_orange_dark"
             android:textStyle="bold"
-            android:textSize="@dimen/padding_16sp"
+            android:textSize="@dimen/size_16sp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </LinearLayout>
 

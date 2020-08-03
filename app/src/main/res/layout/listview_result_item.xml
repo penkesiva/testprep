@@ -11,8 +11,8 @@
         android:layout_gravity="center_vertical"
         android:orientation="vertical"
         android:background="@drawable/rectangle_orange"
-        android:layout_margin="@dimen/padding_2sp"
-        android:padding="@dimen/padding_8sp">
+        android:layout_margin="@dimen/size_2sp"
+        android:padding="@dimen/size_8sp">
 
         <TextView
             android:id="@+id/question"
@@ -31,7 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_5sp"
+            android:layout_marginTop="@dimen/size_5sp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -52,8 +52,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:paddingStart="@dimen/padding_8sp"
-                    android:paddingEnd="@dimen/padding_8sp"
+                    android:paddingStart="@dimen/size_8sp"
+                    android:paddingEnd="@dimen/size_8sp"
                     android:text="Answer"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold" />
@@ -92,8 +92,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:paddingLeft="@dimen/padding_8sp"
-                    android:paddingRight="@dimen/padding_8sp"
+                    android:paddingLeft="@dimen/size_8sp"
+                    android:paddingRight="@dimen/size_8sp"
                     android:text="Answer "
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
@@ -102,7 +102,7 @@
                     android:id="@+id/validate_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/padding_8sp"
+                    android:layout_marginStart="@dimen/size_8sp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     android:maxWidth="16sp"
@@ -117,7 +117,7 @@
                 android:id="@+id/user_option_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/padding_16sp"
+                android:paddingStart="@dimen/size_16sp"
                 android:text="user option content here"
                 android:textStyle="italic"
                 android:textColor="@color/colorGreen"/>

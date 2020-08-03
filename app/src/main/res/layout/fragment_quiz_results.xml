@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_8sp"
+    android:padding="@dimen/size_8sp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,8 +17,8 @@
             android:id="@+id/your_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_8sp"
-            android:layout_marginStart="@dimen/padding_8sp"
+            android:padding="@dimen/size_8sp"
+            android:layout_marginStart="@dimen/size_8sp"
             android:gravity="start"
             android:layout_weight="1"
             android:textSize="@dimen/big_font"
@@ -30,7 +30,7 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_8sp"
+            android:padding="@dimen/size_8sp"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_weight="1"
@@ -47,11 +47,11 @@
         android:layout_below="@+id/score_layout"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:paddingTop="@dimen/padding_8sp"
+        android:paddingTop="@dimen/size_8sp"
         android:gravity="center"
         android:columnWidth="100dp"
         android:numColumns="auto_fit"
-        android:verticalSpacing="@dimen/padding_24sp"
+        android:verticalSpacing="@dimen/size_24sp"
         android:horizontalSpacing="10dp"
         android:stretchMode="spacingWidthUniform" />
 </RelativeLayout>
